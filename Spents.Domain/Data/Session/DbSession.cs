@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 
 namespace Data.Session
 {
-    internal class DbSession : IDisposable
+    public class DbSession : IDisposable
     {
         public IDbConnection Connection { get; private set; }
 

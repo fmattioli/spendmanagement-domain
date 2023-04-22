@@ -2,7 +2,7 @@
 
 namespace Domain.Interfaces
 {
-    internal interface IReceiptRepository : IBaseRepository<Receipt>
+    public interface IReceiptRepository : IBaseRepository<Receipt>
     {
     }
 }

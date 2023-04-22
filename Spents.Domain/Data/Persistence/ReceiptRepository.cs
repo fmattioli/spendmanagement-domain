@@ -1,9 +1,10 @@
 ﻿using Data.Session;
 using Domain.Entities;
+using Domain.Interfaces;
 
 namespace Data.Persistence
 {
-    internal class ReceiptRepository : BaseRepository<Receipt>
+    public class ReceiptRepository : BaseRepository<Receipt>, IReceiptRepository
     {
         public ReceiptRepository(DbSession dbSession) : base(dbSession)
         {

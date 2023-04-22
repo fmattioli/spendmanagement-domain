@@ -1,10 +1,12 @@
 ﻿using KafkaFlow;
+
 using Newtonsoft.Json;
+
 using System.Text;
 
-namespace Application.Extensions
+namespace Application.Kafka.Extensions
 {
-    internal static class MessageMiddlewareExtension
+    public static class MessageMiddlewareExtensions
     {
         public static string GetPartitionKey(this IMessageContext context)
         {

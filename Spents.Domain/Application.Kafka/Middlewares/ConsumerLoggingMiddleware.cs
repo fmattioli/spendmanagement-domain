@@ -1,11 +1,10 @@
-﻿using Application.Extensions;
-
+﻿using Application.Kafka.Extensions;
 using KafkaFlow;
 using Newtonsoft.Json;
 using Serilog;
 using System.Diagnostics;
 
-namespace Application.Middlewares
+namespace Application.Kafka.Middlewares
 {
     public class ConsumerLoggingMiddleware : IMessageMiddleware
     {

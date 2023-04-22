@@ -8,11 +8,23 @@
 
   <ItemGroup>
     <PackageReference Include="KafkaFlow" Version="2.2.16" />
+    <PackageReference Include="KafkaFlow.Abstractions" Version="2.2.16" />
+    <PackageReference Include="KafkaFlow.Admin" Version="2.2.16" />
+    <PackageReference Include="KafkaFlow.Admin.Dashboard" Version="2.2.16" />
+    <PackageReference Include="KafkaFlow.LogHandler.Console" Version="2.2.16" />
+    <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="2.2.16" />
+    <PackageReference Include="KafkaFlow.Serializer" Version="2.2.16" />
+    <PackageReference Include="KafkaFlow.Serializer.JsonCore" Version="2.2.16" />
+    <PackageReference Include="KafkaFlow.TypedHandler" Version="2.2.16" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Spents.Topics" Version="1.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Extensions\" />
+    <ProjectReference Include="..\Application.Kafka\Application.Kafka.csproj" />
+    <ProjectReference Include="..\Data\Data.csproj" />
   </ItemGroup>
 
 </Project>
