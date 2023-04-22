@@ -11,15 +11,16 @@ namespace Crosscutting.HostedService
         {
             kafkaBus = serviceProvider.CreateKafkaBus();
         }
+
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Kakfa started");
+            Console.WriteLine("Kafka started");
             await kafkaBus.StartAsync(cancellationToken);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            Console.WriteLine("Kakfa stoped");
+            Console.WriteLine("Kafka stopped");
             await kafkaBus.StopAsync();
         }
     }

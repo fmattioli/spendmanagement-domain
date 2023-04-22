@@ -17,7 +17,7 @@ namespace Crosscutting.Extensions
     {
         public static IApplicationBuilder ShowKafkaDashboard(this IApplicationBuilder app) => app.UseKafkaFlowDashboard();
 
-        public static IServiceCollection AddKafka(this IServiceCollection services, KafkaSettings kafkaSettings)
+        public static IServiceCollection AddKafka(this IServiceCollection services, KafkaSettings? kafkaSettings)
         {
             services.AddKafka(kafka => kafka
                 .UseConsoleLog()
@@ -43,9 +43,9 @@ namespace Crosscutting.Extensions
 
         private static IClusterConfigurationBuilder AddBrokers(
             this IClusterConfigurationBuilder builder,
-            KafkaSettings settings)
+            KafkaSettings? settings)
         {
-            if (settings.Sasl_Enabled)
+            if (settings?.Sasl_Enabled ?? false)
             {
                 builder
                     .WithBrokers(settings.Sasl_Brokers)
@@ -68,15 +68,15 @@ namespace Crosscutting.Extensions
 
         private static IClusterConfigurationBuilder AddConsumers(
             this IClusterConfigurationBuilder builder,
-            KafkaSettings settings)
+            KafkaSettings? settings)
         {
             builder.AddConsumer(
                 consumer => consumer
                      .Topics(KafkaTopics.Commands.ReceitCommandTopicName)
                      .WithGroupId("Receipts-Commands")
                      .WithName("Receipt-Commands")
-                     .WithBufferSize(settings.BufferSize)
-                     .WithWorkersCount(settings.WorkerCount)
+                     .WithBufferSize(settings?.BufferSize ?? 0)
+                     .WithWorkersCount(settings?.WorkerCount ?? 0)
                      .WithAutoOffsetReset(AutoOffsetReset.Latest)
                      .AddMiddlewares(
                         middlewares =>

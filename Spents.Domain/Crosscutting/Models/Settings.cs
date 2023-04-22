@@ -2,8 +2,8 @@
 {
     public interface ISettings
     {
-        public KafkaSettings? KafkaSettings { get; }
-        public SqlSettings? SqlSettings { get; }
+        public KafkaSettings KafkaSettings { get; }
+        public SqlSettings SqlSettings { get; }
     }
 
     public record Settings : ISettings
