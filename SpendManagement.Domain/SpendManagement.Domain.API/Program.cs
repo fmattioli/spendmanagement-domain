@@ -19,8 +19,9 @@ builder.Host.ConfigureAppConfiguration((hosting, config) =>
 
 var applicationSettings = builder.Configuration.GetSection("Settings").Get<Settings>();
 
+builder.Services.AddSingleton<ISettings>(applicationSettings ?? throw new Exception("Error while reading app settings."));
+
 builder.Services
-    .AddSingleton<ISettings>(applicationSettings ?? throw new Exception("Error while reading appsettings."))
     .AddKafka(applicationSettings?.KafkaSettings)
     .AddRepositories()
     .AddLoggingDependency()

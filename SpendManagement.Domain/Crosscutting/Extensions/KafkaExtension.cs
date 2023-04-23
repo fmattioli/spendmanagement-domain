@@ -8,8 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Crosscutting.Models;
 using Crosscutting.HostedService;
 using SpendManagement.Topics;
-using Application.Kafka.Middlewares;
-using Application.Kafka.Handlers;
+using Application.Kafka.Commands.Handlers;
+using SpendManagement.Contracts.V1.Events.Interfaces;
+using Crosscutting.Middlewares;
 
 namespace Crosscutting.Extensions
 {
@@ -51,10 +52,10 @@ namespace Crosscutting.Extensions
                     .WithBrokers(settings.Sasl_Brokers)
                     .WithSecurityInformation(si =>
                     {
-                        si.SecurityProtocol = SecurityProtocol.SaslSsl;
+                        si.SecurityProtocol = KafkaFlow.Configuration.SecurityProtocol.SaslSsl;
                         si.SaslUsername = settings.Sasl_UserName;
                         si.SaslPassword = settings.Sasl_Password;
-                        si.SaslMechanism = SaslMechanism.Plain;
+                        si.SaslMechanism = KafkaFlow.Configuration.SaslMechanism.Plain;
                         si.SslCaLocation = string.Empty;
                     });
             }
@@ -77,7 +78,7 @@ namespace Crosscutting.Extensions
                      .WithName("Receipt-Commands")
                      .WithBufferSize(settings?.BufferSize ?? 0)
                      .WithWorkersCount(settings?.WorkerCount ?? 0)
-                     .WithAutoOffsetReset(AutoOffsetReset.Latest)
+                     .WithAutoOffsetReset(KafkaFlow.AutoOffsetReset.Latest)
                      .AddMiddlewares(
                         middlewares =>
                             middlewares
@@ -91,6 +92,29 @@ namespace Crosscutting.Extensions
                                     )
                             )
                      );
+
+            return builder;
+        }
+
+        private static IClusterConfigurationBuilder AddProducers(
+          this IClusterConfigurationBuilder builder,
+          KafkaSettings settings)
+        {
+
+            var producerConfig = new Confluent.Kafka.ProducerConfig
+            {
+                MessageTimeoutMs = settings.MessageTimeoutMs,
+            };
+
+            builder.
+                CreateTopicIfNotExists(KafkaTopics.Events.ReceiptEventTopicName, 2, 1)
+                .AddProducer<IEvent>(p => p
+                .DefaultTopic(KafkaTopics.Events.ReceiptEventTopicName)
+                .AddMiddlewares(m => m
+                    .Add<ProducerRetryMiddleware>()
+                    .AddSerializer<JsonCoreSerializer>())
+                .WithAcks(KafkaFlow.Acks.All)
+                .WithProducerConfig(producerConfig));
 
             return builder;
         }

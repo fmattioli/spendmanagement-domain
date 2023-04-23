@@ -7,7 +7,7 @@ using Serilog;
 using SpendManagement.Contracts.V1.Commands;
 
 
-namespace Application.Kafka.Handlers
+namespace Application.Kafka.Commands.Handlers
 {
     public class CreateReceiptCommandHandler : IMessageHandler<CreateReceiptCommand>
     {
@@ -25,7 +25,7 @@ namespace Application.Kafka.Handlers
             var receiptId = await receiptRepository.Add(receiptDomain, SqlCommands.InsertReceipt());
             await receiptRepository.AddReceiptItem(receiptId, receiptDomain.ReceiptItems);
 
-            this.log.Information(
+            log.Information(
                 $"Spent saved with successfully on database.",
                 () => new
                 {

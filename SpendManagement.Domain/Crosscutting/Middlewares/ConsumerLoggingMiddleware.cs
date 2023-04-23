@@ -1,10 +1,10 @@
-﻿using Application.Kafka.Extensions;
+﻿using Crosscutting.Extensions;
 using KafkaFlow;
 using Newtonsoft.Json;
 using Serilog;
 using System.Diagnostics;
 
-namespace Application.Kafka.Middlewares
+namespace Crosscutting.Middlewares
 {
     public class ConsumerLoggingMiddleware : IMessageMiddleware
     {

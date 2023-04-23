@@ -1,9 +1,10 @@
-﻿using Application.Kafka.Extensions;
+﻿using Crosscutting.Extensions;
+using Crosscutting.Models;
 using KafkaFlow;
 using Polly;
 using Serilog;
 
-namespace Application.Kafka.Middlewares
+namespace Crosscutting.Middlewares
 {
     public class ConsumerRetryMiddleware : IMessageMiddleware
     {
@@ -14,12 +15,11 @@ namespace Application.Kafka.Middlewares
 
         private readonly TimeSpan retryInterval;
 
-        public ConsumerRetryMiddleware(ILogger log)
+        public ConsumerRetryMiddleware(ILogger log, ISettings settings)
         {
             this.log = log ?? throw new ArgumentNullException(nameof(log));
-
-            this.retryCount = 3;
-            this.retryInterval = TimeSpan.FromMilliseconds(100);
+            this.retryCount = settings.KafkaSettings.ConsumerRetryCount;
+            this.retryInterval = TimeSpan.FromSeconds(settings.KafkaSettings.ConsumerRetryInterval);
         }
 
         public Task Invoke(IMessageContext context, MiddlewareDelegate next)

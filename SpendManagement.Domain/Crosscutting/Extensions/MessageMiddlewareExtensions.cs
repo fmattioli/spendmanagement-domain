@@ -1,10 +1,8 @@
 ﻿using KafkaFlow;
-
 using Newtonsoft.Json;
-
 using System.Text;
 
-namespace Application.Kafka.Extensions
+namespace Crosscutting.Extensions
 {
     public static class MessageMiddlewareExtensions
     {
