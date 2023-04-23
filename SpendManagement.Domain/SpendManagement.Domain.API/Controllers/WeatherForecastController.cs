@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Spents.Domain.API.Controllers
+namespace SpendManagement.Domain.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]

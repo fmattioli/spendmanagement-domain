@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Crosscutting.Models;
 using Crosscutting.HostedService;
-using Spents.Topics;
+using SpendManagement.Topics;
 using Application.Kafka.Middlewares;
 using Application.Kafka.Handlers;
 
@@ -72,7 +72,7 @@ namespace Crosscutting.Extensions
         {
             builder.AddConsumer(
                 consumer => consumer
-                     .Topics(KafkaTopics.Commands.ReceitCommandTopicName)
+                     .Topics(KafkaTopics.Commands.ReceiptCommandTopicName)
                      .WithGroupId("Receipts-Commands")
                      .WithName("Receipt-Commands")
                      .WithBufferSize(settings?.BufferSize ?? 0)

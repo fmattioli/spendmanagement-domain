@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["Spents.API/Spents.API.csproj", "Spents.API/"]
-RUN dotnet restore "Spents.API/Spents.API.csproj"
+COPY ["SpendManagement.API/SpendManagement.API.csproj", "SpendManagement.API/"]
+RUN dotnet restore "SpendManagement.API/SpendManagement.API.csproj"
 COPY . .
-WORKDIR "/src/Spents.API"
-RUN dotnet build "Spents.API.csproj" -c Release -o /app/build
+WORKDIR "/src/SpendManagement.API"
+RUN dotnet build "SpendManagement.API.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Spents.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "SpendManagement.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Spents.API.dll"]
+ENTRYPOINT ["dotnet", "SpendManagement.API.dll"]

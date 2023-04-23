@@ -1,8 +1,7 @@
 ﻿using KafkaFlow;
 using KafkaFlow.TypedHandler;
 using Serilog;
-
-using Spents.Contracts.V1.Commands;
+using SpendManagement.Contracts.V1.Commands;
 
 namespace Application.Kafka.Handlers
 {

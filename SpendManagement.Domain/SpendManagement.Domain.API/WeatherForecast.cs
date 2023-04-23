@@ -1,4 +1,4 @@
-namespace Spents.Domain.API
+namespace SpendManagement.Domain.API
 {
     public class WeatherForecast
     {
