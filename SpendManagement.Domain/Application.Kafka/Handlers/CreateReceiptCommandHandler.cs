@@ -15,7 +15,7 @@ namespace Application.Kafka.Handlers
 
         public async Task Handle(IMessageContext context, CreateReceiptCommand message)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException() ;
         }
     }
 }
