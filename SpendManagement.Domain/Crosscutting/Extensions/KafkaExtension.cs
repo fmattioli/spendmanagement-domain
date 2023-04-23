@@ -60,7 +60,7 @@ namespace Crosscutting.Extensions
             }
             else
             {
-                builder.WithBrokers(new[] { settings.Brokers });
+                builder.WithBrokers(new[] { settings?.Brokers });
             }
 
             return builder;

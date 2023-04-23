@@ -7,16 +7,14 @@ namespace Data.Persistence
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        private readonly DbSession _db;
+        protected readonly DbSession _db;
 
         public BaseRepository(DbSession dbSession) => this._db = dbSession;
 
-        public async Task<int> Add(T entity, string table)
+        public async Task<Guid> Add(T entity, string sqlCommand)
         {
             using var conn = _db.Connection;
-            var Id = await conn.ExecuteScalarAsync<int>(
-                SqlCommands.InsertReceipt(table), entity);
-            return Id;
+            return await conn.ExecuteScalarAsync<Guid>(sqlCommand, entity);
         }
     }
 }

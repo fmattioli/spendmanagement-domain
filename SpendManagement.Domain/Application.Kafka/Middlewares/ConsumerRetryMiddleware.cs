@@ -1,5 +1,4 @@
 ﻿using Application.Kafka.Extensions;
-
 using KafkaFlow;
 using Polly;
 using Serilog;
@@ -19,7 +18,7 @@ namespace Application.Kafka.Middlewares
         {
             this.log = log ?? throw new ArgumentNullException(nameof(log));
 
-            this.retryCount = 2;
+            this.retryCount = 3;
             this.retryInterval = TimeSpan.FromMilliseconds(100);
         }
 
