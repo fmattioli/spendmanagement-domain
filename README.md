@@ -1,4 +1,4 @@
-# spents-domain
+# spendmanagement-domain
 This project is the heart of the spents-project. This project read commands from a topic and produce domain events to change the state of a object.
 
 # Related projects
@@ -6,8 +6,8 @@ This project is the heart of the spents-project. This project read commands from
 > https://github.com/fmattioli/spents-eventsourcing
 
 # Related packages
-> https://github.com/fmattioli/spents-contracts <br/>
-> https://github.com/fmattioli/spent-topics
+> https://github.com/fmattioli/spendmanagement-contracts <br/>
+> https://github.com/fmattioli/spendmanagement-topics
 
 
 # How it works?
