@@ -18,7 +18,7 @@ namespace Crosscutting.Extensions
     {
         public static IApplicationBuilder ShowKafkaDashboard(this IApplicationBuilder app) => app.UseKafkaFlowDashboard();
 
-        public static IServiceCollection AddKafka(this IServiceCollection services, KafkaSettings? kafkaSettings)
+        public static IServiceCollection AddKafka(this IServiceCollection services, KafkaSettings kafkaSettings)
         {
             services.AddKafka(kafka => kafka
                 .UseConsoleLog()
@@ -26,6 +26,7 @@ namespace Crosscutting.Extensions
                     .AddBrokers(kafkaSettings)
                     .AddTelemetry()
                     .AddConsumers(kafkaSettings)
+                    .AddProducers(kafkaSettings)
                     )
                 );
             services.AddHostedService<KafkaBusHostedService>();
@@ -36,8 +37,8 @@ namespace Crosscutting.Extensions
             this IClusterConfigurationBuilder builder)
         {
             builder
-                .EnableAdminMessages(KafkaTopics.Events.ReceiptTelemetry)
-                .EnableTelemetry(KafkaTopics.Events.ReceiptTelemetry);
+                .EnableAdminMessages(KafkaTopics.Commands.ReceiptTelemetry)
+                .EnableTelemetry(KafkaTopics.Commands.ReceiptTelemetry);
 
             return builder;
         }
