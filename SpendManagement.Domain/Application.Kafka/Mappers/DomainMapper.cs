@@ -1,5 +1,8 @@
 ﻿using Domain.Entities;
+
+using SpendManagement.Contracts.V1.Base;
 using SpendManagement.Contracts.V1.Commands;
+using SpendManagement.Contracts.V1.Events;
 
 namespace Application.Kafka.Converters
 {
@@ -20,6 +23,24 @@ namespace Application.Kafka.Converters
                     Quantity = x.Quantity
                 })
             );
+        }
+
+        public static ReceiptCreatedEvent ToReceiptCreatedEvent(this Receipt receipt)
+        {
+            return new ReceiptCreatedEvent
+            {
+                Id = receipt.Id,
+                EstablishmentName = receipt.EstablishmentName,
+                ReceiptDate = receipt.ReceiptDate,
+                ReceiptItems = receipt.ReceiptItems.Select(x => new ReceiptItem
+                {
+                    Id = x.Id,
+                    ItemName = x.ItemName,
+                    ItemPrice = x.ItemPrice,
+                    Observation = x.Observation,
+                    Quantity = x.Quantity
+                })
+            };
         }
     }
 }
