@@ -3,6 +3,7 @@ This project is the heart of the spents-project. This project read commands from
 
 # Related projects
 > https://github.com/fmattioli/spendmanagement-api <br/>
+> https://github.com/fmattioli/spendmanagement-eventhandler <br/>
 > https://github.com/fmattioli/spendmanagement-eventsourcing
 
 # Related packages
