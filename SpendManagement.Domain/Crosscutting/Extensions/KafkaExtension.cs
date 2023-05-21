@@ -101,7 +101,6 @@ namespace Crosscutting.Extensions
           this IClusterConfigurationBuilder builder,
           KafkaSettings settings)
         {
-
             var producerConfig = new Confluent.Kafka.ProducerConfig
             {
                 MessageTimeoutMs = settings.MessageTimeoutMs,

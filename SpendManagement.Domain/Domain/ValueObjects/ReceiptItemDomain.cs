@@ -1,9 +1,12 @@
-﻿namespace Domain.ValueObjects
+﻿using Domain.Entities;
+
+namespace Domain.ValueObjects
 {
-    public record ReceiptItem
+    public record ReceiptItemDomain
     {
         public Guid Id { get; set; }
         public Guid ReceiptId { get; set; }
+        public CategoryDomain Category { get; set; } = null!;
         public string ItemName { get; set; } = null!;
         public short Quantity { get; set; }
         public decimal ItemPrice { get; set; }

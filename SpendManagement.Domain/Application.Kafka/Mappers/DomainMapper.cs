@@ -1,45 +1,37 @@
 ﻿using Domain.Entities;
-
+using Domain.ValueObjects;
 using SpendManagement.Contracts.V1.Base;
 using SpendManagement.Contracts.V1.Commands;
 using SpendManagement.Contracts.V1.Events;
+using SpendManagement.Contracts.V1.Entities;
 
 namespace Application.Kafka.Converters
 {
     public static class Mappers
     {
-        public static Receipt ToDomain(this CreateReceiptCommand createReceiptCommand)
+        public static ReceiptDomain ToDomain(this CreateReceiptCommand createReceiptCommand)
         {
-            return new Receipt(
-                createReceiptCommand.Id,
-                createReceiptCommand.EstablishmentName,
-                createReceiptCommand.ReceiptDate,
-                createReceiptCommand.ReceiptItems.Select(x => new Domain.ValueObjects.ReceiptItem
+            return new ReceiptDomain(createReceiptCommand.Receipt.Id,
+                createReceiptCommand.Receipt.EstablishmentName,
+                createReceiptCommand.Receipt.ReceiptDate,
+                createReceiptCommand.ReceiptItems.Select(x => new ReceiptItemDomain
                 {
                     Id = x.Id,
+                    Category = new CategoryDomain(x.Category.Id, x.Category.Name),
                     ItemName = x.ItemName,
                     ItemPrice = x.ItemPrice,
                     Observation = x.Observation,
-                    Quantity = x.Quantity
-                })
-            );
+                    Quantity = x.Quantity,
+                    ReceiptId = createReceiptCommand.Receipt.Id
+                }));
         }
 
-        public static CreatedReceiptEvent ToReceiptCreatedEvent(this Receipt receipt)
+        public static CreatedReceiptEvent ToReceiptCreatedEvent(this ReceiptDomain receipt)
         {
             return new CreatedReceiptEvent
             {
-                Id = receipt.Id,
-                EstablishmentName = receipt.EstablishmentName,
-                ReceiptDate = receipt.ReceiptDate,
-                ReceiptItems = receipt.ReceiptItems.Select(x => new ReceiptItem
-                {
-                    Id = x.Id,
-                    ItemName = x.ItemName,
-                    ItemPrice = x.ItemPrice,
-                    Observation = x.Observation,
-                    Quantity = x.Quantity
-                })
+                Receipt = new Receipt(receipt.Id, receipt.EstablishmentName, receipt.ReceiptDate),
+                ReceiptItem = receipt.ReceiptItems.Select(x => new ReceiptItem(x.Id, x.ItemName, new Category(x.Category.Id, x.Category.Name), x.Quantity, x.ItemPrice, x.Observation))
             };
         }
     }
