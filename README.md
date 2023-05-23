@@ -2,6 +2,7 @@
 This project is the heart of the spents-project. This project read commands from a topic and produce domain events to change the state of a object.
 
 # Related projects
+> https://github.com/fmattioli/spendmanagement-apigateway <br/>
 > https://github.com/fmattioli/spendmanagement-api <br/>
 > https://github.com/fmattioli/spendmanagement-eventhandler <br/>
 > https://github.com/fmattioli/spendmanagement-readmodel <br/>
