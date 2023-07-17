@@ -1,6 +1,6 @@
 ﻿using Application.Kafka.Events.Interfaces;
 using KafkaFlow;
-using SpendManagement.Contracts.V1.Events.Interfaces;
+using SpendManagement.Contracts.V1.Interfaces;
 using SpendManagement.Topics;
 
 namespace Application.Kafka.Events
@@ -14,7 +14,7 @@ namespace Application.Kafka.Events
             this.eventsProducer = eventProducer;
         }
 
-        public async Task ProduceEvent(IEvent @event)
+        public async Task SendEventAsync(IEvent @event)
         {
             await eventsProducer.ProduceAsync(KafkaTopics.Events.ReceiptEventTopicName, @event.RoutingKey, @event);
         }

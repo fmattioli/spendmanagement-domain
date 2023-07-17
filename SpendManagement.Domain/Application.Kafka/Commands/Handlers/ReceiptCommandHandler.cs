@@ -5,18 +5,18 @@ using Domain.Interfaces;
 using KafkaFlow;
 using KafkaFlow.TypedHandler;
 using Serilog;
-using SpendManagement.Contracts.V1.Commands;
 
+using SpendManagement.Contracts.V1.Commands.ReceiptCommands;
 
 namespace Application.Kafka.Commands.Handlers
 {
-    public class CreateReceiptCommandHandler : IMessageHandler<CreateReceiptCommand>
+    public class ReceiptCommandHandler : IMessageHandler<CreateReceiptCommand>
     {
         private readonly ILogger log;
         private readonly IReceiptRepository receiptRepository;
         private readonly IReceiptProducer receiptProducer;
 
-        public CreateReceiptCommandHandler(ILogger log, IReceiptRepository receiptRepository, IReceiptProducer receiptProducer)
+        public ReceiptCommandHandler(ILogger log, IReceiptRepository receiptRepository, IReceiptProducer receiptProducer)
         {
             this.log = log;
             this.receiptRepository = receiptRepository;
@@ -30,7 +30,7 @@ namespace Application.Kafka.Commands.Handlers
             await receiptRepository.AddReceiptItem(receiptId, receiptDomain.ReceiptItems);
 
             var receiptCreatedEvent = receiptDomain.ToReceiptCreatedEvent();
-            await receiptProducer.ProduceEvent(receiptCreatedEvent);
+            await receiptProducer.SendEventAsync(receiptCreatedEvent);
 
             log.Information(
                 $"Spent saved with successfully on database.",

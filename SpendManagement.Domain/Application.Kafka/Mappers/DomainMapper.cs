@@ -1,9 +1,8 @@
 ﻿using Domain.Entities;
 using Domain.ValueObjects;
-using SpendManagement.Contracts.V1.Base;
-using SpendManagement.Contracts.V1.Commands;
-using SpendManagement.Contracts.V1.Events;
+using SpendManagement.Contracts.V1.Commands.ReceiptCommands;
 using SpendManagement.Contracts.V1.Entities;
+using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 
 namespace Application.Kafka.Converters
 {
@@ -17,7 +16,7 @@ namespace Application.Kafka.Converters
                 createReceiptCommand.ReceiptItems.Select(x => new ReceiptItemDomain
                 {
                     Id = x.Id,
-                    Category = new CategoryDomain(x.Category.Id, x.Category.Name),
+                    CategoryId =x.CategoryId,
                     ItemName = x.ItemName,
                     ItemPrice = x.ItemPrice,
                     Observation = x.Observation,
@@ -31,7 +30,7 @@ namespace Application.Kafka.Converters
             return new CreatedReceiptEvent
             {
                 Receipt = new Receipt(receipt.Id, receipt.EstablishmentName, receipt.ReceiptDate),
-                ReceiptItem = receipt.ReceiptItems.Select(x => new ReceiptItem(x.Id, x.ItemName, new Category(x.Category.Id, x.Category.Name), x.Quantity, x.ItemPrice, x.Observation))
+                ReceiptItem = receipt.ReceiptItems.Select(x => new ReceiptItem(x.Id, x.ItemName, x.CategoryId, x.Quantity, x.ItemPrice, x.Observation))
             };
         }
     }

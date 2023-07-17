@@ -6,7 +6,7 @@ namespace Domain.ValueObjects
     {
         public Guid Id { get; set; }
         public Guid ReceiptId { get; set; }
-        public CategoryDomain Category { get; set; } = null!;
+        public Guid CategoryId { get; set; }
         public string ItemName { get; set; } = null!;
         public short Quantity { get; set; }
         public decimal ItemPrice { get; set; }

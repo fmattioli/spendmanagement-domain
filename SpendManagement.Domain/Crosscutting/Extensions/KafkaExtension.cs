@@ -1,16 +1,17 @@
-﻿using KafkaFlow;
+﻿using Application.Kafka.Commands.Handlers;
+using Crosscutting.HostedService;
+using Crosscutting.Middlewares;
+using Crosscutting.Models;
+using KafkaFlow;
 using KafkaFlow.Admin.Dashboard;
 using KafkaFlow.Configuration;
 using KafkaFlow.Serializer;
 using KafkaFlow.TypedHandler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Crosscutting.Models;
-using Crosscutting.HostedService;
+
+using SpendManagement.Contracts.V1.Interfaces;
 using SpendManagement.Topics;
-using Application.Kafka.Commands.Handlers;
-using SpendManagement.Contracts.V1.Events.Interfaces;
-using Crosscutting.Middlewares;
 
 namespace Crosscutting.Extensions
 {
@@ -89,7 +90,7 @@ namespace Crosscutting.Extensions
                             .AddTypedHandlers(
                                 h => h
                                     .WithHandlerLifetime(InstanceLifetime.Scoped)
-                                    .AddHandler<CreateReceiptCommandHandler>()
+                                    .AddHandlersFromAssemblyOf<ReceiptCommandHandler>()
                                     )
                             )
                      );
