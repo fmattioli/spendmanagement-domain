@@ -7,7 +7,7 @@ using Domain.ValueObjects;
 
 namespace Data.Persistence
 {
-    public class ReceiptRepository : BaseRepository<Receipt>, IReceiptRepository
+    public class ReceiptRepository : BaseRepository<ReceiptDomain>, IReceiptRepository
     {
         private readonly DbSession _dbSession;
         public ReceiptRepository(DbSession dbSession) : base(dbSession)
@@ -15,7 +15,7 @@ namespace Data.Persistence
             _dbSession = dbSession;
         }
 
-        public async Task<bool> AddReceiptItem(Guid receiptId, IEnumerable<ReceiptItem> receiptItems)
+        public async Task<bool> AddReceiptItem(Guid receiptId, IEnumerable<ReceiptItemDomain> receiptItems)
         {
             _db.Connection = _dbSession.OpenConnection();
             using var conn = _db.Connection;

@@ -1,9 +1,9 @@
-﻿using SpendManagement.Contracts.V1.Events.Interfaces;
+﻿using SpendManagement.Contracts.V1.Interfaces;
 
 namespace Application.Kafka.Events.Interfaces
 {
     public interface IReceiptProducer
     {
-        Task ProduceEvent(IEvent @event);
+        Task SendEventAsync(IEvent @event);
     }
 }
