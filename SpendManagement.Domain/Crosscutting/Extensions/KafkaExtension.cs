@@ -9,7 +9,6 @@ using KafkaFlow.Serializer;
 using KafkaFlow.TypedHandler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-
 using SpendManagement.Contracts.V1.Interfaces;
 using SpendManagement.Topics;
 
