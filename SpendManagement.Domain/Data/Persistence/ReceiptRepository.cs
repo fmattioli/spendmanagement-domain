@@ -22,7 +22,7 @@ namespace Data.Persistence
             foreach (var receiptItem in receiptItems)
             {
                 receiptItem.ReceiptId = receiptId;
-                await conn.ExecuteScalarAsync(SqlCommands.InsertReceiptItems(), receiptItem);
+                await conn.ExecuteScalarAsync(ReceiptSqlCommands.InsertReceiptItems(), receiptItem);
             }
 
             return true;

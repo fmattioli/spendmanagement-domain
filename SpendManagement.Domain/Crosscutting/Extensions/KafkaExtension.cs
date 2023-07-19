@@ -79,7 +79,7 @@ namespace Crosscutting.Extensions
                      .WithName("Receipt-Commands")
                      .WithBufferSize(settings?.BufferSize ?? 0)
                      .WithWorkersCount(settings?.WorkerCount ?? 0)
-                     .WithAutoOffsetReset(KafkaFlow.AutoOffsetReset.Latest)
+                     .WithAutoOffsetReset(AutoOffsetReset.Latest)
                      .AddMiddlewares(
                         middlewares =>
                             middlewares
@@ -107,13 +107,13 @@ namespace Crosscutting.Extensions
             };
 
             builder.
-                CreateTopicIfNotExists(KafkaTopics.Events.ReceiptEventTopicName, 2, 1)
+                 CreateTopicIfNotExists(KafkaTopics.Events.ReceiptEventTopicName, 2, 1)
                 .AddProducer<IEvent>(p => p
                 .DefaultTopic(KafkaTopics.Events.ReceiptEventTopicName)
                 .AddMiddlewares(m => m
                     .Add<ProducerRetryMiddleware>()
                     .AddSerializer<JsonCoreSerializer>())
-                .WithAcks(KafkaFlow.Acks.All)
+                .WithAcks(Acks.All)
                 .WithProducerConfig(producerConfig));
 
             return builder;

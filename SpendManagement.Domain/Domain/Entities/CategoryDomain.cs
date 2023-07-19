@@ -2,11 +2,11 @@
 {
     public class CategoryDomain
     {
-        public CategoryDomain(Guid id, string name)
+        public CategoryDomain(Guid id, string name, DateTime createdDate)
         {
             Id = id;
             Name = name;
-            CreatedDate = DateTime.UtcNow;
+            CreatedDate = createdDate;
         }
 
         public Guid Id { get; set; }

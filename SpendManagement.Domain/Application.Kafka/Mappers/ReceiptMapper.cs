@@ -6,7 +6,7 @@ using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 
 namespace Application.Kafka.Converters
 {
-    public static class Mappers
+    public static class ReceiptMappers
     {
         public static ReceiptDomain ToDomain(this CreateReceiptCommand createReceiptCommand)
         {

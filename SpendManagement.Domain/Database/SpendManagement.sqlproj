@@ -60,5 +60,6 @@
   <ItemGroup>
     <Build Include="Receipt.sql" />
     <Build Include="ReceiptItem.sql" />
+    <Build Include="Category.sql" />
   </ItemGroup>
 </Project>

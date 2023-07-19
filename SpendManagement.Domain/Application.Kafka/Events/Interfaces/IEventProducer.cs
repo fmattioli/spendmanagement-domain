@@ -2,7 +2,7 @@
 
 namespace Application.Kafka.Events.Interfaces
 {
-    public interface IReceiptProducer
+    public interface IEventProducer
     {
         Task SendEventAsync(IEvent @event);
     }
