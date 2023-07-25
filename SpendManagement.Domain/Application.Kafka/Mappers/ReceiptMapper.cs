@@ -30,7 +30,8 @@ namespace Application.Kafka.Converters
             return new CreatedReceiptEvent
             {
                 Receipt = new Receipt(receipt.Id, receipt.EstablishmentName, receipt.ReceiptDate),
-                ReceiptItem = receipt.ReceiptItems.Select(x => new ReceiptItem(x.Id, x.ItemName, x.CategoryId, x.Quantity, x.ItemPrice, x.Observation))
+                ReceiptItem = receipt.ReceiptItems.Select(x => new ReceiptItem(x.Id, x.ItemName, x.CategoryId, x.Quantity, x.ItemPrice, x.Observation)),
+                EventCreatedDate = DateTime.UtcNow,
             };
         }
     }

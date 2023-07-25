@@ -1,16 +1,19 @@
 ﻿using Application.Kafka.Events.Interfaces;
 using KafkaFlow;
+using Serilog;
 using SpendManagement.Contracts.V1.Interfaces;
 
 namespace Application.Kafka.Events
 {
-    public class ReceiptProducer : IEventProducer
+    public class EventProducer : IEventProducer
     {
         private readonly IMessageProducer<IEvent> eventsProducer;
+        private readonly ILogger _log;
 
-        public ReceiptProducer(IMessageProducer<IEvent> eventProducer)
+        public EventProducer(IMessageProducer<IEvent> eventProducer, ILogger log)
         {
             this.eventsProducer = eventProducer;
+            this._log = log;
         }
 
         public async Task SendEventAsync(IEvent @event)

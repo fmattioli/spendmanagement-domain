@@ -80,6 +80,7 @@ namespace Crosscutting.Extensions
                      .WithBufferSize(settings?.BufferSize ?? 0)
                      .WithWorkersCount(settings?.WorkerCount ?? 0)
                      .WithAutoOffsetReset(AutoOffsetReset.Latest)
+                     .WithInitialState(Enum.Parse<ConsumerInitialState>(settings?.ConsumerInitialState ?? "Running"))
                      .AddMiddlewares(
                         middlewares =>
                             middlewares
