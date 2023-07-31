@@ -5,7 +5,6 @@ using Domain.Interfaces;
 using KafkaFlow;
 using KafkaFlow.TypedHandler;
 using Serilog;
-
 using SpendManagement.Contracts.V1.Commands.ReceiptCommands;
 
 namespace Application.Kafka.Commands.Handlers
@@ -14,9 +13,9 @@ namespace Application.Kafka.Commands.Handlers
     {
         private readonly ILogger log;
         private readonly IReceiptRepository receiptRepository;
-        private readonly IReceiptProducer receiptProducer;
+        private readonly IEventProducer receiptProducer;
 
-        public ReceiptCommandHandler(ILogger log, IReceiptRepository receiptRepository, IReceiptProducer receiptProducer)
+        public ReceiptCommandHandler(ILogger log, IReceiptRepository receiptRepository, IEventProducer receiptProducer)
         {
             this.log = log;
             this.receiptRepository = receiptRepository;
@@ -26,7 +25,7 @@ namespace Application.Kafka.Commands.Handlers
         public async Task Handle(IMessageContext context, CreateReceiptCommand message)
         {
             var receiptDomain = message.ToDomain();
-            var receiptId = await receiptRepository.Add(receiptDomain, SqlCommands.InsertReceipt());
+            var receiptId = await receiptRepository.Add(receiptDomain, ReceiptSqlCommands.InsertReceipt());
             await receiptRepository.AddReceiptItem(receiptId, receiptDomain.ReceiptItems);
 
             var receiptCreatedEvent = receiptDomain.ToReceiptCreatedEvent();

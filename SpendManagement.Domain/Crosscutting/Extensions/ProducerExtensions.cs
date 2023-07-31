@@ -8,7 +8,7 @@ namespace Crosscutting.Extensions
     {
         public static IServiceCollection AddServiceEventsProducer(this IServiceCollection services)
         {
-            services.AddScoped<IReceiptProducer, ReceiptProducer>();
+            services.AddScoped<IEventProducer, EventProducer>();
             return services;
         }
     }

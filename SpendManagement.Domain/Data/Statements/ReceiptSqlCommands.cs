@@ -2,7 +2,7 @@
 
 namespace Data.Statements
 {
-    public static class SqlCommands
+    public static class ReceiptSqlCommands
     {
         private static readonly StringBuilder QueryBuilder = new();
         public static string InsertReceipt()
@@ -26,6 +26,7 @@ namespace Data.Statements
             QueryBuilder.AppendLine("  (  ");
             QueryBuilder.AppendLine("  [Id], ");
             QueryBuilder.AppendLine("  [ReceiptId], ");
+            QueryBuilder.AppendLine("  [CategoryId], ");
             QueryBuilder.AppendLine("  [ItemName], ");
             QueryBuilder.AppendLine("  [Quantity], ");
             QueryBuilder.AppendLine("  [ItemPrice], ");
@@ -35,6 +36,7 @@ namespace Data.Statements
             QueryBuilder.AppendLine(" ( ");
             QueryBuilder.AppendLine("  @Id,  ");
             QueryBuilder.AppendLine("  @ReceiptId,  ");
+            QueryBuilder.AppendLine("  @CategoryId,  ");
             QueryBuilder.AppendLine("  @ItemName,  ");
             QueryBuilder.AppendLine("  @Quantity,  ");
             QueryBuilder.AppendLine("  @ItemPrice,  ");

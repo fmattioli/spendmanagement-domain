@@ -1,5 +1,4 @@
-﻿using Data.Statements;
-using Data.Session;
+﻿using Data.Session;
 using Domain.Interfaces;
 using Dapper;
 
@@ -13,6 +12,7 @@ namespace Data.Persistence
 
         public async Task<Guid> Add(T entity, string sqlCommand)
         {
+            _db.Connection = _db.OpenConnection();
             using var conn = _db.Connection;
             return await conn.ExecuteScalarAsync<Guid>(sqlCommand, entity);
         }
