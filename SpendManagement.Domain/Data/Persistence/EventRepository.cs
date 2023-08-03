@@ -4,10 +4,10 @@ using Domain.Interfaces;
 
 namespace Data.Persistence
 {
-    public class CategoryRepository : BaseRepository<CategoryDomain>, ICategoryRepository
+    public class EventRepository : BaseRepository<Event>, IEventRepository
     {
         private readonly DbSession _dbSession;
-        public CategoryRepository(DbSession dbSession) : base(dbSession)
+        public EventRepository(DbSession dbSession) : base(dbSession)
         {
             _dbSession = dbSession;
         }

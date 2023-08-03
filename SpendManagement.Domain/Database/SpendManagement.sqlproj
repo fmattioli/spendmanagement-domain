@@ -58,8 +58,7 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Receipt.sql" />
-    <Build Include="ReceiptItem.sql" />
-    <Build Include="Category.sql" />
+    <Build Include="Commands.sql" />
+    <Build Include="Events.sql" />
   </ItemGroup>
 </Project>
