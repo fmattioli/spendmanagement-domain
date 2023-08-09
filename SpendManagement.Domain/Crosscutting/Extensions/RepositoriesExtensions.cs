@@ -10,8 +10,8 @@ namespace Crosscutting.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<DbSession>();
-            services.AddScoped<IReceiptRepository, ReceiptRepository>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICommandRepository, CommandRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
             return services;
         }
     }
