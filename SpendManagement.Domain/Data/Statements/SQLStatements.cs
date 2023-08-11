@@ -15,6 +15,7 @@ namespace Data.Statements
             QueryBuilder.AppendLine("[NameCommand], ");
             QueryBuilder.AppendLine("[CommandBody] ");
             QueryBuilder.AppendLine(") ");
+            QueryBuilder.AppendLine("OUTPUT Inserted.ID ");
             QueryBuilder.AppendLine(" VALUES ");
             QueryBuilder.AppendLine(" ( ");
             QueryBuilder.AppendLine("  @RoutingKey,  ");
@@ -30,6 +31,7 @@ namespace Data.Statements
             QueryBuilder.Clear();
             QueryBuilder.AppendLine($"INSERT INTO [Events]");
             QueryBuilder.AppendLine("( ");
+            QueryBuilder.AppendLine("[FK_Command_Id], ");
             QueryBuilder.AppendLine("[RoutingKey], ");
             QueryBuilder.AppendLine("[DataEvent], ");
             QueryBuilder.AppendLine("[NameEvent], ");
@@ -37,6 +39,7 @@ namespace Data.Statements
             QueryBuilder.AppendLine(") ");
             QueryBuilder.AppendLine(" VALUES ");
             QueryBuilder.AppendLine(" ( ");
+            QueryBuilder.AppendLine("  @Id,  ");
             QueryBuilder.AppendLine("  @RoutingKey,  ");
             QueryBuilder.AppendLine("  @DataEvent,  ");
             QueryBuilder.AppendLine("  @NameEvent,  ");

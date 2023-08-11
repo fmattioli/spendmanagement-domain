@@ -15,9 +15,10 @@ namespace Application.Kafka.Mappers.Receipt
             return new CreatedReceiptEvent(createReceiptCommand.RoutingKey, receipt, receiptItem);
         }
 
-        public static Event ToDomain(this CreatedReceiptEvent createReceiptEvent)
+        public static Event ToDomain(this CreatedReceiptEvent createReceiptEvent, int commandId)
         {
-            return new Event(createReceiptEvent.RoutingKey,
+            return new Event(commandId,
+                createReceiptEvent.RoutingKey,
                 createReceiptEvent.EventCreatedDate,
                 nameof(CreatedReceiptEvent),
                 JsonConvert.SerializeObject(createReceiptEvent));
@@ -30,9 +31,10 @@ namespace Application.Kafka.Mappers.Receipt
             return new UpdateReceiptEvent(updateReceiptCommand.RoutingKey, receipt, receiptItems);
         }
 
-        public static Event ToDomain(this UpdateReceiptEvent updateReceiptEvent)
+        public static Event ToDomain(this UpdateReceiptEvent updateReceiptEvent, int commandId)
         {
-            return new Event(updateReceiptEvent.RoutingKey,
+            return new Event(commandId,
+                updateReceiptEvent.RoutingKey,
                 updateReceiptEvent.EventCreatedDate,
                 nameof(UpdateReceiptEvent),
                 JsonConvert.SerializeObject(updateReceiptEvent));
@@ -43,9 +45,10 @@ namespace Application.Kafka.Mappers.Receipt
             return new DeleteReceiptEvent(deleteReceiptCommand.RoutingKey, deleteReceiptCommand.Id);
         }
 
-        public static Event ToDomain(this DeleteReceiptEvent deleteReceiptEvent)
+        public static Event ToDomain(this DeleteReceiptEvent deleteReceiptEvent, int commandId)
         {
-            return new Event(deleteReceiptEvent.RoutingKey,
+            return new Event(commandId, 
+                deleteReceiptEvent.RoutingKey,
                 deleteReceiptEvent.EventCreatedDate,
                 nameof(DeleteReceiptEvent),
                 JsonConvert.SerializeObject(deleteReceiptEvent));
