@@ -29,12 +29,14 @@ namespace Application.Kafka.Commands.Handlers
         public async Task Handle(IMessageContext context, CreateCategoryCommand message)
         {
             var commandDomain = message.ToDomain();
-            await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+
+            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
 
             var createCategoryEvent = message.ToCreateCategoryEvent();
 
             await _eventProducer.SendEventAsync(createCategoryEvent);
-            await _eventRepository.Add(createCategoryEvent.ToDomain(), SQLStatements.InsertEvent());
+
+            await _eventRepository.Add(createCategoryEvent.ToDomain(commandId), SQLStatements.InsertEvent());
 
             _log.Information(
                 $"Command {nameof(CreateCategoryCommand)} successfully converted in a event {nameof(CreateCategoryEvent)}and saved on database.",
@@ -47,12 +49,13 @@ namespace Application.Kafka.Commands.Handlers
         public async Task Handle(IMessageContext context, UpdateCategoryCommand message)
         {
             var commandDomain = message.ToDomain();
-            await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+
+            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
 
             var updateCategoryEvent = message.ToUpdateCategoryEvent();
             await _eventProducer.SendEventAsync(updateCategoryEvent);
 
-            await _eventRepository.Add(updateCategoryEvent.ToDomain(), SQLStatements.InsertEvent());
+            await _eventRepository.Add(updateCategoryEvent.ToDomain(commandId), SQLStatements.InsertEvent());
 
             _log.Information(
                 $"Command {nameof(UpdateCategoryCommand)} successfully converted in a event {nameof(CreateCategoryEvent)}and saved on database.",
@@ -65,12 +68,12 @@ namespace Application.Kafka.Commands.Handlers
         public async Task Handle(IMessageContext context, DeleteCategoryCommand message)
         {
             var commandDomain = message.ToDomain();
-            await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
 
             var deleteCategoryEvent = message.ToDeleteCategoryEvent();
             await _eventProducer.SendEventAsync(deleteCategoryEvent);
 
-            await _eventRepository.Add(deleteCategoryEvent.ToDomain(), SQLStatements.InsertEvent());
+            await _eventRepository.Add(deleteCategoryEvent.ToDomain(commandId), SQLStatements.InsertEvent());
 
             _log.Information(
                 $"Command {nameof(DeleteCategoryCommand)} successfully converted in a event {nameof(CreateCategoryEvent)}and saved on database.",

@@ -7,9 +7,10 @@ namespace Application.Kafka.Mappers.Category
 {
     public static class EventMappers
     {
-        public static Event ToDomain(this CreateCategoryEvent createCategoryEvent)
+        public static Event ToDomain(this CreateCategoryEvent createCategoryEvent, int commandId)
         {
-            return new Event(createCategoryEvent.RoutingKey,
+            return new Event(commandId,
+                createCategoryEvent.RoutingKey,
                 createCategoryEvent.EventCreatedDate,
                 nameof(CreateCategoryEvent),
                 JsonConvert.SerializeObject(createCategoryEvent));
@@ -27,9 +28,10 @@ namespace Application.Kafka.Mappers.Category
             return new UpdateCategoryEvent(updateCategoryCommand.RoutingKey, category);
         }
 
-        public static Event ToDomain(this UpdateCategoryEvent updateCategoryEvent)
+        public static Event ToDomain(this UpdateCategoryEvent updateCategoryEvent, int commandId)
         {
-            return new Event(updateCategoryEvent.RoutingKey,
+            return new Event(commandId, 
+                updateCategoryEvent.RoutingKey,
                 updateCategoryEvent.EventCreatedDate,
                 nameof(UpdateCategoryEvent),
                 JsonConvert.SerializeObject(updateCategoryEvent));
@@ -40,9 +42,10 @@ namespace Application.Kafka.Mappers.Category
             return new DeleteCategoryEvent(deleteCategoryCommand.RoutingKey, deleteCategoryCommand.Id);
         }
 
-        public static Event ToDomain(this DeleteCategoryEvent deleteCategoryEvent)
+        public static Event ToDomain(this DeleteCategoryEvent deleteCategoryEvent, int commandId)
         {
-            return new Event(deleteCategoryEvent.RoutingKey,
+            return new Event(commandId,
+                deleteCategoryEvent.RoutingKey,
                 deleteCategoryEvent.EventCreatedDate,
                 nameof(DeleteCategoryEvent),
                 JsonConvert.SerializeObject(deleteCategoryEvent));

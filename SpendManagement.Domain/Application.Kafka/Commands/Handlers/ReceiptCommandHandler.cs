@@ -34,12 +34,13 @@ namespace Application.Kafka.Commands.Handlers
         public async Task Handle(IMessageContext context, CreateReceiptCommand message)
         {
             var commandDomain = message.ToDomain();
-            await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+
+            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
 
             var receiptCreatedEvent = message.ToReceiptCreatedEvent();
             await _eventProducer.SendEventAsync(receiptCreatedEvent);
 
-            await _eventRepository.Add(receiptCreatedEvent.ToDomain(), SQLStatements.InsertEvent());
+            await _eventRepository.Add(receiptCreatedEvent.ToDomain(commandId), SQLStatements.InsertEvent());
 
             log.Information(
                 $"Command {nameof(CreateReceiptCommand)} successfully converted in a event {nameof(CreatedReceiptEvent)}and saved on database.",
@@ -52,12 +53,13 @@ namespace Application.Kafka.Commands.Handlers
         public async Task Handle(IMessageContext context, UpdateReceiptCommand message)
         {
             var commandDomain = message.ToDomain();
-            await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+
+            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
 
             var receiptUpdatedEvent = message.ToUpdateReceiptEvent();
             await _eventProducer.SendEventAsync(receiptUpdatedEvent);
 
-            await _eventRepository.Add(receiptUpdatedEvent.ToDomain(), SQLStatements.InsertEvent());
+            await _eventRepository.Add(receiptUpdatedEvent.ToDomain(commandId), SQLStatements.InsertEvent());
 
             log.Information(
                 $"Command {nameof(UpdateReceiptCommand)} successfully converted in a event {nameof(CreatedReceiptEvent)}and saved on database.",
@@ -70,12 +72,13 @@ namespace Application.Kafka.Commands.Handlers
         public async Task Handle(IMessageContext context, DeleteReceiptCommand message)
         {
             var commandDomain = message.ToDomain();
-            await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+
+            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
 
             var deleteReceiptEvent = message.ToDeleteReceiptEvent();
             await _eventProducer.SendEventAsync(deleteReceiptEvent);
 
-            await _eventRepository.Add(deleteReceiptEvent.ToDomain(), SQLStatements.InsertEvent());
+            await _eventRepository.Add(deleteReceiptEvent.ToDomain(commandId), SQLStatements.InsertEvent());
 
             log.Information(
                 $"Command {nameof(DeleteReceiptCommand)} successfully converted in a event {nameof(CreatedReceiptEvent)}and saved on database.",
