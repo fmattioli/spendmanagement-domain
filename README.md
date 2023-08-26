@@ -1,11 +1,12 @@
 # spendmanagement-domain
-This project is the heart of the spents-project. This project read commands from a topic and produce domain events to change the state of a object.
+This project is the heart of the spendmanagement-project. This project reads commands from a topic and produces domain events to change the state of an object.
 
 # Related projects
 > https://github.com/fmattioli/spendmanagement-apigateway <br/>
 > https://github.com/fmattioli/spendmanagement-api <br/>
 > https://github.com/fmattioli/spendmanagement-eventhandler <br/>
 > https://github.com/fmattioli/spendmanagement-readmodel <br/>
+> https://github.com/fmattioli/spendmanagement-indentity <br/>
 > https://github.com/fmattioli/spendmanagement-eventsourcing
 
 
@@ -14,7 +15,7 @@ This project is the heart of the spents-project. This project read commands from
 > https://github.com/fmattioli/spendmanagement-topics
 
 
-# How it works?
+# How it work?
 ![Alt text](SpendManagement.Domain/SpendManagementDiagramFlow.jpg?raw=true "Title")
 
 # Essential to understand
