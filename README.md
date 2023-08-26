@@ -6,7 +6,7 @@ This project is the heart of the spendmanagement-project. This project reads com
 > https://github.com/fmattioli/spendmanagement-api <br/>
 > https://github.com/fmattioli/spendmanagement-eventhandler <br/>
 > https://github.com/fmattioli/spendmanagement-readmodel <br/>
-> https://github.com/fmattioli/spendmanagement-indentity <br/>
+> https://github.com/fmattioli/spendmanagement-identity <br/>
 > https://github.com/fmattioli/spendmanagement-eventsourcing
 
 
@@ -15,7 +15,7 @@ This project is the heart of the spendmanagement-project. This project reads com
 > https://github.com/fmattioli/spendmanagement-topics
 
 
-# How it work?
+# How does it work?
 ![Alt text](SpendManagement.Domain/SpendManagementDiagramFlow.jpg?raw=true "Title")
 
 # Essential to understand
