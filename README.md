@@ -7,7 +7,6 @@ This project is the heart of the spendmanagement-project. This project reads com
 > https://github.com/fmattioli/spendmanagement-eventhandler <br/>
 > https://github.com/fmattioli/spendmanagement-readmodel <br/>
 > https://github.com/fmattioli/spendmanagement-identity <br/>
-> https://github.com/fmattioli/spendmanagement-eventsourcing
 
 
 # Related packages
