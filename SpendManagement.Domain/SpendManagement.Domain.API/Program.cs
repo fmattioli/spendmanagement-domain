@@ -1,11 +1,12 @@
 using KafkaFlow;
 using Crosscutting.Extensions;
 using Crosscutting.Models;
+using Crosscutting.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Host.ConfigureAppConfiguration((hosting, config) =>
+builder.Host.ConfigureAppConfiguration((config) =>
 {
     var currentDirectory = Directory.GetCurrentDirectory();
     config
@@ -22,6 +23,7 @@ var applicationSettings = builder.Configuration.GetSection("Settings").Get<Setti
 builder.Services.AddSingleton<ISettings>(applicationSettings ?? throw new Exception("Error while reading app settings."));
 
 builder.Services
+    .AddHealthCheckers(applicationSettings)
     .AddKafka(applicationSettings.KafkaSettings)
     .AddRepositories()
     .AddServiceEventsProducer()
@@ -48,5 +50,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.ShowKafkaDashboard();
+
+app.UseHealthCheckers();
 
 app.Run();
