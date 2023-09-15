@@ -23,6 +23,7 @@ var applicationSettings = builder.Configuration.GetSection("Settings").Get<Setti
 builder.Services.AddSingleton<ISettings>(applicationSettings ?? throw new Exception("Error while reading app settings."));
 
 builder.Services
+    .AddTracing()
     .AddHealthCheckers(applicationSettings)
     .AddKafka(applicationSettings.KafkaSettings)
     .AddRepositories()
