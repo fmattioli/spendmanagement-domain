@@ -24,7 +24,7 @@ namespace Crosscutting.Middlewares
                 .WaitAndRetryAsync(
                     this.retryCount,
                     _ => this.retryInterval,
-                    (ex, _, retryAttempt, __) =>
+                    (ex, _, __) =>
                     {
                         Console.WriteLine(ex);
                     })
@@ -34,4 +34,3 @@ namespace Crosscutting.Middlewares
         }
     }
 }
-
