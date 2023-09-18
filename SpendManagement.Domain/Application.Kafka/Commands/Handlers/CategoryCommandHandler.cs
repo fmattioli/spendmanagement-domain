@@ -10,9 +10,9 @@ using SpendManagement.Contracts.V1.Events.CategoryEvents;
 
 namespace Application.Kafka.Commands.Handlers
 {
-    public class CategoryCommandHandler 
-        : IMessageHandler<CreateCategoryCommand>, 
-        IMessageHandler<UpdateCategoryCommand>, 
+    public class CategoryCommandHandler
+        : IMessageHandler<CreateCategoryCommand>,
+        IMessageHandler<UpdateCategoryCommand>,
         IMessageHandler<DeleteCategoryCommand>
     {
         private readonly IEventProducer _eventProducer;
@@ -20,10 +20,10 @@ namespace Application.Kafka.Commands.Handlers
         private readonly IEventRepository _eventRepository;
         private readonly ILogger _log;
 
-        public CategoryCommandHandler(ICommandRepository commandRepository, 
-            IEventRepository eventRepository, 
-            ILogger log, 
-            IEventProducer eventProducer) 
+        public CategoryCommandHandler(ICommandRepository commandRepository,
+            IEventRepository eventRepository,
+            ILogger log,
+            IEventProducer eventProducer)
             => (_commandRepository, _eventRepository, _log, _eventProducer) = (commandRepository, eventRepository, log, eventProducer);
 
         public async Task Handle(IMessageContext context, CreateCategoryCommand message)
@@ -39,7 +39,7 @@ namespace Application.Kafka.Commands.Handlers
             await _eventRepository.Add(createCategoryEvent.ToDomain(commandId), SQLStatements.InsertEvent());
 
             _log.Information(
-                $"Command {nameof(CreateCategoryCommand)} successfully converted in a event {nameof(CreateCategoryEvent)}and saved on database.",
+                "Command {nameof(CreateCategoryCommand)} successfully converted in a event {nameof(CreateCategoryEvent)}and saved on database.",
                 () => new
                 {
                     commandDomain
@@ -58,7 +58,7 @@ namespace Application.Kafka.Commands.Handlers
             await _eventRepository.Add(updateCategoryEvent.ToDomain(commandId), SQLStatements.InsertEvent());
 
             _log.Information(
-                $"Command {nameof(UpdateCategoryCommand)} successfully converted in a event {nameof(CreateCategoryEvent)}and saved on database.",
+                "Command {nameof(UpdateCategoryCommand)} successfully converted in a event {nameof(CreateCategoryEvent)}and saved on database.",
                 () => new
                 {
                     commandDomain
@@ -76,7 +76,7 @@ namespace Application.Kafka.Commands.Handlers
             await _eventRepository.Add(deleteCategoryEvent.ToDomain(commandId), SQLStatements.InsertEvent());
 
             _log.Information(
-                $"Command {nameof(DeleteCategoryCommand)} successfully converted in a event {nameof(CreateCategoryEvent)}and saved on database.",
+                "Command {nameof(DeleteCategoryCommand)} successfully converted in a event {nameof(CreateCategoryEvent)}and saved on database.",
                 () => new
                 {
                     commandDomain

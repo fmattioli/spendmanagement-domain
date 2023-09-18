@@ -86,6 +86,7 @@ namespace Crosscutting.Extensions
                             middlewares
                             .AddSerializer<JsonCoreSerializer>()
                             .Add<ConsumerLoggingMiddleware>()
+                            .Add<ConsumerTracingMiddleware>()
                             .Add<ConsumerRetryMiddleware>()
                             .AddTypedHandlers(
                                 h => h
@@ -113,6 +114,7 @@ namespace Crosscutting.Extensions
                 .DefaultTopic(KafkaTopics.Events.ReceiptEventTopicName)
                 .AddMiddlewares(m => m
                     .Add<ProducerRetryMiddleware>()
+                    .Add<ProducerTracingMiddleware>()
                     .AddSerializer<JsonCoreSerializer>())
                 .WithAcks(Acks.All)
                 .WithProducerConfig(producerConfig));
