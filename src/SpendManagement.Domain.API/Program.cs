@@ -12,10 +12,6 @@ builder.Host.ConfigureAppConfiguration((config) =>
     config
         .SetBasePath(currentDirectory)
         .AddJsonFile($"{currentDirectory}/conf/appsettings.json");
-}).ConfigureLogging(logging =>
-{
-    logging.ClearProviders();
-    logging.AddFilter("Microsoft", LogLevel.Critical);
 });
 
 var applicationSettings = builder.Configuration.GetSection("Settings").Get<Settings>();
