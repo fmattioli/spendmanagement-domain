@@ -1,0 +1,30 @@
+version: "3.7"
+
+networks:
+  spendmanagement:
+    external:
+      name: spendmanagement-network
+
+services:
+  spendmanagement_domain:
+    container_name: spendmanagement_domain
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: spendmanagement_domain
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8075:80"
+    networks:
+        - spendmanagement
+
+  mssqltools:
+    container_name: spendmanagement_domain_runscripts
+    image: mcr.microsoft.com/mssql-tools
+    volumes:
+        - ./sql/01-StructureDatabase.sql:/tmp/01-StructureDatabase.sql
+        - ./init-database.sh:/tmp/init-database.sh
+    command: /bin/bash ./tmp/init-database.sh
+    networks:
+        - spendmanagement

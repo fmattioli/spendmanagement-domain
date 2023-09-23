@@ -12,11 +12,13 @@ namespace Crosscutting.HealthChecks
         public static IServiceCollection AddHealthCheckers(this IServiceCollection services, Settings settings)
         {
             var configKafka = new ProducerConfig { BootstrapServers = settings.KafkaSettings.Broker };
-            services.AddHealthChecks()
+            services
+                .AddHealthChecks()
                 .AddKafka(configKafka, name: "Kafka")
                 .AddSqlServer(settings.SqlSettings.ConnectionString, name: "SqlServer", tags: new string[] { "db", "data" });
 
-            services.AddHealthChecksUI()
+            services
+                .AddHealthChecksUI(setupSettings: setup => setup.SetEvaluationTimeInSeconds(60))
                 .AddInMemoryStorage();
             return services;
         }
