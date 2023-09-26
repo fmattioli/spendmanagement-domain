@@ -19,7 +19,7 @@ var applicationSettings = builder.Configuration.GetSection("Settings").Get<Setti
 builder.Services.AddSingleton<ISettings>(applicationSettings ?? throw new Exception("Error while reading app settings."));
 
 builder.Services
-    .AddTracing()
+    .AddTracing(applicationSettings.TracingSettings)
     .AddHealthCheckers(applicationSettings)
     .AddKafka(applicationSettings.KafkaSettings)
     .AddRepositories()
@@ -33,12 +33,8 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
