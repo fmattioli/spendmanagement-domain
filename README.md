@@ -14,9 +14,9 @@ This project is the heart of the spendmanagement-project. This project reads com
 > https://github.com/fmattioli/spendmanagement-topics
 
 
-# How does it work?
+# How does it works?
 ![Alt text](SpendManagementDiagramFlow.jpg?raw=true "Title")
-# How to make it work on your machine?
+# How to make it works on your machine?
 The entire project has docker support.
 It's necessary to run the docker-composes in a defined order.
 To start is necessary to run the docker-compose that will create the dependencies that are used by projects inside the SpendManagament ecosystem.
