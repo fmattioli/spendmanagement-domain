@@ -6,13 +6,12 @@ using Crosscutting.HealthChecks;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Host.ConfigureAppConfiguration((config) =>
-{
-    var currentDirectory = Directory.GetCurrentDirectory();
-    config
-        .SetBasePath(currentDirectory)
-        .AddJsonFile($"{currentDirectory}/conf/appsettings.json");
-});
+var enviroment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+builder.Configuration
+    .AddJsonFile("conf/appsettings.json", false, reloadOnChange: true)
+    .AddJsonFile($"conf/appsettings.{enviroment}.json", true, reloadOnChange: true)
+    .AddEnvironmentVariables();
 
 var applicationSettings = builder.Configuration.GetSection("Settings").Get<Settings>();
 
@@ -24,8 +23,7 @@ builder.Services
     .AddKafka(applicationSettings.KafkaSettings)
     .AddRepositories()
     .AddServiceEventsProducer()
-    .AddLoggingDependency()
-    .AddControllers();
+    .AddLoggingDependency();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -33,17 +31,17 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwagger()
+   .UseSwaggerUI();
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.ShowKafkaDashboard();
 
 app.UseHealthCheckers();
+
+app.MapGet("/", () =>
+"Hello! I'm working. My work is only read commands and producing domain events...\n" +
+"If you wanna, you can see my health on /health");
 
 app.Run();

@@ -13,7 +13,7 @@ services:
       dockerfile: Dockerfile
     image: spendmanagement_domain
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Docker
     ports:
       - "8075:80"
     networks:
