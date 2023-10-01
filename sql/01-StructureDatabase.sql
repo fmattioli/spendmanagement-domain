@@ -1,4 +1,3 @@
-USE SpendManagement
 IF NOT EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'SpendManagement')
 BEGIN
 	CREATE DATABASE SpendManagement
@@ -6,6 +5,9 @@ END
 
 GO
 
+USE SpendManagement
+
+GO
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE NAME='Commands' AND xtype='U')
 BEGIN
     CREATE TABLE [dbo].[Commands] (
@@ -20,7 +22,7 @@ END
 
 GO
 
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE NAME='Commands' AND xtype='U')
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE NAME='Events' AND xtype='U')
 BEGIN
     CREATE TABLE [dbo].[Events] (
         [FK_Command_Id] INT NOT NULL,
