@@ -19,18 +19,18 @@ namespace Crosscutting.Middlewares
         {
             var sw = Stopwatch.StartNew();
 
-            this.log.Information(
-                $"[{nameof(ConsumerLoggingMiddleware)}] - Kafka message received.",
-                () => new
-                {
-                    context.ConsumerContext.GroupId,
-                    context.ConsumerContext.Topic,
-                    PartitionNumber = context.ConsumerContext.Partition,
-                    PartitionKey = context.GetPartitionKey(),
-                    Headers = context.Headers.ToJsonString(),
-                    MessageType = context.Message.Value.GetType().FullName,
-                    Message = JsonConvert.SerializeObject(context.Message)
-                });
+            var kafkaMessageInfo = new
+            {
+                context.ConsumerContext.GroupId,
+                context.ConsumerContext.Topic,
+                PartitionNumber = context.ConsumerContext.Partition,
+                PartitionKey = context.GetPartitionKey(),
+                Headers = context.Headers.ToJsonString(),
+                MessageType = context.Message.Value.GetType().FullName,
+                Message = JsonConvert.SerializeObject(context.Message)
+            };
+
+            this.log.Information($"[{nameof(ConsumerLoggingMiddleware)}]"  + "Kafka message received. {@kafkaMessageInfo}", kafkaMessageInfo);
 
             try
             {

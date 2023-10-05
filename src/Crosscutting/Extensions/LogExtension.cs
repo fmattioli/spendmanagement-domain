@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using Serilog.Formatting.Json;
 
 namespace Crosscutting.Extensions
 {
@@ -8,11 +9,8 @@ namespace Crosscutting.Extensions
         public static IServiceCollection AddLoggingDependency(this IServiceCollection services)
         {
             Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Verbose()
-                .WriteTo.Console()
+                .WriteTo.Console(new JsonFormatter())
                 .CreateLogger();
-
-            AppDomain.CurrentDomain.ProcessExit += (s, e) => Log.CloseAndFlush();
 
             return services.AddSingleton(Log.Logger);
         }
