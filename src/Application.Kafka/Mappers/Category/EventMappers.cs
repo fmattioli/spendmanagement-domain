@@ -30,7 +30,7 @@ namespace Application.Kafka.Mappers.Category
 
         public static Event ToDomain(this UpdateCategoryEvent updateCategoryEvent, int commandId)
         {
-            return new Event(commandId, 
+            return new Event(commandId,
                 updateCategoryEvent.RoutingKey,
                 updateCategoryEvent.EventCreatedDate,
                 nameof(UpdateCategoryEvent),

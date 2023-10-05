@@ -15,6 +15,12 @@ builder.Configuration
 
 var applicationSettings = builder.Configuration.GetSection("Settings").Get<Settings>();
 
+builder.Logging
+    .ClearProviders()
+    .AddFilter("Microsoft", LogLevel.Warning)
+    .AddFilter("Microsoft", LogLevel.Error)
+    .AddFilter("Microsoft", LogLevel.Critical);
+
 builder.Services.AddSingleton<ISettings>(applicationSettings ?? throw new Exception("Error while reading app settings."));
 
 builder.Services
