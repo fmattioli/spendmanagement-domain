@@ -9,7 +9,6 @@ using KafkaFlow.Serializer;
 using KafkaFlow.TypedHandler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using SpendManagement.Contracts.V1.Interfaces;
 using SpendManagement.Topics;
 
 namespace Crosscutting.Extensions
@@ -110,7 +109,7 @@ namespace Crosscutting.Extensions
 
             builder.
                  CreateTopicIfNotExists(KafkaTopics.Events.ReceiptEventTopicName, 2, 1)
-                .AddProducer<IEvent>(p => p
+                .AddProducer<SpendManagement.Contracts.V1.Interfaces.IEvent>(p => p
                 .DefaultTopic(KafkaTopics.Events.ReceiptEventTopicName)
                 .AddMiddlewares(m => m
                     .Add<ProducerRetryMiddleware>()

@@ -1,22 +1,22 @@
 ﻿using Application.Kafka.Events.Interfaces;
 using KafkaFlow;
 using Serilog;
-using SpendManagement.Contracts.V1.Interfaces;
+using SpendManagementEvents = SpendManagement.Contracts.V1.Interfaces;
 
 namespace Application.Kafka.Events
 {
     public class EventProducer : IEventProducer
     {
-        private readonly IMessageProducer<IEvent> eventsProducer;
+        private readonly IMessageProducer<SpendManagementEvents.IEvent> eventsProducer;
         private readonly ILogger _logger;
 
-        public EventProducer(IMessageProducer<IEvent> eventProducer, ILogger log)
+        public EventProducer(IMessageProducer<SpendManagementEvents.IEvent> eventProducer, ILogger log)
         {
             this.eventsProducer = eventProducer;
             this._logger = log;
         }
 
-        public async Task SendEventAsync(IEvent spendManagementEvent)
+        public async Task SendEventAsync(SpendManagementEvents.IEvent spendManagementEvent)
         {
             await eventsProducer.ProduceAsync(spendManagementEvent.RoutingKey, spendManagementEvent);
 
