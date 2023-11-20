@@ -1,6 +1,5 @@
 ﻿using Application.Kafka.Mappers.Category ;
 using Application.Kafka.Events.Interfaces;
-using Data.Statements;
 using Domain.Interfaces;
 using KafkaFlow;
 using KafkaFlow.TypedHandler;
@@ -12,6 +11,7 @@ namespace Application.Kafka.Commands.Handlers
         : IMessageHandler<CreateCategoryCommand>,
         IMessageHandler<UpdateCategoryCommand>,
         IMessageHandler<DeleteCategoryCommand>
+
     {
         private readonly IEventProducer _eventProducer;
         private readonly ICommandRepository _commandRepository;
