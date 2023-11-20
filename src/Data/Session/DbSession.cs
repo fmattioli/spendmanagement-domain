@@ -7,7 +7,7 @@ namespace Data.Session
     public class DbSession : IDisposable
     {
         public IDbConnection Connection { get; set; }
-        public IConfiguration Configuration { get; private set; }
+        public IConfiguration Configuration { get; }
 
         public DbSession(IConfiguration configuration)
         {
@@ -17,13 +17,17 @@ namespace Data.Session
             Connection.Open();
         }
 
-        public IDbConnection OpenConnection() 
+        public IDbConnection OpenConnection()
         {
             Connection = new SqlConnection(Configuration.GetSection("Settings:SqlSettings:ConnectionString").Value);
             Connection.Open();
             return Connection;
         }
 
-        public void Dispose() => Connection?.Dispose();
+        public void Dispose()
+        {
+            Connection?.Dispose();
+            GC.SuppressFinalize(this);
+        }
     }
 }

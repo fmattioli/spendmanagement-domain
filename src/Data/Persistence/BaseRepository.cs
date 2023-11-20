@@ -3,6 +3,7 @@ using Domain.Interfaces;
 using Dapper;
 using Serilog;
 using Data.Statements;
+using Domain.Entities;
 
 namespace Data.Persistence
 {
@@ -19,14 +20,19 @@ namespace Data.Persistence
 
         public async Task<int> Add(T entity)
         {
-            _db.Connection = _db.OpenConnection();
+            using var conn = _db.OpenConnection();
 
-            using var conn = _db.Connection;
-            var Id = await conn.ExecuteScalarAsync<int>(SQLStatements.InsertCommand(), entity);
+            string sqlStatement = entity switch
+            {
+                Command _ => SQLStatements.InsertCommand(),
+                _ => SQLStatements.InsertEvent()
+            };
 
-            _logger.Information("Command or event inserted with sucessfully on database {@entity}", entity);
+            var id = await conn.ExecuteScalarAsync<int>(sqlStatement, entity);
 
-            return Id;
+            _logger.Information("Command or event inserted successfully on database {@entity}", entity);
+
+            return id;
         }
     }
 }
