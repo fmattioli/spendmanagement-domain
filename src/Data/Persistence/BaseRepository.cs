@@ -2,6 +2,7 @@
 using Domain.Interfaces;
 using Dapper;
 using Serilog;
+using Data.Statements;
 
 namespace Data.Persistence
 {
@@ -16,12 +17,12 @@ namespace Data.Persistence
             this._logger = logger;
         }
 
-        public async Task<int> Add(T entity, string sqlCommand)
+        public async Task<int> Add(T entity)
         {
             _db.Connection = _db.OpenConnection();
 
             using var conn = _db.Connection;
-            var Id = await conn.ExecuteScalarAsync<int>(sqlCommand, entity);
+            var Id = await conn.ExecuteScalarAsync<int>(SQLStatements.InsertCommand(), entity);
 
             _logger.Information("Command or event inserted with sucessfully on database {@entity}", entity);
 

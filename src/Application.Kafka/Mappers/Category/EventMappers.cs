@@ -19,13 +19,13 @@ namespace Application.Kafka.Mappers.Category
         public static CreateCategoryEvent ToCreateCategoryEvent(this CreateCategoryCommand createCategoryCommand)
         {
             var category = new SpendManagement.Contracts.V1.Entities.Category(createCategoryCommand.Category.Id, createCategoryCommand.Category.Name);
-            return new CreateCategoryEvent(createCategoryCommand.RoutingKey, category);
+            return new CreateCategoryEvent(category);
         }
 
         public static UpdateCategoryEvent ToUpdateCategoryEvent(this UpdateCategoryCommand updateCategoryCommand)
         {
             var category = new SpendManagement.Contracts.V1.Entities.Category(updateCategoryCommand.Category.Id, updateCategoryCommand.Category.Name);
-            return new UpdateCategoryEvent(updateCategoryCommand.RoutingKey, category);
+            return new UpdateCategoryEvent(category);
         }
 
         public static Event ToDomain(this UpdateCategoryEvent updateCategoryEvent, int commandId)
@@ -39,7 +39,7 @@ namespace Application.Kafka.Mappers.Category
 
         public static DeleteCategoryEvent ToDeleteCategoryEvent(this DeleteCategoryCommand deleteCategoryCommand)
         {
-            return new DeleteCategoryEvent(deleteCategoryCommand.RoutingKey, deleteCategoryCommand.Id);
+            return new DeleteCategoryEvent(deleteCategoryCommand.Id);
         }
 
         public static Event ToDomain(this DeleteCategoryEvent deleteCategoryEvent, int commandId)

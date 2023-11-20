@@ -30,39 +30,39 @@ namespace Application.Kafka.Commands.Handlers
         {
             var commandDomain = message.ToDomain();
 
-            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+            var commandId = await _commandRepository.Add(commandDomain);
 
             var receiptCreatedEvent = message.ToReceiptCreatedEvent();
 
             await _eventProducer.SendEventAsync(receiptCreatedEvent);
 
-            await _eventRepository.Add(receiptCreatedEvent.ToDomain(commandId), SQLStatements.InsertEvent());
+            await _eventRepository.Add(receiptCreatedEvent.ToDomain(commandId));
         }
 
         public async Task Handle(IMessageContext context, UpdateReceiptCommand message)
         {
             var commandDomain = message.ToDomain();
 
-            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+            var commandId = await _commandRepository.Add(commandDomain);
 
             var receiptUpdatedEvent = message.ToUpdateReceiptEvent();
 
             await _eventProducer.SendEventAsync(receiptUpdatedEvent);
 
-            await _eventRepository.Add(receiptUpdatedEvent.ToDomain(commandId), SQLStatements.InsertEvent());
+            await _eventRepository.Add(receiptUpdatedEvent.ToDomain(commandId));
         }
 
         public async Task Handle(IMessageContext context, DeleteReceiptCommand message)
         {
             var commandDomain = message.ToDomain();
 
-            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+            var commandId = await _commandRepository.Add(commandDomain);
 
             var deleteReceiptEvent = message.ToDeleteReceiptEvent();
 
             await _eventProducer.SendEventAsync(deleteReceiptEvent);
 
-            await _eventRepository.Add(deleteReceiptEvent.ToDomain(commandId), SQLStatements.InsertEvent());
+            await _eventRepository.Add(deleteReceiptEvent.ToDomain(commandId));
         }
     }
 }

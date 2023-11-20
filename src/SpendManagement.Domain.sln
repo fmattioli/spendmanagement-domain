@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Kafka", "Applic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpendManagement.Domain.API", "SpendManagement.Domain.API\SpendManagement.Domain.API.csproj", "{6BA7F020-EF6F-49B1-AF75-E60577CCC7FA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3E2F2B61-9CFA-4EB5-81CB-1355416C6198}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpendManagement.Domain.Unit.Tests", "..\tests\SpendManagement.Domain.Unit.Tests\SpendManagement.Domain.Unit.Tests.csproj", "{4EE75E6F-490A-483C-8127-00A9BF1C424B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,10 @@ Global
 		{6BA7F020-EF6F-49B1-AF75-E60577CCC7FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BA7F020-EF6F-49B1-AF75-E60577CCC7FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BA7F020-EF6F-49B1-AF75-E60577CCC7FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EE75E6F-490A-483C-8127-00A9BF1C424B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EE75E6F-490A-483C-8127-00A9BF1C424B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EE75E6F-490A-483C-8127-00A9BF1C424B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EE75E6F-490A-483C-8127-00A9BF1C424B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +72,7 @@ Global
 		{0D604B5E-CE89-44CA-84A9-DACDC5805DBD} = {71F9425D-17F7-4A01-A9CF-D54E5FC3B5EE}
 		{7027CD5E-CBDF-41E0-BDD3-017CB5641109} = {2E5B457D-3630-4688-9D0E-2B58084C0C5D}
 		{6BA7F020-EF6F-49B1-AF75-E60577CCC7FA} = {C342BC02-CA19-4130-8280-4A206D477C59}
+		{4EE75E6F-490A-483C-8127-00A9BF1C424B} = {3E2F2B61-9CFA-4EB5-81CB-1355416C6198}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6DB7E096-A418-44A5-A52C-643DE2B880E6}

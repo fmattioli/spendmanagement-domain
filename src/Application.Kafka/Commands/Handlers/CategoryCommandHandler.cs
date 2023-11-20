@@ -17,7 +17,8 @@ namespace Application.Kafka.Commands.Handlers
         private readonly ICommandRepository _commandRepository;
         private readonly IEventRepository _eventRepository;
 
-        public CategoryCommandHandler(ICommandRepository commandRepository,
+        public CategoryCommandHandler(
+            ICommandRepository commandRepository,
             IEventRepository eventRepository,
             IEventProducer eventProducer)
             => (_commandRepository, _eventRepository, _eventProducer) = (commandRepository, eventRepository, eventProducer);
@@ -26,39 +27,39 @@ namespace Application.Kafka.Commands.Handlers
         {
             var commandDomain = message.ToDomain();
 
-            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+            var commandId = await _commandRepository.Add(commandDomain);
 
             var createCategoryEvent = message.ToCreateCategoryEvent();
 
             await _eventProducer.SendEventAsync(createCategoryEvent);
 
-            await _eventRepository.Add(createCategoryEvent.ToDomain(commandId), SQLStatements.InsertEvent());
+            await _eventRepository.Add(createCategoryEvent.ToDomain(commandId));
         }
 
         public async Task Handle(IMessageContext context, UpdateCategoryCommand message)
         {
             var commandDomain = message.ToDomain();
 
-            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+            var commandId = await _commandRepository.Add(commandDomain);
 
             var updateCategoryEvent = message.ToUpdateCategoryEvent();
 
             await _eventProducer.SendEventAsync(updateCategoryEvent);
 
-            await _eventRepository.Add(updateCategoryEvent.ToDomain(commandId), SQLStatements.InsertEvent());
+            await _eventRepository.Add(updateCategoryEvent.ToDomain(commandId));
         }
 
         public async Task Handle(IMessageContext context, DeleteCategoryCommand message)
         {
             var commandDomain = message.ToDomain();
 
-            var commandId = await _commandRepository.Add(commandDomain, SQLStatements.InsertCommand());
+            var commandId = await _commandRepository.Add(commandDomain);
 
             var deleteCategoryEvent = message.ToDeleteCategoryEvent();
 
             await _eventProducer.SendEventAsync(deleteCategoryEvent);
 
-            await _eventRepository.Add(deleteCategoryEvent.ToDomain(commandId), SQLStatements.InsertEvent());
+            await _eventRepository.Add(deleteCategoryEvent.ToDomain(commandId));
         }
     }
 }
