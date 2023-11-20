@@ -6,7 +6,6 @@ using Domain.Interfaces;
 using KafkaFlow;
 using Moq;
 using SpendManagement.Contracts.V1.Commands.CategoryCommands;
-using SpendManagement.Contracts.V1.Interfaces;
 
 namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
 {
@@ -25,7 +24,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
         }
 
         [Fact(DisplayName = "On Given a DeleteCategoryCommand, an event and command should inserted on DB and an Event should be produced")]
-        public async Task Handle_OnGivenAValidDeleteCategoryCommand_ShouldBeProducedADeleteCategoryEvent()
+        public async Task Handle_OnGivenAValidDeleteCategoryCommand_ShouldBeProduced_DeleteCategoryEvent()
         {
             //Arrange
             var deleteCategoryCommand = _fixture.Create<DeleteCategoryCommand>();

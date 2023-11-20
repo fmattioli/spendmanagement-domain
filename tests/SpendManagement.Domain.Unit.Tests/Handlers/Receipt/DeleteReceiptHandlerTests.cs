@@ -5,29 +5,29 @@ using Domain.Entities;
 using Domain.Interfaces;
 using KafkaFlow;
 using Moq;
-using SpendManagement.Contracts.V1.Commands.CategoryCommands;
+using SpendManagement.Contracts.V1.Commands.ReceiptCommands;
 
-namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
+namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
 {
-    public class UpdateCategoryHandlerTests
+    public class DeleteReceiptHandlerTests
     {
-        private readonly CategoryCommandHandler _categoryHandler;
+        private readonly ReceiptCommandHandler _receiptHandler;
         private readonly Fixture _fixture = new();
         private readonly Mock<IEventProducer> _eventProducer = new();
         private readonly Mock<ICommandRepository> _commandRepository = new();
         private readonly Mock<IEventRepository> _eventRepository = new();
         private readonly Mock<IMessageContext> _messageContext = new();
 
-        public UpdateCategoryHandlerTests()
+        public DeleteReceiptHandlerTests()
         {
-            _categoryHandler = new(_commandRepository.Object, _eventRepository.Object, _eventProducer.Object);
+            _receiptHandler = new(_commandRepository.Object, _eventRepository.Object, _eventProducer.Object);
         }
 
-        [Fact(DisplayName = "On Given a UpdateCategoryCommand, an event and command should inserted on DB and an Event should be produced")]
-        public async Task Handle_OnGivenAValidUpdateCategoryCommand_ShouldBeProduced_An_UpdateCategoryEvent()
+        [Fact(DisplayName = "On Given a DeleteReceiptCommand, an event and command should inserted on DB and an Event should be produced")]
+        public async Task Handle_OnGivenAValidDeleteReceiptCommand_ShouldBeProduced_An_DeleteReceiptEvent()
         {
             //Arrange
-            var updateCategoryCommand = _fixture.Create<UpdateCategoryCommand>();
+            var deleteReceiptCommand = _fixture.Create<DeleteReceiptCommand>();
 
             _commandRepository
                 .Setup(x => x.Add(It.IsAny<Command>()))
@@ -42,7 +42,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
                 .ReturnsAsync(_fixture.Create<int>());
 
             //Act
-            await _categoryHandler.Handle(_messageContext.Object, updateCategoryCommand);
+            await _receiptHandler.Handle(_messageContext.Object, deleteReceiptCommand);
 
             //Assert
             _commandRepository
@@ -52,7 +52,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
 
             _eventProducer
                 .Verify(
-                    x => x.SendEventAsync(It.IsAny<SpendManagement.Contracts.V1.Interfaces.IEvent>()),
+                    x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()),
                     Times.Once);
 
             _eventRepository

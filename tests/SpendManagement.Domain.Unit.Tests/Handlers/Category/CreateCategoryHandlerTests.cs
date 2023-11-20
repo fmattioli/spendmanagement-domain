@@ -23,8 +23,8 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
             _categoryHandler = new(_commandRepository.Object, _eventRepository.Object, _eventProducer.Object);
         }
 
-        [Fact(DisplayName = "On Given a Create Category Command, an event and category should inserted on DB and an Event should be produced")]
-        public async Task Handle_OnGivenAValidCreateCategoryCommand_ShouldBeProducedAUpdateCategoryEvent()
+        [Fact(DisplayName = "On Given a CreateCategoryCommand, an event and command should inserted on DB and an Event should be produced")]
+        public async Task Handle_OnGivenAValidCreateCategoryCommand_ShouldBeProduced_CreateCategoryEvent()
         {
             //Arrange
             var createCategoryCommand = _fixture.Create<CreateCategoryCommand>();
