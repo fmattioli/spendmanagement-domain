@@ -1,0 +1,20 @@
+{
+  "PollingSettings": {
+    "RetryCount": 500,
+    "Delay": 200
+  },
+
+  "SqlSettings": {
+    "ConnectionString": "Server=127.0.0.1,1433;Database=SpendManagement;User Id=sa;Password=SqlServer2019!;TrustServerCertificate=true"
+  },
+  "Kafka": {
+    "Brokers": [ "localhost:9094" ],
+    "Environment": "local",
+    "InitializationDelay": 0,
+    "Batch": {
+      "WorkerCount": 1,
+      "BufferSize": 1,
+      "MessageTimeoutSec": 1
+    }
+  }
+}

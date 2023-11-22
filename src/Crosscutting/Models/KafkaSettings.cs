@@ -9,7 +9,6 @@
         public bool Sasl_Enabled { get; set; }
         public string Sasl_UserName { get; set; } = null!;
         public string Sasl_Password { get; set; } = null!;
-        public string DependencyName { get; set; } = null!;
         public int ProducerRetryCount { get; set; }
         public int ProducerRetryInterval { get; set; }
         public int MessageTimeoutMs { get; set; }

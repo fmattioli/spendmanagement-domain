@@ -8,7 +8,7 @@ namespace Data.Statements
         public static string InsertCommand()
         {
             QueryBuilder.Clear();
-            QueryBuilder.AppendLine("INSERT INTO [Commands]");
+            QueryBuilder.AppendLine("INSERT INTO [SpendManagementCommands]");
             QueryBuilder.AppendLine("( ");
             QueryBuilder.AppendLine("[RoutingKey], ");
             QueryBuilder.AppendLine("[DataCommand], ");
@@ -29,7 +29,7 @@ namespace Data.Statements
         public static string InsertEvent()
         {
             QueryBuilder.Clear();
-            QueryBuilder.AppendLine("INSERT INTO [Events]");
+            QueryBuilder.AppendLine("INSERT INTO [SpendManagementEvents]");
             QueryBuilder.AppendLine("( ");
             QueryBuilder.AppendLine("[FK_Command_Id], ");
             QueryBuilder.AppendLine("[RoutingKey], ");

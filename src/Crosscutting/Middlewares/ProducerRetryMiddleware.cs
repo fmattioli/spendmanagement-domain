@@ -1,6 +1,7 @@
 ﻿using Crosscutting.Models;
 using KafkaFlow;
 using Polly;
+using Serilog;
 
 namespace Crosscutting.Middlewares
 {
@@ -8,13 +9,17 @@ namespace Crosscutting.Middlewares
     {
         private readonly int retryCount;
         private readonly TimeSpan retryInterval;
-        public ProducerRetryMiddleware(ISettings settings)
+        private readonly ILogger _logger;
+
+        public ProducerRetryMiddleware(ISettings settings, ILogger log)
         {
             if (settings.KafkaSettings is not null)
             {
                 this.retryCount = settings.KafkaSettings.ProducerRetryCount;
                 this.retryInterval = TimeSpan.FromSeconds(settings.KafkaSettings.ProducerRetryInterval);
             }
+
+            _logger = log;
         }
 
         public async Task Invoke(IMessageContext context, MiddlewareDelegate next)
@@ -24,13 +29,8 @@ namespace Crosscutting.Middlewares
                 .WaitAndRetryAsync(
                     this.retryCount,
                     _ => this.retryInterval,
-                    (ex, _, __) =>
-                    {
-                        Console.WriteLine(ex);
-                    })
+                    (ex, _, __) => _logger.Information("Event produced with success. Event details: {@spendManagementEvent}", ex.Message))
                 .ExecuteAndCaptureAsync(() => next(context));
-
-            //TODO: Generate Log wth Microsoft.Logging
         }
     }
 }

@@ -58,7 +58,7 @@
     <Folder Include="Properties" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Commands.sql" />
-    <Build Include="Events.sql" />
+    <Build Include="SpendManagementCommands.sql" />
+    <Build Include="SpendManagementEvents.sql" />
   </ItemGroup>
 </Project>

@@ -5,13 +5,13 @@ namespace Domain.Entities
 {
     public class Event
     {
-        public Event(int id, string routingKey, DateTime dataEvent, string nameEvent, string commandEvent)
+        public Event(int FK_Command_Id, string routingKey, DateTime dataEvent, string nameEvent, string eventBody)
         {
-            Id = id;
+            Id = FK_Command_Id;
             RoutingKey = routingKey;
             DataEvent = dataEvent;
             NameEvent = nameEvent;
-            EventBody = commandEvent;
+            EventBody = eventBody;
         }
 
         [Column("FK_Command_Id")]
