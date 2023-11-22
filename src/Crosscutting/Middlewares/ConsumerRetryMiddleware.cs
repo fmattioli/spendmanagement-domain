@@ -8,7 +8,6 @@ namespace Crosscutting.Middlewares
 {
     public class ConsumerRetryMiddleware : IMessageMiddleware
     {
-
         private readonly ILogger log;
 
         private readonly int retryCount;

@@ -25,7 +25,7 @@ namespace Crosscutting.Middlewares
         {
             if (props.Headers.GetString("traceparent") != string.Empty)
             {
-                var bytes = Encoding.ASCII.GetBytes(props.Headers.GetString("traceparent"));
+                var bytes = Encoding.ASCII.GetBytes(props.Headers.GetString("traceparent") ?? "");
                 return new[] { Encoding.UTF8.GetString(bytes) };
             }
 

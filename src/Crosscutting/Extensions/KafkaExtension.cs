@@ -107,16 +107,16 @@ namespace Crosscutting.Extensions
                 MessageTimeoutMs = settings.MessageTimeoutMs,
             };
 
-            builder.
-                 CreateTopicIfNotExists(KafkaTopics.Events.ReceiptEventTopicName, 2, 1)
-                .AddProducer<SpendManagement.Contracts.V1.Interfaces.IEvent>(p => p
-                .DefaultTopic(KafkaTopics.Events.ReceiptEventTopicName)
-                .AddMiddlewares(m => m
-                    .Add<ProducerRetryMiddleware>()
-                    .Add<ProducerTracingMiddleware>()
-                    .AddSerializer<JsonCoreSerializer>())
-                .WithAcks(Acks.All)
-                .WithProducerConfig(producerConfig));
+            builder
+                .AddProducer<SpendManagement.Contracts.V1.Interfaces.IEvent>(
+                p => p
+                    .DefaultTopic(KafkaTopics.Events.ReceiptEventTopicName)
+                    .AddMiddlewares(m => m
+                        .Add<ProducerRetryMiddleware>()
+                        .Add<ProducerTracingMiddleware>()
+                        .AddSerializer<JsonCoreSerializer>())
+                    .WithAcks(Acks.All)
+                    .WithProducerConfig(producerConfig));
 
             return builder;
         }
