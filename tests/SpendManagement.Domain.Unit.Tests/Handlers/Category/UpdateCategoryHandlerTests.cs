@@ -14,8 +14,8 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
         private readonly CategoryCommandHandler _categoryHandler;
         private readonly Fixture _fixture = new();
         private readonly Mock<IEventProducer> _eventProducer = new();
-        private readonly Mock<ICommandRepository> _commandRepository = new();
-        private readonly Mock<IEventRepository> _eventRepository = new();
+        private readonly Mock<ISpendManagementCommandRepository> _commandRepository = new();
+        private readonly Mock<ISpendManagementEventRepository> _eventRepository = new();
         private readonly Mock<IMessageContext> _messageContext = new();
 
         public UpdateCategoryHandlerTests()
@@ -23,23 +23,19 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
             _categoryHandler = new(_commandRepository.Object, _eventRepository.Object, _eventProducer.Object);
         }
 
-        [Fact(DisplayName = "On Given a UpdateCategoryCommand, an event and command should inserted on DB and an Event should be produced")]
-        public async Task Handle_OnGivenAValidUpdateCategoryCommand_ShouldBeProduced_An_UpdateCategoryEvent()
+        [Fact(DisplayName = "On Given a UpdateCategoryCommand, a command should inserted on DB and an UpdateCategoryEvent should be produced")]
+        public async Task Handle_OnGivenAValidUpdateCategoryCommand_CommandShouldBeInserted_And_ShouldBeProducedUpdateCategoryEvent()
         {
             //Arrange
             var updateCategoryCommand = _fixture.Create<UpdateCategoryCommand>();
 
             _commandRepository
-                .Setup(x => x.Add(It.IsAny<Command>()))
+                .Setup(x => x.Add(It.IsAny<SpendManagementCommand>()))
                 .ReturnsAsync(_fixture.Create<int>());
 
             _eventProducer
                 .Setup(x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()))
                 .Returns(Task.CompletedTask);
-
-            _eventRepository
-                .Setup(x => x.Add(It.IsAny<Event>()))
-                .ReturnsAsync(_fixture.Create<int>());
 
             //Act
             await _categoryHandler.Handle(_messageContext.Object, updateCategoryCommand);
@@ -47,8 +43,36 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
             //Assert
             _commandRepository
                .Verify(
-                  x => x.Add(It.IsAny<Command>()),
+                  x => x.Add(It.IsAny<SpendManagementCommand>()),
                    Times.Once);
+
+            _eventProducer
+                .Verify(
+                    x => x.SendEventAsync(It.IsAny<SpendManagement.Contracts.V1.Interfaces.IEvent>()),
+                    Times.Once);
+
+            _commandRepository.VerifyNoOtherCalls();
+            _eventProducer.VerifyNoOtherCalls();
+        }
+
+        [Fact(DisplayName = "On Given a UpdateCategoryCommand, an event should be inserted on DB and an UpdateCategoryEvent should be produced.")]
+        public async Task Handle_OnGivenAValidUpdateCategoryCommand_EventShouldBeInserted_ShouldBeProduced_An_UpdateCategoryEvent()
+        {
+            //Arrange
+            var updateCategoryCommand = _fixture.Create<UpdateCategoryCommand>();
+
+            _eventProducer
+                .Setup(x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()))
+                .Returns(Task.CompletedTask);
+
+            _eventRepository
+                .Setup(x => x.Add(It.IsAny<SpendManagementEvent>()))
+                .ReturnsAsync(_fixture.Create<int>());
+
+            //Act
+            await _categoryHandler.Handle(_messageContext.Object, updateCategoryCommand);
+
+            //Assert
 
             _eventProducer
                 .Verify(
@@ -57,12 +81,11 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
 
             _eventRepository
                 .Verify(
-                    x => x.Add(It.IsAny<Event>()),
+                    x => x.Add(It.IsAny<SpendManagementEvent>()),
                     Times.Once);
 
-            _commandRepository.VerifyNoOtherCalls();
-            _eventProducer.VerifyNoOtherCalls();
             _eventRepository.VerifyNoOtherCalls();
+            _eventProducer.VerifyNoOtherCalls();
         }
     }
 }

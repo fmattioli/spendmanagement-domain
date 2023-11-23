@@ -9,22 +9,20 @@ namespace SpendManagement.Domain.Integration.Tests.Fixtures
     {
         private readonly List<string> routingKeys = new();
 
-        public async Task<Command> GetCommandAsync(string commandId)
+        public async Task<SpendManagementCommand> GetCommandAsync(string commandId)
         {
             using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
-            var command = await connection.QueryFirstOrDefaultAsync<Command>("SELECT * FROM SpendManagementCommands WHERE RoutingKey = @id", new { id = commandId });
-            if(command is not null)
-                routingKeys.Add(commandId);
+            var command = await connection.QueryFirstOrDefaultAsync<SpendManagementCommand>("SELECT * FROM SpendManagementCommands WHERE RoutingKey = @id", new { id = commandId });
+            routingKeys.Add(commandId);
             return command!;
         }
 
-        public async Task<Event> GetEventAsync(string eventId)
+        public async Task<SpendManagementEvent> GetEventAsync(string eventId)
         {
             using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
             {
-                var @event = await connection.QueryFirstOrDefaultAsync<Event>("SELECT * FROM SpendManagementEvents WHERE RoutingKey = @id", new { id = eventId });
-                if(@event is not null)
-                    routingKeys.Add(eventId);
+                var @event = await connection.QueryFirstOrDefaultAsync<SpendManagementEvent>("SELECT * FROM SpendManagementEvents WHERE RoutingKey = @id", new { id = eventId });
+                routingKeys.Add(eventId);
                 return @event!;
             }
         }

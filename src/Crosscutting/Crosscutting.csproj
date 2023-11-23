@@ -33,7 +33,7 @@
     <PackageReference Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.5.1-beta.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.0" />
     <PackageReference Include="SpendManagement.Contracts" Version="3.0.1" />
-    <PackageReference Include="SpendManagement.Topics" Version="1.0.2" />
+    <PackageReference Include="SpendManagement.Topics" Version="1.0.5" />
   </ItemGroup>
 
   <ItemGroup>

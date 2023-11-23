@@ -2,7 +2,11 @@
 using Crosscutting.Models;
 using KafkaFlow;
 using KafkaFlow.Serializer;
+
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
+using Serilog.Formatting.Json;
 using SpendManagement.Contracts.V1.Interfaces;
 using SpendManagement.Domain.Integration.Tests.Configuration;
 using SpendManagement.Domain.Integration.Tests.Helpers;
@@ -26,10 +30,22 @@ namespace SpendManagement.Domain.Integration.Tests.Fixtures
             {
                 KafkaSettings = new Crosscutting.Models.KafkaSettings
                 {
-                    ProducerRetryCount = 2,
-                    ConsumerRetryInterval = 2,
+                    Environment = "tests",
+                    ProducerRetryCount = 1,
+                    ConsumerRetryInterval = 100,
+                    ConsumerInitialState = "Running",
+                    MessageTimeoutMs = 45000,
+                    ConsumerRetryCount = 1,
+                    WorkerCount = 2,
+                    BufferSize = 4
                 }
             });
+
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console(new JsonFormatter())
+                .CreateLogger();
+
+            services.AddSingleton(Log.Logger);
 
             services.AddKafka(kafka => kafka
                .UseLogHandler<ConsoleLogHandler>()
@@ -38,19 +54,21 @@ namespace SpendManagement.Domain.Integration.Tests.Fixtures
                        .AddConsumer(consumer =>
                        {
                            consumer
-                               .Topics(KafkaTopics.Events.ReceiptEventTopicName)
+                               .Topics(KafkaTopics.Events.GetReceiptEvents(settings!.Environment))
                                .WithGroupId("Receipts-Events")
                                .WithName("Receipt-Events")
                                .WithBufferSize(settings!.Batch!.BufferSize)
                                .WithWorkersCount(settings!.Batch!.WorkerCount)
                                .WithAutoOffsetReset(AutoOffsetReset.Latest)
+                               .WithInitialState(Enum.Parse<ConsumerInitialState>("Running"))
                                .AddMiddlewares(middlewares => middlewares
                                    .AddSerializer<JsonCoreSerializer>()
                                    .Add(_ => this.kafkaMessage));
                        })
+                       .CreateTopicIfNotExists(KafkaTopics.Commands.GetReceiptCommands(settings!.Environment), 2, 1)
                        .AddProducer<ICommand>(
                        p => p
-                       .DefaultTopic(KafkaTopics.Commands.ReceiptCommandTopicName)
+                       .DefaultTopic(KafkaTopics.Commands.GetReceiptCommands(settings!.Environment))
                        .AddMiddlewares(m => m
                         .Add<ProducerRetryMiddleware>()
                         .Add<ProducerTracingMiddleware>()

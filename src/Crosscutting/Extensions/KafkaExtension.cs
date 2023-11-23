@@ -23,7 +23,7 @@ namespace Crosscutting.Extensions
                 .UseConsoleLog()
                 .AddCluster(cluster => cluster
                     .AddBrokers(kafkaSettings)
-                    .AddTelemetry()
+                    .AddTelemetry(kafkaSettings.Environment)
                     .AddConsumers(kafkaSettings)
                     .AddProducers(kafkaSettings)
                     )
@@ -33,11 +33,14 @@ namespace Crosscutting.Extensions
         }
 
         private static IClusterConfigurationBuilder AddTelemetry(
-            this IClusterConfigurationBuilder builder)
+            this IClusterConfigurationBuilder builder,
+            string enviroment)
         {
+            var topic = $"{enviroment}.spendmanagement.receipts.events.telemetry";
+
             builder
-                .EnableAdminMessages(KafkaTopics.Commands.ReceiptTelemetry)
-                .EnableTelemetry(KafkaTopics.Commands.ReceiptTelemetry);
+                .EnableAdminMessages(topic)
+                .EnableTelemetry(topic);
 
             return builder;
         }
@@ -52,10 +55,10 @@ namespace Crosscutting.Extensions
                     .WithBrokers(settings.Sasl_Brokers)
                     .WithSecurityInformation(si =>
                     {
-                        si.SecurityProtocol = KafkaFlow.Configuration.SecurityProtocol.SaslSsl;
+                        si.SecurityProtocol = SecurityProtocol.SaslSsl;
                         si.SaslUsername = settings.Sasl_UserName;
                         si.SaslPassword = settings.Sasl_Password;
-                        si.SaslMechanism = KafkaFlow.Configuration.SaslMechanism.Plain;
+                        si.SaslMechanism = SaslMechanism.Plain;
                         si.SslCaLocation = string.Empty;
                     });
             }
@@ -73,7 +76,7 @@ namespace Crosscutting.Extensions
         {
             builder.AddConsumer(
                 consumer => consumer
-                     .Topics(KafkaTopics.Commands.ReceiptCommandTopicName)
+                     .Topics(KafkaTopics.Commands.GetReceiptCommands(settings!.Environment))
                      .WithGroupId("Receipts-Commands")
                      .WithName("Receipt-Commands")
                      .WithBufferSize(settings?.BufferSize ?? 0)
@@ -110,7 +113,7 @@ namespace Crosscutting.Extensions
             builder
                 .AddProducer<SpendManagement.Contracts.V1.Interfaces.IEvent>(
                 p => p
-                    .DefaultTopic(KafkaTopics.Events.ReceiptEventTopicName)
+                    .DefaultTopic(KafkaTopics.Events.GetReceiptEvents(settings.Environment))
                     .AddMiddlewares(m => m
                         .Add<ProducerRetryMiddleware>()
                         .Add<ProducerTracingMiddleware>()

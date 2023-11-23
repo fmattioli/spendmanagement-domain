@@ -1,8 +1,8 @@
 ﻿namespace Domain.Entities
 {
-    public class Command
+    public class SpendManagementCommand
     {
-        public Command(int id, string routingKey, DateTime dataCommand, string nameCommand, string commandBody)
+        public SpendManagementCommand(int id, string routingKey, DateTime dataCommand, string nameCommand, string commandBody)
         {
             Id = id;
             RoutingKey = routingKey;
@@ -11,7 +11,7 @@
             CommandBody = commandBody;
         }
 
-        public Command(string routingKey, DateTime dataCommand, string nameCommand, string commandBody)
+        public SpendManagementCommand(string routingKey, DateTime dataCommand, string nameCommand, string commandBody)
         {
             RoutingKey = routingKey;
             DataCommand = dataCommand;

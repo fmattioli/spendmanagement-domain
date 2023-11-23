@@ -4,27 +4,27 @@ using SpendManagement.Contracts.V1.Commands.ReceiptCommands;
 
 namespace Application.Kafka.Mappers.Receipt
 {
-    public static class CommandMappers
+    public static class ReceiptCommandMappers
     {
-        public static Command ToDomain(this CreateReceiptCommand createReceiptCommand)
+        public static SpendManagementCommand ToDomain(this CreateReceiptCommand createReceiptCommand)
         {
-            return new Command(createReceiptCommand.RoutingKey,
+            return new SpendManagementCommand(createReceiptCommand.RoutingKey,
                 createReceiptCommand.CommandCreatedDate,
                 nameof(CreateReceiptCommand),
                 JsonConvert.SerializeObject(createReceiptCommand));
         }
 
-        public static Command ToDomain(this UpdateReceiptCommand updateReceiptCommand)
+        public static SpendManagementCommand ToDomain(this UpdateReceiptCommand updateReceiptCommand)
         {
-            return new Command(updateReceiptCommand.RoutingKey,
+            return new SpendManagementCommand(updateReceiptCommand.RoutingKey,
                 updateReceiptCommand.CommandCreatedDate,
                 nameof(UpdateReceiptCommand),
                 JsonConvert.SerializeObject(updateReceiptCommand));
         }
 
-        public static Command ToDomain(this DeleteReceiptCommand deleteReceiptCommand)
+        public static SpendManagementCommand ToDomain(this DeleteReceiptCommand deleteReceiptCommand)
         {
-            return new Command(deleteReceiptCommand.RoutingKey,
+            return new SpendManagementCommand(deleteReceiptCommand.RoutingKey,
                 deleteReceiptCommand.CommandCreatedDate,
                 nameof(DeleteReceiptCommand),
                 JsonConvert.SerializeObject(deleteReceiptCommand));

@@ -13,12 +13,12 @@ namespace Application.Kafka.Commands.Handlers
         IMessageHandler<UpdateReceiptCommand>,
         IMessageHandler<DeleteReceiptCommand>
     {
-        private readonly ICommandRepository _commandRepository;
-        private readonly IEventRepository _eventRepository;
+        private readonly ISpendManagementCommandRepository _commandRepository;
+        private readonly ISpendManagementEventRepository _eventRepository;
         private readonly IEventProducer _eventProducer;
 
-        public ReceiptCommandHandler(ICommandRepository commandRepository,
-            IEventRepository eventRepository,
+        public ReceiptCommandHandler(ISpendManagementCommandRepository commandRepository,
+            ISpendManagementEventRepository eventRepository,
             IEventProducer receiptProducer)
         {
             this._commandRepository = commandRepository;

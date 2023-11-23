@@ -6,7 +6,7 @@ namespace SpendManagement.Domain.Integration.Tests.Fixtures
     {
         public SharedFixture()
         {
-            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
+            Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Tests");
             var webAppFactory = new WebApplicationFactory<Program>();
             webAppFactory.CreateDefaultClient();
         }
