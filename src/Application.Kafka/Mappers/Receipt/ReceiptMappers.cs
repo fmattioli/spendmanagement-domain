@@ -6,7 +6,7 @@ using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 
 namespace Application.Kafka.Mappers.Receipt
 {
-    public static class EventMappers
+    public static class ReceiptMappers
     {
         public static CreatedReceiptEvent ToReceiptCreatedEvent(this CreateReceiptCommand createReceiptCommand)
         {
@@ -15,9 +15,9 @@ namespace Application.Kafka.Mappers.Receipt
             return new CreatedReceiptEvent(receipt, receiptItem);
         }
 
-        public static Event ToDomain(this CreatedReceiptEvent createReceiptEvent, int commandId)
+        public static SpendManagementEvent ToDomain(this CreatedReceiptEvent createReceiptEvent, int commandId)
         {
-            return new Event(commandId,
+            return new SpendManagementEvent(commandId,
                 createReceiptEvent.RoutingKey,
                 createReceiptEvent.EventCreatedDate,
                 nameof(CreatedReceiptEvent),
@@ -31,9 +31,9 @@ namespace Application.Kafka.Mappers.Receipt
             return new UpdateReceiptEvent(receipt, receiptItems);
         }
 
-        public static Event ToDomain(this UpdateReceiptEvent updateReceiptEvent, int commandId)
+        public static SpendManagementEvent ToDomain(this UpdateReceiptEvent updateReceiptEvent, int commandId)
         {
-            return new Event(commandId,
+            return new SpendManagementEvent(commandId,
                 updateReceiptEvent.RoutingKey,
                 updateReceiptEvent.EventCreatedDate,
                 nameof(UpdateReceiptEvent),
@@ -45,9 +45,9 @@ namespace Application.Kafka.Mappers.Receipt
             return new DeleteReceiptEvent(deleteReceiptCommand.Id);
         }
 
-        public static Event ToDomain(this DeleteReceiptEvent deleteReceiptEvent, int commandId)
+        public static SpendManagementEvent ToDomain(this DeleteReceiptEvent deleteReceiptEvent, int commandId)
         {
-            return new Event(commandId,
+            return new SpendManagementEvent(commandId,
                 deleteReceiptEvent.RoutingKey,
                 deleteReceiptEvent.EventCreatedDate,
                 nameof(DeleteReceiptEvent),

@@ -23,7 +23,7 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Category
         }
 
         [Fact(DisplayName = "On adding a valid category, a command should be inserted on the database, and a CreateCategoryEvent should be produced.")]
-        private async Task OnGivenAValidCategory_ShouldBeProducedACreateCategoryCommand()
+        private async Task OnGivenAValidCategory_ShouldBeCreateACommandAndEventOnDb_And_ShouldBeProduce_CreateCategoryEvent()
         {
             // Arrange
             var categoryId = fixture.Create<Guid>();
@@ -44,66 +44,35 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Category
 
             // Assert
             var command = await Policy
-                .HandleResult<Command>(
+                .HandleResult<SpendManagementCommand>(
                     p => p?.RoutingKey == null)
                 .WaitAndRetryAsync(
                     TestSettings.Polling!.RetryCount,
                     _ => TimeSpan.FromMilliseconds(TestSettings.Polling.Delay))
-                .ExecuteAsync(() => _sqlFixture.GetCommandAsync(categoryCommand.RoutingKey));
+                .ExecuteAsync(() => _sqlFixture.GetCommandAsync(categoryId.ToString()));
 
             command.Should().NotBeNull();
             command.NameCommand.Should().Be(nameof(CreateCategoryCommand));
-            command.RoutingKey.Should().Be(categoryCommand.RoutingKey);
+            command.RoutingKey.Should().Be(categoryId.ToString());
             command.CommandBody.Should().NotBeNull();
 
-            var createCategoryEvent = _kafkaFixture.Consume<CreateCategoryEvent>(
-                (@event, _) =>
-                @event.Category.Id == categoryId &&
-                @event.RoutingKey == categoryId.ToString());
-
-            createCategoryEvent
-                .Should()
-                .NotBeNull();
-        }
-
-        [Fact(DisplayName = "On adding a valid category, an event should be inserted on the database, and a CreateCategoryEvent should be produced.")]
-        private async Task OnGivenAValidCategory_EventsShouldHaveCorrectName()
-        {
-            // Arrange
-            var categoryId = fixture.Create<Guid>();
-
-            var category = fixture
-                .Build<Contracts.V1.Entities.Category>()
-                .With(x => x.Id, categoryId)
-                .Create();
-
-            var categoryCommand = fixture
-                .Build<CreateCategoryCommand>()
-                .With(x => x.RoutingKey, categoryId.ToString())
-                .With(x => x.Category, category)
-                .Create();
-
-            // Act
-            await this._kafkaFixture.ProduceCommandAsync(categoryCommand);
-
-            // Assert
-            var @event = await Policy
-                .HandleResult<Event>(
+            var spendManagementEvent = await Policy
+                .HandleResult<SpendManagementEvent>(
                     p => p?.RoutingKey == null)
                 .WaitAndRetryAsync(
                     TestSettings.Polling!.RetryCount,
                     _ => TimeSpan.FromMilliseconds(TestSettings.Polling.Delay))
                 .ExecuteAsync(() => _sqlFixture.GetEventAsync(categoryCommand.RoutingKey));
 
-            @event.Should().NotBeNull();
-            @event.NameEvent.Should().Be(nameof(CreateCategoryEvent));
-            @event.RoutingKey.Should().Be(categoryCommand.RoutingKey);
-            @event.EventBody.Should().NotBeNull();
+            spendManagementEvent.Should().NotBeNull();
+            spendManagementEvent.NameEvent.Should().Be(nameof(CreateCategoryEvent));
+            spendManagementEvent.RoutingKey.Should().Be(categoryCommand.RoutingKey);
+            spendManagementEvent.EventBody.Should().NotBeNull();
 
             var createCategoryEvent = _kafkaFixture.Consume<CreateCategoryEvent>(
-                (@event, _) =>
-                @event.Category.Id == categoryId &&
-                @event.RoutingKey == categoryId.ToString());
+                (createCategoryEvent, _) =>
+                createCategoryEvent.Category.Id == categoryId &&
+                createCategoryEvent.RoutingKey == categoryId.ToString());
 
             createCategoryEvent
                 .Should()

@@ -5,11 +5,11 @@ using SpendManagement.Contracts.V1.Events.CategoryEvents;
 
 namespace Application.Kafka.Mappers.Category
 {
-    public static class EventMappers
+    public static class CategoryMappers
     {
-        public static Event ToDomain(this CreateCategoryEvent createCategoryEvent, int commandId)
+        public static SpendManagementEvent ToDomain(this CreateCategoryEvent createCategoryEvent, int commandId)
         {
-            return new Event(commandId,
+            return new SpendManagementEvent(commandId,
                 createCategoryEvent.RoutingKey,
                 createCategoryEvent.EventCreatedDate,
                 nameof(CreateCategoryEvent),
@@ -28,9 +28,9 @@ namespace Application.Kafka.Mappers.Category
             return new UpdateCategoryEvent(category);
         }
 
-        public static Event ToDomain(this UpdateCategoryEvent updateCategoryEvent, int commandId)
+        public static SpendManagementEvent ToDomain(this UpdateCategoryEvent updateCategoryEvent, int commandId)
         {
-            return new Event(commandId,
+            return new SpendManagementEvent(commandId,
                 updateCategoryEvent.RoutingKey,
                 updateCategoryEvent.EventCreatedDate,
                 nameof(UpdateCategoryEvent),
@@ -42,9 +42,9 @@ namespace Application.Kafka.Mappers.Category
             return new DeleteCategoryEvent(deleteCategoryCommand.Id);
         }
 
-        public static Event ToDomain(this DeleteCategoryEvent deleteCategoryEvent, int commandId)
+        public static SpendManagementEvent ToDomain(this DeleteCategoryEvent deleteCategoryEvent, int commandId)
         {
-            return new Event(commandId,
+            return new SpendManagementEvent(commandId,
                 deleteCategoryEvent.RoutingKey,
                 deleteCategoryEvent.EventCreatedDate,
                 nameof(DeleteCategoryEvent),

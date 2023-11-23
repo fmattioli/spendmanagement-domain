@@ -14,12 +14,12 @@ namespace Application.Kafka.Commands.Handlers
 
     {
         private readonly IEventProducer _eventProducer;
-        private readonly ICommandRepository _commandRepository;
-        private readonly IEventRepository _eventRepository;
+        private readonly ISpendManagementCommandRepository _commandRepository;
+        private readonly ISpendManagementEventRepository _eventRepository;
 
         public CategoryCommandHandler(
-            ICommandRepository commandRepository,
-            IEventRepository eventRepository,
+            ISpendManagementCommandRepository commandRepository,
+            ISpendManagementEventRepository eventRepository,
             IEventProducer eventProducer)
             => (_commandRepository, _eventRepository, _eventProducer) = (commandRepository, eventRepository, eventProducer);
 

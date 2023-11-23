@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities
 {
-    public class Event
+    public class SpendManagementEvent
     {
-        public Event(int FK_Command_Id, string routingKey, DateTime dataEvent, string nameEvent, string eventBody)
+        public SpendManagementEvent(int FK_Command_Id, string routingKey, DateTime dataEvent, string nameEvent, string eventBody)
         {
             Id = FK_Command_Id;
             RoutingKey = routingKey;

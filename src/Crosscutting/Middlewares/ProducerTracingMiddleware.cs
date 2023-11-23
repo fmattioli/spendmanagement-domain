@@ -1,4 +1,6 @@
 ﻿using Application.Kafka.Constants;
+using Crosscutting.Models;
+
 using KafkaFlow;
 using OpenTelemetry;
 using OpenTelemetry.Context.Propagation;
@@ -12,6 +14,12 @@ namespace Crosscutting.Middlewares
     {
         private static readonly ActivitySource Activity = new(Constants.ApplicationName);
         private static readonly TextMapPropagator Propagator = new TraceContextPropagator();
+        private readonly string environment;
+
+        public ProducerTracingMiddleware(ISettings settings)
+        {
+            environment = settings.KafkaSettings.Environment;
+        }
 
         public async Task Invoke(IMessageContext context, MiddlewareDelegate next)
         {
@@ -29,7 +37,7 @@ namespace Crosscutting.Middlewares
             Propagator.Inject(new PropagationContext(activity.Context, Baggage.Current), props, InjectContextIntoHeader);
             activity?.SetTag("messaging.system", "Kafka");
             activity?.SetTag("messaging.destination_kind", "queue");
-            activity?.SetTag("messaging..topic", KafkaTopics.Events.ReceiptEventTopicName);
+            activity?.SetTag("messaging..topic", KafkaTopics.Events.GetReceiptEvents(environment));
         }
 
         private void InjectContextIntoHeader(IMessageContext props, string key, string value)

@@ -24,7 +24,7 @@ namespace Data.Persistence
 
             string sqlStatement = entity switch
             {
-                Command _ => SQLStatements.InsertCommand(),
+                SpendManagementCommand _ => SQLStatements.InsertCommand(),
                 _ => SQLStatements.InsertEvent()
             };
 

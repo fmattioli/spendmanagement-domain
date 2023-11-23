@@ -14,8 +14,8 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
         private readonly CategoryCommandHandler _categoryHandler;
         private readonly Fixture _fixture = new();
         private readonly Mock<IEventProducer> _eventProducer = new();
-        private readonly Mock<ICommandRepository> _commandRepository = new();
-        private readonly Mock<IEventRepository> _eventRepository = new();
+        private readonly Mock<ISpendManagementCommandRepository> _commandRepository = new();
+        private readonly Mock<ISpendManagementEventRepository> _eventRepository = new();
         private readonly Mock<IMessageContext> _messageContext = new();
 
         public CreateCategoryHandlerTests()
@@ -23,23 +23,19 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
             _categoryHandler = new(_commandRepository.Object, _eventRepository.Object, _eventProducer.Object);
         }
 
-        [Fact(DisplayName = "On Given a CreateCategoryCommand, an event and command should inserted on DB and an Event should be produced")]
-        public async Task Handle_OnGivenAValidCreateCategoryCommand_ShouldBeProduced_CreateCategoryEvent()
+        [Fact(DisplayName = "On Given a CreateCategoryCommand, a command should inserted on DB and a CreateCategoryEvent should be produced")]
+        public async Task Handle_OnGivenAValidCreateCategoryCommand_SpendManagementCommandShouldBeInserted()
         {
             //Arrange
             var createCategoryCommand = _fixture.Create<CreateCategoryCommand>();
 
             _commandRepository
-                .Setup(x => x.Add(It.IsAny<Command>()))
+                .Setup(x => x.Add(It.IsAny<SpendManagementCommand>()))
                 .ReturnsAsync(_fixture.Create<int>());
 
             _eventProducer
                 .Setup(x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()))
                 .Returns(Task.CompletedTask);
-
-            _eventRepository
-                .Setup(x => x.Add(It.IsAny<Event>()))
-                .ReturnsAsync(_fixture.Create<int>());
 
             //Act
             await _categoryHandler.Handle(_messageContext.Object, createCategoryCommand);
@@ -47,7 +43,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
             //Assert
             _commandRepository
                .Verify(
-                  x => x.Add(It.IsAny<Command>()),
+                  x => x.Add(It.IsAny<SpendManagementCommand>()),
                    Times.Once);
 
             _eventProducer
@@ -55,14 +51,40 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
                     x => x.SendEventAsync(It.IsAny<SpendManagement.Contracts.V1.Interfaces.IEvent>()),
                     Times.Once);
 
-            _eventRepository
-                .Verify(
-                    x => x.Add(It.IsAny<Event>()),
-                    Times.Once);
-
             _commandRepository.VerifyNoOtherCalls();
             _eventProducer.VerifyNoOtherCalls();
+        }
+
+        [Fact(DisplayName = "On Given a CreateCategoryCommand, an event should inserted on DB and a CreateCategoryEvent should be produced")]
+        public async Task Handle_OnGivenAValidCreateCategoryCommand_SpendManagementEventShouldBeInserted()
+        {
+            //Arrange
+            var createCategoryCommand = _fixture.Create<CreateCategoryCommand>();
+
+            _eventProducer
+                .Setup(x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()))
+                .Returns(Task.CompletedTask);
+
+            _eventRepository
+                .Setup(x => x.Add(It.IsAny<SpendManagementEvent>()))
+                .ReturnsAsync(_fixture.Create<int>());
+
+            //Act
+            await _categoryHandler.Handle(_messageContext.Object, createCategoryCommand);
+
+            //Assert
+            _eventProducer
+                .Verify(
+                    x => x.SendEventAsync(It.IsAny<SpendManagement.Contracts.V1.Interfaces.IEvent>()),
+                    Times.Once);
+
+            _eventRepository
+                .Verify(
+                    x => x.Add(It.IsAny<SpendManagementEvent>()),
+                    Times.Once);
+
             _eventRepository.VerifyNoOtherCalls();
+            _eventProducer.VerifyNoOtherCalls();
         }
     }
 }
