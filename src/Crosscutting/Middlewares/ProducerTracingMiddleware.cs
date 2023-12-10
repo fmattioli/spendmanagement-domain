@@ -1,6 +1,5 @@
 ﻿using Application.Kafka.Constants;
 using Crosscutting.Models;
-
 using KafkaFlow;
 using OpenTelemetry;
 using OpenTelemetry.Context.Propagation;
