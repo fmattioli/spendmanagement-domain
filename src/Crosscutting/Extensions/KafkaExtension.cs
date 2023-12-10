@@ -6,7 +6,6 @@ using KafkaFlow;
 using KafkaFlow.Admin.Dashboard;
 using KafkaFlow.Configuration;
 using KafkaFlow.Serializer;
-using KafkaFlow.TypedHandler;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using SpendManagement.Topics;
@@ -83,12 +82,10 @@ namespace Crosscutting.Extensions
                      .WithWorkersCount(settings?.WorkerCount ?? 0)
                      .WithAutoOffsetReset(AutoOffsetReset.Latest)
                      .WithInitialState(Enum.Parse<ConsumerInitialState>(settings?.ConsumerInitialState ?? "Running"))
-                     .AddMiddlewares(
-                        middlewares =>
-                            middlewares
-                            .AddSerializer<JsonCoreSerializer>()
+                     .AddMiddlewares(m => m
                             .Add<ConsumerLoggingMiddleware>()
                             .Add<ConsumerTracingMiddleware>()
+                            .AddDeserializer<JsonCoreDeserializer>()
                             .Add<ConsumerRetryMiddleware>()
                             .AddTypedHandlers(
                                 h => h
