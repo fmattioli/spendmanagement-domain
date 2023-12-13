@@ -56,7 +56,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
         }
 
         [Fact(DisplayName = "On Given a CreateCategoryCommand, an event should inserted on DB and a CreateCategoryEvent should be produced")]
-        public async Task Handle_OnGivenAValidCreateCategoryCommand_SpendManagementEventShouldBeInserted()
+        public async Task Handle_OnGivenAValidCreateCategoryCommand_AnCreateCategoryEvent_ShouldBeProduced()
         {
             //Arrange
             var createCategoryCommand = _fixture.Create<CreateCategoryCommand>();
