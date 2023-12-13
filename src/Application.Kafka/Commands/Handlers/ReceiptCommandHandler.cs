@@ -1,9 +1,7 @@
 ﻿using Application.Kafka.Mappers.Receipt;
 using Application.Kafka.Events.Interfaces;
-using Data.Statements;
 using Domain.Interfaces;
 using KafkaFlow;
-using KafkaFlow.TypedHandler;
 using SpendManagement.Contracts.V1.Commands.ReceiptCommands;
 
 namespace Application.Kafka.Commands.Handlers

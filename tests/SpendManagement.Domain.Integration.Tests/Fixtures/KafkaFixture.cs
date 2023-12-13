@@ -62,7 +62,7 @@ namespace SpendManagement.Domain.Integration.Tests.Fixtures
                                .WithAutoOffsetReset(AutoOffsetReset.Latest)
                                .WithInitialState(Enum.Parse<ConsumerInitialState>("Running"))
                                .AddMiddlewares(middlewares => middlewares
-                                   .AddSerializer<JsonCoreSerializer>()
+                                   .AddDeserializer<JsonCoreDeserializer>()
                                    .Add(_ => this.kafkaMessage));
                        })
                        .CreateTopicIfNotExists(KafkaTopics.Commands.GetReceiptCommands(settings!.Environment), 2, 1)

@@ -2,7 +2,6 @@
 using Application.Kafka.Events.Interfaces;
 using Domain.Interfaces;
 using KafkaFlow;
-using KafkaFlow.TypedHandler;
 using SpendManagement.Contracts.V1.Commands.CategoryCommands;
 
 namespace Application.Kafka.Commands.Handlers
