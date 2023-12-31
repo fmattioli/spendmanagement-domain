@@ -1,34 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.Kafka" Version="6.0.2" />
-    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="6.0.2" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="6.0.2" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="6.0.2" />
-    <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="6.0.2" />
-    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="6.0.2" />
-    <PackageReference Include="KafkaFlow" Version="3.0.1" />
-    <PackageReference Include="KafkaFlow.Abstractions" Version="3.0.1" />
-    <PackageReference Include="KafkaFlow.Admin" Version="3.0.1" />
-    <PackageReference Include="KafkaFlow.Admin.Dashboard" Version="3.0.1" />
-    <PackageReference Include="KafkaFlow.LogHandler.Console" Version="3.0.1" />
-    <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="3.0.1" />
-    <PackageReference Include="KafkaFlow.Serializer.JsonCore" Version="3.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Kafka" Version="8.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="8.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="8.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.Uris" Version="8.0.0" />
+    <PackageReference Include="KafkaFlow" Version="3.0.3" />
+    <PackageReference Include="KafkaFlow.Abstractions" Version="3.0.3" />
+    <PackageReference Include="KafkaFlow.Admin" Version="3.0.3" />
+    <PackageReference Include="KafkaFlow.Admin.Dashboard" Version="3.0.3" />
+    <PackageReference Include="KafkaFlow.LogHandler.Console" Version="3.0.3" />
+    <PackageReference Include="KafkaFlow.Microsoft.DependencyInjection" Version="3.0.3" />
+    <PackageReference Include="KafkaFlow.Serializer.JsonCore" Version="3.0.3" />
     <PackageReference Include="KafkaFlow.TypedHandler" Version="2.5.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="OpenTelemetry" Version="1.6.0" />
-    <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.6.0" />
-    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.6.0" />
-    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.6.0" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.5.1-beta.1" />
-    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.5.1-beta.1" />
+    <PackageReference Include="OpenTelemetry" Version="1.7.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.Console" Version="1.7.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.7.0" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.7.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.7.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.7.0" />
     <PackageReference Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.5.1-beta.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
     <PackageReference Include="SpendManagement.Contracts" Version="3.0.1" />
