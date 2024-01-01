@@ -108,6 +108,7 @@ namespace Crosscutting.Extensions
             };
 
             builder
+                .CreateTopicIfNotExists(KafkaTopics.Events.GetReceiptEvents(settings.Environment), 2, 1)
                 .AddProducer<SpendManagement.Contracts.V1.Interfaces.IEvent>(
                 p => p
                     .DefaultTopic(KafkaTopics.Events.GetReceiptEvents(settings.Environment))
