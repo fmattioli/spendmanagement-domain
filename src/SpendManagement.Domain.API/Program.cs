@@ -27,6 +27,7 @@ builder.Services
     .AddTracing(applicationSettings.TracingSettings)
     .AddHealthCheckers(applicationSettings)
     .AddKafka(applicationSettings.KafkaSettings)
+    .AddUnitOfWork(applicationSettings.SqlSettings.ConnectionString)
     .AddRepositories()
     .AddServiceEventsProducer()
     .AddLoggingDependency();

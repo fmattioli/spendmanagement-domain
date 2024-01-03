@@ -3,6 +3,8 @@ using Application.Kafka.Events.Interfaces;
 using Domain.Interfaces;
 using KafkaFlow;
 using SpendManagement.Contracts.V1.Commands.CategoryCommands;
+using Data.Persistence.Interfaces;
+using Data.Persistence.UnitOfWork;
 
 namespace Application.Kafka.Commands.Handlers
 {
@@ -15,24 +17,29 @@ namespace Application.Kafka.Commands.Handlers
         private readonly IEventProducer _eventProducer;
         private readonly ISpendManagementCommandRepository _commandRepository;
         private readonly ISpendManagementEventRepository _eventRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public CategoryCommandHandler(
             ISpendManagementCommandRepository commandRepository,
             ISpendManagementEventRepository eventRepository,
-            IEventProducer eventProducer)
-            => (_commandRepository, _eventRepository, _eventProducer) = (commandRepository, eventRepository, eventProducer);
+            IEventProducer eventProducer,
+            IUnitOfWork unitOfWork)
+            => (_commandRepository, _eventRepository, _eventProducer, _unitOfWork) = (commandRepository, eventRepository, eventProducer, unitOfWork);
 
         public async Task Handle(IMessageContext context, CreateCategoryCommand message)
         {
             var commandDomain = message.ToDomain();
 
-            var commandId = await _commandRepository.Add(commandDomain);
+            var commandId = await _unitOfWork.SpendManagementCommandRepository.Add(commandDomain);
 
             var createCategoryEvent = message.ToCreateCategoryEvent();
 
             await _eventProducer.SendEventAsync(createCategoryEvent);
 
-            await _eventRepository.Add(createCategoryEvent.ToDomain(commandId));
+            var eventDomain = createCategoryEvent.ToDomain(commandId);
+            await _unitOfWork.SpendManagementEventRepository.Add(eventDomain);
+
+            _unitOfWork.Commit();
         }
 
         public async Task Handle(IMessageContext context, UpdateCategoryCommand message)

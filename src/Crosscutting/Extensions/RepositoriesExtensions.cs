@@ -1,5 +1,4 @@
-﻿using Data.Persistence;
-using Data.Session;
+﻿using Data.Persistence.Repository;
 using Domain.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +8,6 @@ namespace Crosscutting.Extensions
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<DbSession>();
             services.AddScoped<ISpendManagementCommandRepository, SpendManagementCommandRepository>();
             services.AddScoped<ISpendManagementEventRepository, SpendManagementEventRepository>();
             return services;
