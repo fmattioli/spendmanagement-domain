@@ -9,13 +9,17 @@ namespace Crosscutting.HealthChecks
 {
     public static class HealthCheckersExtensions
     {
+        private const string UrlHealthCheck = "/health";
+        private static readonly string[] tags = ["db", "data"];
+
         public static IServiceCollection AddHealthCheckers(this IServiceCollection services, Settings settings)
         {
             var configKafka = new ProducerConfig { BootstrapServers = settings.KafkaSettings.Broker };
             services
                 .AddHealthChecks()
                 .AddKafka(configKafka, name: "Kafka")
-                .AddSqlServer(settings.SqlSettings.ConnectionString, name: "SqlServer", tags: new string[] { "db", "data" });
+                .AddSqlServer(settings.SqlSettings.ConnectionString, name: "SqlServer", tags: tags)
+                .AddUrlGroup(new Uri(settings.SpendManagementEventHandler?.Url + UrlHealthCheck), name: "SpendManagement.EventHandler");
 
             services
                 .AddHealthChecksUI(setupSettings: setup => setup.SetEvaluationTimeInSeconds(60))
