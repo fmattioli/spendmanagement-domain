@@ -10,8 +10,8 @@ namespace Application.Kafka.Mappers.Receipt
     {
         public static CreatedReceiptEvent ToReceiptCreatedEvent(this CreateReceiptCommand createReceiptCommand)
         {
-            var receipt = new SpendManagement.Contracts.V1.Entities.Receipt(createReceiptCommand.Receipt.Id, createReceiptCommand.Receipt.EstablishmentName, createReceiptCommand.Receipt.ReceiptDate);
-            var receiptItem = createReceiptCommand.ReceiptItems.Select(x => new ReceiptItem(x.Id, x.ItemName, x.CategoryId, x.Quantity, x.ItemPrice, x.Observation));
+            var receipt = new SpendManagement.Contracts.V1.Entities.Receipt(createReceiptCommand.Receipt.Id, createReceiptCommand.Receipt.CategoryId, createReceiptCommand.Receipt.EstablishmentName, createReceiptCommand.Receipt.ReceiptDate);
+            var receiptItem = createReceiptCommand.ReceiptItems.Select(x => new ReceiptItem(x.Id, x.ItemName, x.Quantity, x.ItemPrice, x.Observation));
             return new CreatedReceiptEvent(receipt, receiptItem);
         }
 
@@ -26,8 +26,8 @@ namespace Application.Kafka.Mappers.Receipt
 
         public static UpdateReceiptEvent ToUpdateReceiptEvent(this UpdateReceiptCommand updateReceiptCommand)
         {
-            var receipt = new SpendManagement.Contracts.V1.Entities.Receipt(updateReceiptCommand.Receipt.Id, updateReceiptCommand.Receipt.EstablishmentName, updateReceiptCommand.Receipt.ReceiptDate);
-            var receiptItems = updateReceiptCommand.ReceiptItems.Select(x => new ReceiptItem(x.Id, x.ItemName, x.CategoryId, x.Quantity, x.ItemPrice, x.Observation));
+            var receipt = new SpendManagement.Contracts.V1.Entities.Receipt(updateReceiptCommand.Receipt.Id, updateReceiptCommand.Receipt.CategoryId, updateReceiptCommand.Receipt.EstablishmentName, updateReceiptCommand.Receipt.ReceiptDate);
+            var receiptItems = updateReceiptCommand.ReceiptItems.Select(x => new ReceiptItem(x.Id, x.ItemName, x.Quantity, x.ItemPrice, x.Observation));
             return new UpdateReceiptEvent(receipt, receiptItems);
         }
 
