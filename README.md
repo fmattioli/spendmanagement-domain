@@ -15,7 +15,7 @@ This project is the heart of the spendmanagement-project. This project reads com
 
 
 # How does it works?
-![Alt text](SpendManagementDiagramFlow.jpg?raw=true "Title")
+![Alt text](SpendManagementDiagramFlow.png?raw=true "Title")
 # How to make it works on your machine?
 The entire project has docker support.
 It's necessary to run the docker-composes in a defined order.
