@@ -10,17 +10,11 @@ using SpendManagement.Domain.Integration.Tests.Fixtures;
 namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Category
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class DeleteCategoryTests
+    public class DeleteCategoryTests(KafkaFixture kafkaFixture, SqlFixture sqlFixture)
     {
         private readonly Fixture fixture = new();
-        private readonly KafkaFixture _kafkaFixture;
-        private readonly SqlFixture _sqlFixture;
-
-        public DeleteCategoryTests(KafkaFixture kafkaFixture, SqlFixture sqlFixture)
-        {
-            this._kafkaFixture = kafkaFixture;
-            this._sqlFixture = sqlFixture;
-        }
+        private readonly KafkaFixture _kafkaFixture = kafkaFixture;
+        private readonly SqlFixture _sqlFixture = sqlFixture;
 
         [Fact(DisplayName = "On deleting a valid category, a command should be inserted on the database, and a DeleteCategoryEvent should be produced.")]
         private async Task OnGivenAValidCategory_ShouldBeInsertedACommand_Should_Produced_DeleteCategoryCommand()

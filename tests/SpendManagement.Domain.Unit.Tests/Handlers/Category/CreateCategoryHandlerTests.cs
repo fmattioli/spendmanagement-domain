@@ -22,7 +22,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
 
         public CreateCategoryHandlerTests()
         {
-            _categoryHandler = new(_commandRepository.Object, _eventRepository.Object, _eventProducer.Object, _unitOfWork.Object);
+            _categoryHandler = new(_eventProducer.Object, _unitOfWork.Object);
         }
 
         [Fact(DisplayName = "On Given a CreateCategoryCommand, a command should inserted on DB and a CreateCategoryEvent should be produced")]
@@ -77,7 +77,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
             //Assert
             _eventProducer
                 .Verify(
-                    x => x.SendEventAsync(It.IsAny<SpendManagement.Contracts.V1.Interfaces.IEvent>()),
+                    x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()),
                     Times.Once);
 
             _eventRepository
