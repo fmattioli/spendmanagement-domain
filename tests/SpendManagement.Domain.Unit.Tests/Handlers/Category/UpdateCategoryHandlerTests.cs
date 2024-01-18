@@ -22,7 +22,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
 
         public UpdateCategoryHandlerTests()
         {
-            _categoryHandler = new(_commandRepository.Object, _eventRepository.Object, _eventProducer.Object, _unitOfWork.Object);
+            _categoryHandler = new(_eventProducer.Object, _unitOfWork.Object);
         }
 
         [Fact(DisplayName = "On Given a UpdateCategoryCommand, a command should inserted on DB and an UpdateCategoryEvent should be produced")]

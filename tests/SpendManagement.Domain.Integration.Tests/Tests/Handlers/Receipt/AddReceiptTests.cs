@@ -10,17 +10,11 @@ using SpendManagement.Domain.Integration.Tests.Fixtures;
 namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Receipt
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class AddReceiptTests
+    public class AddReceiptTests(KafkaFixture kafkaFixture, SqlFixture sqlFixture)
     {
         private readonly Fixture fixture = new();
-        private readonly KafkaFixture _kafkaFixture;
-        private readonly SqlFixture _sqlFixture;
-
-        public AddReceiptTests(KafkaFixture kafkaFixture, SqlFixture sqlFixture)
-        {
-            this._kafkaFixture = kafkaFixture;
-            this._sqlFixture = sqlFixture;
-        }
+        private readonly KafkaFixture _kafkaFixture = kafkaFixture;
+        private readonly SqlFixture _sqlFixture = sqlFixture;
 
         [Fact(DisplayName = "On adding a valid receipt, a command should be inserted on the database, and a CreateReceiptEvent should be produced.")]
         private async Task OnGivenAValidReceipt_ShouldBeCreateACommandAndEventOnDb_And_ShouldBeProduce_CreateReceiptEvent()

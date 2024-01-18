@@ -23,7 +23,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
 
         public DeleteCategoryHandlerTests()
         {
-            _categoryHandler = new(_commandRepository.Object, _eventRepository.Object, _eventProducer.Object, _unitOfWork.Object);
+            _categoryHandler = new(_eventProducer.Object, _unitOfWork.Object);
         }
 
         [Fact(DisplayName = "On Given a DeleteCategoryCommand, an event and command should inserted on DB and an Event should be produced")]

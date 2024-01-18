@@ -10,17 +10,11 @@ using SpendManagement.Domain.Integration.Tests.Fixtures;
 namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Category
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class AddCategoryTests
+    public class AddCategoryTests(KafkaFixture kafkaFixture, SqlFixture sqlFixture)
     {
         private readonly Fixture fixture = new();
-        private readonly KafkaFixture _kafkaFixture;
-        private readonly SqlFixture _sqlFixture;
-
-        public AddCategoryTests(KafkaFixture kafkaFixture, SqlFixture sqlFixture)
-        {
-            this._kafkaFixture = kafkaFixture;
-            this._sqlFixture = sqlFixture;
-        }
+        private readonly KafkaFixture _kafkaFixture = kafkaFixture;
+        private readonly SqlFixture _sqlFixture = sqlFixture;
 
         [Fact(DisplayName = "On adding a valid category, a command should be inserted on the database, and a CreateCategoryEvent should be produced.")]
         private async Task OnGivenAValidCategory_ShouldBeCreateACommandAndEventOnDb_And_ShouldBeProduce_CreateCategoryEvent()

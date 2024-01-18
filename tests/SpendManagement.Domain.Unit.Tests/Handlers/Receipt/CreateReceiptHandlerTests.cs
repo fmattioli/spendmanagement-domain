@@ -1,6 +1,7 @@
 ﻿using Application.Kafka.Commands.Handlers;
 using Application.Kafka.Events.Interfaces;
 using AutoFixture;
+using Data.Persistence.Interfaces;
 using Domain.Entities;
 using Domain.Interfaces;
 using KafkaFlow;
@@ -17,10 +18,11 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
         private readonly Mock<ISpendManagementCommandRepository> _commandRepository = new();
         private readonly Mock<ISpendManagementEventRepository> _eventRepository = new();
         private readonly Mock<IMessageContext> _messageContext = new();
+        private readonly Mock<IUnitOfWork> _unitOfWork = new();
 
         public CreateReceiptHandlerTests()
         {
-            _receiptHandler = new(_commandRepository.Object, _eventRepository.Object, _eventProducer.Object);
+            _receiptHandler = new(_eventProducer.Object, _unitOfWork.Object);
         }
 
         [Fact(DisplayName = "On Given a CreateReceiptCommand, a command should inserted on DB and an CreateReceiptEvent should be produced")]
