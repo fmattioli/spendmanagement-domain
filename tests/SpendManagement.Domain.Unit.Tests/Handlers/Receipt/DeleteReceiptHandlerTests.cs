@@ -1,12 +1,13 @@
 ﻿using Application.Kafka.Commands.Handlers;
 using Application.Kafka.Events.Interfaces;
 using AutoFixture;
-using Data.Persistence.Interfaces;
+using Data.Persistence.UnitOfWork;
 using Domain.Entities;
 using Domain.Interfaces;
 using KafkaFlow;
 using Moq;
 using SpendManagement.Contracts.V1.Commands.ReceiptCommands;
+using System.Data;
 
 namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
 {
@@ -15,14 +16,15 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
         private readonly ReceiptCommandHandler _receiptHandler;
         private readonly Fixture _fixture = new();
         private readonly Mock<IEventProducer> _eventProducer = new();
-        private readonly Mock<ISpendManagementCommandRepository> _commandRepository = new();
-        private readonly Mock<ISpendManagementEventRepository> _eventRepository = new();
         private readonly Mock<IMessageContext> _messageContext = new();
-        private readonly Mock<IUnitOfWork> _unitOfWork = new();
+        private readonly Mock<IDbTransaction> _dbTransactionObject = new();
+        private readonly Mock<ISpendManagementCommandRepository> _commandRepositoryMock = new();
+        private readonly Mock<ISpendManagementEventRepository> _eventRepositoryMock = new();
 
         public DeleteReceiptHandlerTests()
         {
-            _receiptHandler = new(_eventProducer.Object, _unitOfWork.Object);
+            var unitOfWork = new UnitOfWork(_dbTransactionObject.Object, _commandRepositoryMock.Object, _eventRepositoryMock.Object);
+            _receiptHandler = new(_eventProducer.Object, unitOfWork);
         }
 
         [Fact(DisplayName = "On Given a DeleteReceiptCommand, a command should inserted on DB and an DeleteReceiptEvent should be produced")]
@@ -31,39 +33,11 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
             //Arrange
             var deleteReceiptCommand = _fixture.Create<DeleteReceiptCommand>();
 
-            _commandRepository
+            _commandRepositoryMock
                 .Setup(x => x.Add(It.IsAny<SpendManagementCommand>()))
                 .ReturnsAsync(_fixture.Create<int>());
 
-            _eventProducer
-                .Setup(x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()))
-                .Returns(Task.CompletedTask);
-
-            //Act
-            await _receiptHandler.Handle(_messageContext.Object, deleteReceiptCommand);
-
-            //Assert
-            _commandRepository
-               .Verify(
-                  x => x.Add(It.IsAny<SpendManagementCommand>()),
-                   Times.Once);
-
-            _eventProducer
-                .Verify(
-                    x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()),
-                    Times.Once);
-
-            _commandRepository.VerifyNoOtherCalls();
-            _eventProducer.VerifyNoOtherCalls();
-        }
-
-        [Fact(DisplayName = "On Given a DeleteReceiptCommand, an event should inserted on DB and an DeleteReceiptEvent should be produced")]
-        public async Task Handle_OnGivenAValidDeleteReceiptEvent_CommandShouldBeInserted_ShouldBeProduced_An_DeleteReceiptEvent()
-        {
-            //Arrange
-            var deleteReceiptCommand = _fixture.Create<DeleteReceiptCommand>();
-
-            _eventRepository
+            _eventRepositoryMock
                 .Setup(x => x.Add(It.IsAny<SpendManagementEvent>()))
                 .ReturnsAsync(_fixture.Create<int>());
 
@@ -75,7 +49,12 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
             await _receiptHandler.Handle(_messageContext.Object, deleteReceiptCommand);
 
             //Assert
-            _eventRepository
+            _commandRepositoryMock
+               .Verify(
+                  x => x.Add(It.IsAny<SpendManagementCommand>()),
+                   Times.Once);
+
+            _eventRepositoryMock
                .Verify(
                   x => x.Add(It.IsAny<SpendManagementEvent>()),
                    Times.Once);
@@ -85,7 +64,8 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
                     x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()),
                     Times.Once);
 
-            _eventRepository.VerifyNoOtherCalls();
+            _commandRepositoryMock.VerifyNoOtherCalls();
+            _eventRepositoryMock.VerifyNoOtherCalls();
             _eventProducer.VerifyNoOtherCalls();
         }
     }
