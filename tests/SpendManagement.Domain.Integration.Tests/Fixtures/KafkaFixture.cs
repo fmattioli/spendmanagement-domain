@@ -2,8 +2,6 @@
 using Crosscutting.Models;
 using KafkaFlow;
 using KafkaFlow.Serializer;
-
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using Serilog.Formatting.Json;
