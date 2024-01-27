@@ -5,12 +5,9 @@ using System.Data;
 namespace Data.Persistence.UnitOfWork
 {
     public class UnitOfWork(IDbTransaction dbTransaction,
-        ISpendManagementCommandRepository spendManagementCommandRepository,
-        ISpendManagementEventRepository spendManagementEventRepository) : IUnitOfWork, IDisposable
+        ISpendManagementCommandRepository spendManagementCommandRepository) : IUnitOfWork, IDisposable
     {
         public ISpendManagementCommandRepository SpendManagementCommandRepository { get; } = spendManagementCommandRepository;
-
-        public ISpendManagementEventRepository SpendManagementEventRepository { get; } = spendManagementEventRepository;
 
         private readonly IDbTransaction _dbTransaction = dbTransaction;
 

@@ -6,8 +6,6 @@ namespace Data.Persistence.Interfaces
     {
         ISpendManagementCommandRepository SpendManagementCommandRepository { get; }
 
-        ISpendManagementEventRepository SpendManagementEventRepository { get; }
-
         void Commit();
         void Dispose();
     }

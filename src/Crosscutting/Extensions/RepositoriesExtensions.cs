@@ -9,7 +9,6 @@ namespace Crosscutting.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<ISpendManagementCommandRepository, SpendManagementCommandRepository>();
-            services.AddScoped<ISpendManagementEventRepository, SpendManagementEventRepository>();
             return services;
         }
     }

@@ -2,15 +2,11 @@
 using Application.Kafka.Events.Interfaces;
 using AutoFixture;
 using Data.Persistence.Interfaces;
-using Data.Persistence.UnitOfWork;
-
 using Domain.Entities;
 using Domain.Interfaces;
 using KafkaFlow;
 using Moq;
 using SpendManagement.Contracts.V1.Commands.CategoryCommands;
-
-using System.Data;
 
 namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
 {
@@ -19,15 +15,13 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
         private readonly CategoryCommandHandler _categoryHandler;
         private readonly Fixture _fixture = new();
         private readonly Mock<IEventProducer> _eventProducer = new();
+        private readonly Mock<ISpendManagementCommandRepository> _commandRepository = new();
         private readonly Mock<IMessageContext> _messageContext = new();
-        private readonly Mock<IDbTransaction> _dbTransactionObject = new();
-        private readonly Mock<ISpendManagementCommandRepository> _commandRepositoryMock = new();
-        private readonly Mock<ISpendManagementEventRepository> _eventRepositoryMock = new();
+        private readonly Mock<IUnitOfWork> _unitOfWork = new();
 
         public DeleteCategoryHandlerTests()
         {
-            var unitOfWork = new UnitOfWork(_dbTransactionObject.Object, _commandRepositoryMock.Object, _eventRepositoryMock.Object);
-            _categoryHandler = new(_eventProducer.Object, unitOfWork);
+            _categoryHandler = new(_eventProducer.Object, _unitOfWork.Object);
         }
 
         [Fact(DisplayName = "On Given a DeleteCategoryCommand, an event and command should inserted on DB and an Event should be produced")]
@@ -36,23 +30,19 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
             //Arrange
             var deleteCategoryCommand = _fixture.Create<DeleteCategoryCommand>();
 
-            _commandRepositoryMock
+            _commandRepository
                 .Setup(x => x.Add(It.IsAny<SpendManagementCommand>()))
-                .ReturnsAsync(_fixture.Create<int>());
+                .ReturnsAsync(_fixture.Create<Guid>());
 
             _eventProducer
                 .Setup(x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()))
                 .Returns(Task.CompletedTask);
 
-            _eventRepositoryMock
-                .Setup(x => x.Add(It.IsAny<SpendManagementEvent>()))
-                .ReturnsAsync(_fixture.Create<int>());
-
             //Act
             await _categoryHandler.Handle(_messageContext.Object, deleteCategoryCommand);
 
             //Assert
-            _commandRepositoryMock
+            _commandRepository
                .Verify(
                   x => x.Add(It.IsAny<SpendManagementCommand>()),
                    Times.Once);
@@ -62,14 +52,40 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Category
                     x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()),
                     Times.Once);
 
-            _eventRepositoryMock
+
+            _commandRepository.VerifyNoOtherCalls();
+            _eventProducer.VerifyNoOtherCalls();
+        }
+
+        [Fact(DisplayName = "On Given a DeleteCategoryCommand, a command should inserted on DB and a DeleteCategoryEvent should be produced")]
+        public async Task Handle_OnGivenAValidDeleteCategoryCommand_CommandShouldBeInserted_ShouldBeProduced_DeleteCategoryEvent()
+        {
+            //Arrange
+            var deleteCategoryCommand = _fixture.Create<DeleteCategoryCommand>();
+
+            _commandRepository
+                .Setup(x => x.Add(It.IsAny<SpendManagementCommand>()))
+                .ReturnsAsync(_fixture.Create<Guid>());
+
+            _eventProducer
+                .Setup(x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()))
+                .Returns(Task.CompletedTask);
+            //Act
+            await _categoryHandler.Handle(_messageContext.Object, deleteCategoryCommand);
+
+            //Assert
+            _commandRepository
+               .Verify(
+                  x => x.Add(It.IsAny<SpendManagementCommand>()),
+                   Times.Once);
+
+            _eventProducer
                 .Verify(
-                    x => x.Add(It.IsAny<SpendManagementEvent>()),
+                    x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()),
                     Times.Once);
 
-            _commandRepositoryMock.VerifyNoOtherCalls();
+            _commandRepository.VerifyNoOtherCalls();
             _eventProducer.VerifyNoOtherCalls();
-            _eventRepositoryMock.VerifyNoOtherCalls();
         }
     }
 }

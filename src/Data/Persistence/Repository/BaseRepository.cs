@@ -2,7 +2,6 @@
 using Dapper;
 using Serilog;
 using Data.Statements;
-using Domain.Entities;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -14,19 +13,20 @@ namespace Data.Persistence.Repository
         private readonly IDbTransaction _dbTransaction = dbTransaction;
         private readonly ILogger _logger = logger;
 
-        public async Task<int> Add(T entity)
+        public async Task<Guid> Add(T entity)
         {
-            string sqlStatement = entity switch
+            var sql = SQLStatements.InsertCommand();
+
+            var result = await _sqlConnection.ExecuteScalarAsync(sql, entity, _dbTransaction);
+
+            if (result != null && Guid.TryParse(result.ToString(), out Guid guidResult))
             {
-                SpendManagementCommand _ => SQLStatements.InsertCommand(),
-                _ => SQLStatements.InsertEvent()
-            };
+                _logger.Information("Command or event inserted successfully on database {@entity}", entity);
+                return guidResult;
+            }
 
-            var id = await _sqlConnection.ExecuteScalarAsync<int>(sqlStatement, entity, _dbTransaction);
-
-            _logger.Information("Command or event inserted successfully on database {@entity}", entity);
-
-            return id;
+            _logger.Information("An error occured when tried insert the command", entity);
+            return Guid.Empty;
         }
     }
 }

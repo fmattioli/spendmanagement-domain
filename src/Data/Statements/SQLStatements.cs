@@ -15,7 +15,7 @@ namespace Data.Statements
             QueryBuilder.AppendLine("[NameCommand], ");
             QueryBuilder.AppendLine("[CommandBody] ");
             QueryBuilder.AppendLine(") ");
-            QueryBuilder.AppendLine("OUTPUT Inserted.ID ");
+            QueryBuilder.AppendLine("OUTPUT Inserted.RoutingKey ");
             QueryBuilder.AppendLine(" VALUES ");
             QueryBuilder.AppendLine(" ( ");
             QueryBuilder.AppendLine("  @RoutingKey,  ");
