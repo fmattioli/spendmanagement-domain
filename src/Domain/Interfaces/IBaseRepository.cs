@@ -2,6 +2,6 @@
 {
     public interface IBaseRepository<T> where T : class
     {
-        Task<int> Add(T entity);
+        Task<Guid> Add(T entity);
     }
 }

@@ -43,27 +43,11 @@ namespace Application.Kafka.Mappers.Receipt
             return new UpdateReceiptEvent(receipt, receiptItems);
         }
 
-        public static SpendManagementEvent ToDomain(this UpdateReceiptEvent updateReceiptEvent, int commandId)
-        {
-            return new SpendManagementEvent(commandId,
-                updateReceiptEvent.RoutingKey,
-                updateReceiptEvent.EventCreatedDate,
-                nameof(UpdateReceiptEvent),
-                JsonConvert.SerializeObject(updateReceiptEvent));
-        }
 
         public static DeleteReceiptEvent ToDeleteReceiptEvent(this DeleteReceiptCommand deleteReceiptCommand)
         {
             return new DeleteReceiptEvent(deleteReceiptCommand.Id);
         }
 
-        public static SpendManagementEvent ToDomain(this DeleteReceiptEvent deleteReceiptEvent, int commandId)
-        {
-            return new SpendManagementEvent(commandId,
-                deleteReceiptEvent.RoutingKey,
-                deleteReceiptEvent.EventCreatedDate,
-                nameof(DeleteReceiptEvent),
-                JsonConvert.SerializeObject(deleteReceiptEvent));
-        }
     }
 }
