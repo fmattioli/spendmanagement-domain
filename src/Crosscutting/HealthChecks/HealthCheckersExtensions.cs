@@ -18,8 +18,7 @@ namespace Crosscutting.HealthChecks
             services
                 .AddHealthChecks()
                 .AddKafka(configKafka, name: "Kafka")
-                .AddSqlServer(settings.SqlSettings.ConnectionString, name: "SqlServer", tags: tags)
-                .AddUrlGroup(new Uri(settings.SpendManagementEventHandler?.Url + UrlHealthCheck), name: "SpendManagement.EventHandler");
+                .AddSqlServer(settings.SqlSettings.ConnectionString, name: "SqlServer", tags: tags);
 
             services
                 .AddHealthChecksUI(setupSettings: setup => setup.SetEvaluationTimeInSeconds(60))
