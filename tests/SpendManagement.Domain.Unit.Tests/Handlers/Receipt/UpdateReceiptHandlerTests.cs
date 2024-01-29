@@ -1,12 +1,13 @@
 ﻿using Application.Kafka.Commands.Handlers;
 using Application.Kafka.Events.Interfaces;
 using AutoFixture;
-using Data.Persistence.Interfaces;
+using Data.Persistence.UnitOfWork;
 using Domain.Entities;
 using Domain.Interfaces;
 using KafkaFlow;
 using Moq;
 using SpendManagement.Contracts.V1.Commands.ReceiptCommands;
+using System.Data;
 
 namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
 {
@@ -15,13 +16,14 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
         private readonly ReceiptCommandHandler _receiptHandler;
         private readonly Fixture _fixture = new();
         private readonly Mock<IEventProducer> _eventProducer = new();
-        private readonly Mock<ISpendManagementCommandRepository> _commandRepository = new();
+        private readonly Mock<IDbTransaction> _dbTransactionObject = new();
+        private readonly Mock<ISpendManagementCommandRepository> _commandRepositoryMock = new();
         private readonly Mock<IMessageContext> _messageContext = new();
-        private readonly Mock<IUnitOfWork> _unitOfWork = new();
 
         public UpdateReceiptHandlerTests()
         {
-            _receiptHandler = new(_eventProducer.Object, _unitOfWork.Object);
+            var unitOfWork = new UnitOfWork(_dbTransactionObject.Object, _commandRepositoryMock.Object);
+            _receiptHandler = new(_eventProducer.Object, unitOfWork);
         }
 
         [Fact(DisplayName = "On Given a UpdateReceiptCommand, a command should inserted on DB and an UpdateReceiptEvent should be produced")]
@@ -30,7 +32,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
             //Arrange
             var updateReceiptCommand = _fixture.Create<UpdateReceiptCommand>();
 
-            _commandRepository
+            _commandRepositoryMock
                 .Setup(x => x.Add(It.IsAny<SpendManagementCommand>()))
                 .ReturnsAsync(_fixture.Create<Guid>());
 
@@ -42,7 +44,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
             await _receiptHandler.Handle(_messageContext.Object, updateReceiptCommand);
 
             //Assert
-            _commandRepository
+            _commandRepositoryMock
                .Verify(
                   x => x.Add(It.IsAny<SpendManagementCommand>()),
                    Times.Once);
@@ -52,7 +54,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
                     x => x.SendEventAsync(It.IsAny<Contracts.V1.Interfaces.IEvent>()),
                     Times.Once);
 
-            _commandRepository.VerifyNoOtherCalls();
+            _commandRepositoryMock.VerifyNoOtherCalls();
             _eventProducer.VerifyNoOtherCalls();
         }
 
