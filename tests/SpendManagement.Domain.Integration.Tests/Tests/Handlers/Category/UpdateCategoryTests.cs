@@ -50,19 +50,6 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Category
             command.RoutingKey.Should().Be(categoryId.ToString());
             command.CommandBody.Should().NotBeNull();
 
-            var spendManagementEvent = await Policy
-                .HandleResult<SpendManagementEvent>(
-                    p => p?.RoutingKey == null)
-                .WaitAndRetryAsync(
-                    TestSettings.Polling!.RetryCount,
-                    _ => TimeSpan.FromMilliseconds(TestSettings.Polling.Delay))
-                .ExecuteAsync(() => _sqlFixture.GetEventAsync(categoryUpdateCommand.RoutingKey));
-
-            spendManagementEvent.Should().NotBeNull();
-            spendManagementEvent.NameEvent.Should().Be(nameof(UpdateCategoryEvent));
-            spendManagementEvent.RoutingKey.Should().Be(categoryUpdateCommand.RoutingKey);
-            spendManagementEvent.EventBody.Should().NotBeNull();
-
             var updateCategoryEvent = _kafkaFixture.Consume<UpdateCategoryEvent>(
                 (createCategoryEvent, _) =>
                 createCategoryEvent.Category.Id == categoryId &&

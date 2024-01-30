@@ -42,6 +42,8 @@ namespace Application.Kafka.Commands.Handlers
             var updateCategoryEvent = message.ToUpdateCategoryEvent();
 
             await _eventProducer.SendEventAsync(updateCategoryEvent);
+
+            _unitOfWork.Commit();
         }
 
         public async Task Handle(IMessageContext context, DeleteCategoryCommand message)
@@ -53,6 +55,7 @@ namespace Application.Kafka.Commands.Handlers
             var deleteCategoryEvent = message.ToDeleteCategoryEvent();
 
             await _eventProducer.SendEventAsync(deleteCategoryEvent);
+
             _unitOfWork.Commit();
         }
     }
