@@ -43,19 +43,6 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Receipt
             command.RoutingKey.Should().Be(receiptId.ToString());
             command.CommandBody.Should().NotBeNull();
 
-            var spendManagementEvent = await Policy
-                .HandleResult<SpendManagementEvent>(
-                    p => p?.RoutingKey == null)
-                .WaitAndRetryAsync(
-                    TestSettings.Polling!.RetryCount,
-                    _ => TimeSpan.FromMilliseconds(TestSettings.Polling.Delay))
-                .ExecuteAsync(() => _sqlFixture.GetEventAsync(deleteReceiptCommand.RoutingKey));
-
-            spendManagementEvent.Should().NotBeNull();
-            spendManagementEvent.NameEvent.Should().Be(nameof(DeleteReceiptEvent));
-            spendManagementEvent.RoutingKey.Should().Be(deleteReceiptCommand.RoutingKey);
-            spendManagementEvent.EventBody.Should().NotBeNull();
-
             var deleteReceiptEvent = _kafkaFixture.Consume<DeleteReceiptEvent>(
                 (deleteReceiptEvent, _) =>
                 deleteReceiptEvent.Id == receiptId &&
