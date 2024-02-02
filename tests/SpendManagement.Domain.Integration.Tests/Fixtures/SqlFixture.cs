@@ -17,16 +17,6 @@ namespace SpendManagement.Domain.Integration.Tests.Fixtures
             return command!;
         }
 
-        public async Task<SpendManagementEvent> GetEventAsync(string eventId)
-        {
-            using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
-            {
-                var @event = await connection.QueryFirstOrDefaultAsync<SpendManagementEvent>("SELECT * FROM SpendManagementEvents WHERE RoutingKey = @id", new { id = eventId });
-                routingKeys.Add(eventId);
-                return @event!;
-            }
-        }
-
         public Task InitializeAsync() => Task.CompletedTask;
 
         public async Task DisposeAsync()
