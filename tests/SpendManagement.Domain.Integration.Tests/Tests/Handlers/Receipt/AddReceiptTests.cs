@@ -19,6 +19,7 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Receipt
         [Fact(DisplayName = "On adding a valid receipt, a command should be inserted on the database, and a CreateReceiptEvent should be produced.")]
         private async Task OnGivenAValidReceipt_ShouldBeCreateACommandAndEventOnDb_And_ShouldBeProduce_CreateReceiptEvent()
         {
+            //Arrange
             var receiptId = fixture.Create<Guid>();
 
             var receipt = fixture
@@ -37,6 +38,7 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Receipt
                 .With(x => x.ReceiptItems, receiptItems)
                 .Create();
 
+            //Act
             await this._kafkaFixture.ProduceCommandAsync(createReceiptCommand);
 
             // Assert
@@ -46,7 +48,7 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Receipt
                 .WaitAndRetryAsync(
                     TestSettings.Polling!.RetryCount,
                     _ => TimeSpan.FromMilliseconds(TestSettings.Polling.Delay))
-                .ExecuteAsync(() => _sqlFixture.GetCommandAsync(receiptId.ToString()));
+                .ExecuteAsync(() => SqlFixture.GetCommandAsync(receiptId.ToString()));
 
             command.Should().NotBeNull();
             command.NameCommand.Should().Be(nameof(CreateReceiptCommand));
