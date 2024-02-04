@@ -7,13 +7,10 @@ namespace SpendManagement.Domain.Integration.Tests.Fixtures
 {
     public class SqlFixture : IAsyncLifetime
     {
-        private readonly List<string> routingKeys = [];
-
-        public async Task<SpendManagementCommand> GetCommandAsync(string commandId)
+        public static async Task<SpendManagementCommand> GetCommandAsync(string commandId)
         {
             using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
             var command = await connection.QueryFirstOrDefaultAsync<SpendManagementCommand>("SELECT * FROM SpendManagementCommands WHERE RoutingKey = @id", new { id = commandId });
-            routingKeys.Add(commandId);
             return command!;
         }
 
@@ -21,12 +18,8 @@ namespace SpendManagement.Domain.Integration.Tests.Fixtures
 
         public async Task DisposeAsync()
         {
-            if (routingKeys.Count != 0)
-            {
-                using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
-                await connection.ExecuteAsync("DELETE FROM SpendManagementEvents WHERE RoutingKey in @ids", new { ids = routingKeys.Select(x => x) });
-                await connection.ExecuteAsync("DELETE FROM SpendManagementCommands WHERE RoutingKey in @ids", new { ids = routingKeys.Select(x => x) });
-            }
+            using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
+            await connection.ExecuteAsync("DELETE FROM SpendManagementCommands");
         }
     }
 

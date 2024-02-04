@@ -43,7 +43,7 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Category
                 .WaitAndRetryAsync(
                     TestSettings.Polling!.RetryCount,
                     _ => TimeSpan.FromMilliseconds(TestSettings.Polling.Delay))
-                .ExecuteAsync(() => _sqlFixture.GetCommandAsync(categoryId.ToString()));
+                .ExecuteAsync(() => SqlFixture.GetCommandAsync(categoryId.ToString()));
 
             command.Should().NotBeNull();
             command.NameCommand.Should().Be(nameof(CreateCategoryCommand));
