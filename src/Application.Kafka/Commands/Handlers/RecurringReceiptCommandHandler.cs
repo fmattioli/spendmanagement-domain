@@ -20,7 +20,7 @@ namespace Application.Kafka.Commands.Handlers
 
             await _unitOfWork.SpendManagementCommandRepository.Add(commandDomain);
 
-            var receiptCreatedEvent = message.ToReceiptRecurringCreatedEvent();
+            var receiptCreatedEvent = message.ToRecurringReceiptCreatedEvent();
 
             _unitOfWork.Commit();
 
