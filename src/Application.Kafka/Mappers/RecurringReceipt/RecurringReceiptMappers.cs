@@ -1,9 +1,6 @@
 ﻿using Domain.Entities;
 using Newtonsoft.Json;
-using SpendManagement.Contracts.V1.Commands.ReceiptCommands;
 using SpendManagement.Contracts.V1.Commands.RecurringReceiptCommands;
-using SpendManagement.Contracts.V1.Entities;
-using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 using SpendManagement.Contracts.V1.Events.RecurringReceiptEvents;
 
 namespace Application.Kafka.Mappers.RecurringReceipt
@@ -34,7 +31,7 @@ namespace Application.Kafka.Mappers.RecurringReceipt
                 JsonConvert.SerializeObject(deleteReceiptCommand));
         }
 
-        public static CreateRecurringReceiptEvent ToReceiptRecurringCreatedEvent(this CreateRecurringReceiptCommand createRecurringReceiptCommand)
+        public static CreateRecurringReceiptEvent ToRecurringReceiptCreatedEvent(this CreateRecurringReceiptCommand createRecurringReceiptCommand)
         {
             var recurringReceipt = new SpendManagement.Contracts.Contracts.V1.Entities.RecurringReceipt(createRecurringReceiptCommand.RecurringReceipt.Id,
                 createRecurringReceiptCommand.RecurringReceipt.CategoryId,
