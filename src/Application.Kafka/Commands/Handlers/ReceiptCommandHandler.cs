@@ -19,7 +19,9 @@ namespace Application.Kafka.Commands.Handlers
             var commandDomain = message.ToDomain();
 
             await _unitOfWork.SpendManagementCommandRepository.Add(commandDomain);
+
             var receiptCreatedEvent = message.ToReceiptCreatedEvent();
+
             _unitOfWork.Commit();
 
             await _eventProducer.SendEventAsync(receiptCreatedEvent);

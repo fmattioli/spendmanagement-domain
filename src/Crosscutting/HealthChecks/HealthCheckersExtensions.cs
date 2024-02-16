@@ -9,7 +9,6 @@ namespace Crosscutting.HealthChecks
 {
     public static class HealthCheckersExtensions
     {
-        private const string UrlHealthCheck = "/health";
         private static readonly string[] tags = ["db", "data"];
 
         public static IServiceCollection AddHealthCheckers(this IServiceCollection services, Settings settings)
