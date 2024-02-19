@@ -7,17 +7,16 @@ using SpendManagement.Contracts.V1.Events.ReceiptEvents;
 using SpendManagement.Domain.Integration.Tests.Configuration;
 using SpendManagement.Domain.Integration.Tests.Fixtures;
 
-namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Receipt
+namespace SpendManagement.Domain.Integration.Tests.Handlers.Receipt
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class UpdateReceiptTests(KafkaFixture kafkaFixture, SqlFixture sqlFixture)
+    public class AddReceiptTests(KafkaFixture kafkaFixture)
     {
         private readonly Fixture fixture = new();
         private readonly KafkaFixture _kafkaFixture = kafkaFixture;
-        private readonly SqlFixture _sqlFixture = sqlFixture;
 
-        [Fact(DisplayName = "On updating a valid receipt, a command should be inserted on the database, and a UpdateReceiptEvent should be produced.")]
-        private async Task OnGivenAValidReceipt_ShouldBeCreateACommandAndEventOnDb_And_ShouldBeProduce_UpdateReceiptEvent()
+        [Fact(DisplayName = "On adding a valid receipt, a command should be inserted on the database, and a CreateReceiptEvent should be produced.")]
+        private async Task OnGivenAValidReceipt_ShouldBeCreateACommandAndEventOnDb_And_ShouldBeProduce_CreateReceiptEvent()
         {
             //Arrange
             var receiptId = fixture.Create<Guid>();
@@ -31,15 +30,15 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Receipt
                 .Build<Contracts.V1.Entities.ReceiptItem>()
                 .CreateMany(1);
 
-            var updateReceiptCommand = fixture
-                .Build<UpdateReceiptCommand>()
+            var createReceiptCommand = fixture
+                .Build<CreateReceiptCommand>()
                 .With(x => x.RoutingKey, receiptId.ToString())
                 .With(x => x.Receipt, receipt)
                 .With(x => x.ReceiptItems, receiptItems)
                 .Create();
 
             //Act
-            await this._kafkaFixture.ProduceCommandAsync(updateReceiptCommand);
+            await _kafkaFixture.ProduceCommandAsync(createReceiptCommand);
 
             // Assert
             var command = await Policy
@@ -51,16 +50,16 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Receipt
                 .ExecuteAsync(() => SqlFixture.GetCommandAsync(receiptId.ToString()));
 
             command.Should().NotBeNull();
-            command.NameCommand.Should().Be(nameof(UpdateReceiptCommand));
+            command.NameCommand.Should().Be(nameof(CreateReceiptCommand));
             command.RoutingKey.Should().Be(receiptId.ToString());
             command.CommandBody.Should().NotBeNull();
 
-            var updateReceiptEvent = _kafkaFixture.Consume<UpdateReceiptEvent>(
-                (updateReceiptEvent, _) =>
-                updateReceiptEvent.Receipt.Id == receiptId &&
-                updateReceiptEvent.RoutingKey == receiptId.ToString());
+            var createReceiptEvent = _kafkaFixture.Consume<CreatedReceiptEvent>(
+                (createReceiptEvent, _) =>
+                createReceiptEvent.Receipt.Id == receiptId &&
+                createReceiptEvent.RoutingKey == receiptId.ToString());
 
-            updateReceiptEvent
+            createReceiptEvent
                 .Should()
                 .NotBeNull();
         }
