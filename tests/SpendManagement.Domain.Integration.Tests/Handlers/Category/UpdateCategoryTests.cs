@@ -7,14 +7,13 @@ using SpendManagement.Contracts.V1.Events.CategoryEvents;
 using SpendManagement.Domain.Integration.Tests.Configuration;
 using SpendManagement.Domain.Integration.Tests.Fixtures;
 
-namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Category
+namespace SpendManagement.Domain.Integration.Tests.Handlers.Category
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class UpdateCategoryTests(KafkaFixture kafkaFixture, SqlFixture sqlFixture)
+    public class UpdateCategoryTests(KafkaFixture kafkaFixture)
     {
         private readonly Fixture fixture = new();
         private readonly KafkaFixture _kafkaFixture = kafkaFixture;
-        private readonly SqlFixture _sqlFixture = sqlFixture;
 
         [Fact(DisplayName = "On updating a valid category, a command should be inserted on the database, and a UpdateCategoryEvent should be produced.")]
         private async Task OnGivenAValidCategory_ShouldBeCreateACommandAndEventOnDb_And_ShouldBeProduce_UpdateCategoryEvent()
@@ -34,7 +33,7 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Category
                 .Create();
 
             // Act
-            await this._kafkaFixture.ProduceCommandAsync(categoryUpdateCommand);
+            await _kafkaFixture.ProduceCommandAsync(categoryUpdateCommand);
 
             // Assert
             var command = await Policy

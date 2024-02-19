@@ -7,14 +7,13 @@ using SpendManagement.Contracts.V1.Events.CategoryEvents;
 using SpendManagement.Domain.Integration.Tests.Configuration;
 using SpendManagement.Domain.Integration.Tests.Fixtures;
 
-namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Category
+namespace SpendManagement.Domain.Integration.Tests.Handlers.Category
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class DeleteCategoryTests(KafkaFixture kafkaFixture, SqlFixture sqlFixture)
+    public class DeleteCategoryTests(KafkaFixture kafkaFixture)
     {
         private readonly Fixture fixture = new();
         private readonly KafkaFixture _kafkaFixture = kafkaFixture;
-        private readonly SqlFixture _sqlFixture = sqlFixture;
 
         [Fact(DisplayName = "On deleting a valid category, a command should be inserted on the database, and a DeleteCategoryEvent should be produced.")]
         private async Task OnGivenAValidCategory_ShouldBeInsertedACommand_Should_Produced_DeleteCategoryCommand()
@@ -29,7 +28,7 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Category
                 .Create();
 
             // Act
-            await this._kafkaFixture.ProduceCommandAsync(categoryDeleteComand);
+            await _kafkaFixture.ProduceCommandAsync(categoryDeleteComand);
 
             // Assert
             var command = await Policy

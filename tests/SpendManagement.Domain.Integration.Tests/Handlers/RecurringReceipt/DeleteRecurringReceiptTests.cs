@@ -2,34 +2,33 @@
 using Domain.Entities;
 using FluentAssertions;
 using Polly;
-using SpendManagement.Contracts.V1.Commands.ReceiptCommands;
-using SpendManagement.Contracts.V1.Events.ReceiptEvents;
+using SpendManagement.Contracts.V1.Commands.RecurringReceiptCommands;
+using SpendManagement.Contracts.V1.Events.RecurringReceiptEvents;
 using SpendManagement.Domain.Integration.Tests.Configuration;
 using SpendManagement.Domain.Integration.Tests.Fixtures;
 
-namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Receipt
+namespace SpendManagement.Domain.Integration.Tests.Handlers.RecurringReceipt
 {
     [Collection(nameof(SharedFixtureCollection))]
-    public class DeleteReceiptTests(KafkaFixture kafkaFixture, SqlFixture sqlFixture)
+    public class DeleteReceiptTests(KafkaFixture kafkaFixture)
     {
         private readonly Fixture fixture = new();
         private readonly KafkaFixture _kafkaFixture = kafkaFixture;
-        private readonly SqlFixture _sqlFixture = sqlFixture;
 
-        [Fact(DisplayName = "On deleting a valid receipt, a command should be inserted on the database, and a DeleteReceiptEvent should be produced.")]
-        private async Task OnGivenAValidReceipt_ShouldBeCreateACommandAndEventOnDb_And_ShouldBeProduce_DeleteReceiptEvent()
+        [Fact]
+        private async Task OnGivenAValidReceipt_ShouldBeCreateACommandAndEventOnDb_And_ShouldBeProduce_DeleteRecurringReceiptEvent()
         {
             //Arrange
             var receiptId = fixture.Create<Guid>();
 
             var deleteReceiptCommand = fixture
-                .Build<DeleteReceiptCommand>()
+                .Build<DeleteRecurringReceiptCommand>()
                 .With(x => x.RoutingKey, receiptId.ToString())
                 .With(x => x.Id, receiptId)
                 .Create();
 
             //Act
-            await this._kafkaFixture.ProduceCommandAsync(deleteReceiptCommand);
+            await _kafkaFixture.ProduceCommandAsync(deleteReceiptCommand);
 
             // Assert
             var command = await Policy
@@ -41,11 +40,11 @@ namespace SpendManagement.Domain.Integration.Tests.Tests.Handlers.Receipt
                 .ExecuteAsync(() => SqlFixture.GetCommandAsync(receiptId.ToString()));
 
             command.Should().NotBeNull();
-            command.NameCommand.Should().Be(nameof(DeleteReceiptCommand));
+            command.NameCommand.Should().Be(nameof(DeleteRecurringReceiptCommand));
             command.RoutingKey.Should().Be(receiptId.ToString());
             command.CommandBody.Should().NotBeNull();
 
-            var deleteReceiptEvent = _kafkaFixture.Consume<DeleteReceiptEvent>(
+            var deleteReceiptEvent = _kafkaFixture.Consume<DeleteRecurringReceiptEvent>(
                 (deleteReceiptEvent, _) =>
                 deleteReceiptEvent.Id == receiptId &&
                 deleteReceiptEvent.RoutingKey == receiptId.ToString());
