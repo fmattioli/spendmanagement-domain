@@ -14,7 +14,6 @@ services:
     image: spendmanagement_domain:${APP_VERSION}
     environment:
       - APP_VERSION=${APP_VERSION}
-      - ASPNETCORE_ENVIRONMENT=Docker
     ports:
       - "8075:8080"
     networks:
