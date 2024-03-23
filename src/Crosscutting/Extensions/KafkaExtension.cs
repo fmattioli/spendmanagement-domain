@@ -52,13 +52,13 @@ namespace Crosscutting.Extensions
             {
                 builder
                     .WithBrokers(settings.Sasl_Brokers)
-                    .WithSecurityInformation(si =>
+                    .WithSecurityInformation(x =>
                     {
-                        si.SecurityProtocol = SecurityProtocol.SaslSsl;
-                        si.SaslUsername = settings.Sasl_UserName;
-                        si.SaslPassword = settings.Sasl_Password;
-                        si.SaslMechanism = SaslMechanism.Plain;
-                        si.SslCaLocation = string.Empty;
+                        x.SecurityProtocol = KafkaFlow.Configuration.SecurityProtocol.SaslSsl;
+                        x.SaslUsername = settings.Sasl_UserName;
+                        x.SaslPassword = settings.Sasl_Password;
+                        x.SaslMechanism = KafkaFlow.Configuration.SaslMechanism.ScramSha512;
+                        x.SslCaLocation = string.Empty;
                     });
             }
             else
@@ -77,7 +77,6 @@ namespace Crosscutting.Extensions
                 consumer => consumer
                      .Topics(KafkaTopics.Commands.GetReceiptCommands(settings!.Environment))
                      .WithGroupId("Receipts-Commands")
-                     .WithName("Receipt-Commands")
                      .WithBufferSize(settings?.BufferSize ?? 0)
                      .WithWorkersCount(settings?.WorkerCount ?? 0)
                      .WithAutoOffsetReset(AutoOffsetReset.Latest)
