@@ -58,7 +58,6 @@ namespace Crosscutting.Extensions
                         information.SaslUsername = settings.Sasl_UserName;
                         information.SaslPassword = settings.Sasl_Password;
                         information.SecurityProtocol = SecurityProtocol.SaslSsl;
-                        information.SecurityProtocol = SecurityProtocol.SaslSsl;
                         information.EnableSslCertificateVerification = true;
                     });
             }
