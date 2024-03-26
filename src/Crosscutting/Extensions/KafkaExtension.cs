@@ -55,7 +55,7 @@ namespace Crosscutting.Extensions
                     .WithSecurityInformation(information =>
                     {
                         information.SaslMechanism = SaslMechanism.ScramSha256;
-                        information.SaslUsername = settings.Sasl_UserName;
+                        information.SaslUsername = settings.Sasl_Username;
                         information.SaslPassword = settings.Sasl_Password;
                         information.SecurityProtocol = SecurityProtocol.SaslSsl;
                         information.EnableSslCertificateVerification = true;

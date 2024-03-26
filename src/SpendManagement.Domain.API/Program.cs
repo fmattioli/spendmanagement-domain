@@ -5,7 +5,6 @@ using Crosscutting.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 var enviroment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
 builder.Configuration
@@ -13,7 +12,7 @@ builder.Configuration
     .AddJsonFile($"conf/appsettings.{enviroment}.json", true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-var applicationSettings = builder.Configuration.GetSection("Settings").Get<Settings>();
+var applicationSettings = builder.Configuration.GetApplicationSettings(builder.Environment);
 
 builder.Logging
     .ClearProviders()
