@@ -3,13 +3,13 @@ using Dapper;
 using Serilog;
 using Data.Statements;
 using System.Data;
-using System.Data.SqlClient;
+using Npgsql;
 
 namespace Data.Persistence.Repository
 {
-    public class BaseRepository<T>(SqlConnection sqlConnection, IDbTransaction dbTransaction, ILogger logger) : IBaseRepository<T> where T : class
+    public class BaseRepository<T>(NpgsqlConnection connection, IDbTransaction dbTransaction, ILogger logger) : IBaseRepository<T> where T : class
     {
-        private readonly SqlConnection _sqlConnection = sqlConnection;
+        private readonly NpgsqlConnection _connection = connection;
         private readonly IDbTransaction _dbTransaction = dbTransaction;
         private readonly ILogger _logger = logger;
 
@@ -17,7 +17,7 @@ namespace Data.Persistence.Repository
         {
             var sql = SQLStatements.InsertCommand();
 
-            var result = await _sqlConnection.ExecuteScalarAsync(sql, entity, _dbTransaction);
+            var result = await _connection.ExecuteScalarAsync(sql, entity, _dbTransaction);
 
             if (result != null && Guid.TryParse(result.ToString(), out Guid guidResult))
             {

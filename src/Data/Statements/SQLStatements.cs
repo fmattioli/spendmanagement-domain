@@ -8,42 +8,19 @@ namespace Data.Statements
         public static string InsertCommand()
         {
             QueryBuilder.Clear();
-            QueryBuilder.AppendLine("INSERT INTO [SpendManagementCommands]");
+            QueryBuilder.AppendLine("INSERT INTO SpendManagementCommands");
             QueryBuilder.AppendLine("( ");
-            QueryBuilder.AppendLine("[RoutingKey], ");
-            QueryBuilder.AppendLine("[DataCommand], ");
-            QueryBuilder.AppendLine("[NameCommand], ");
-            QueryBuilder.AppendLine("[CommandBody] ");
+            QueryBuilder.AppendLine("RoutingKey, ");
+            QueryBuilder.AppendLine("DataCommand, ");
+            QueryBuilder.AppendLine("NameCommand, ");
+            QueryBuilder.AppendLine("CommandBody ");
             QueryBuilder.AppendLine(") ");
-            QueryBuilder.AppendLine("OUTPUT Inserted.RoutingKey ");
             QueryBuilder.AppendLine(" VALUES ");
             QueryBuilder.AppendLine(" ( ");
             QueryBuilder.AppendLine("  @RoutingKey,  ");
             QueryBuilder.AppendLine("  @DataCommand,  ");
             QueryBuilder.AppendLine("  @NameCommand,  ");
             QueryBuilder.AppendLine("  @CommandBody  ");
-            QueryBuilder.AppendLine("  )  ");
-            return QueryBuilder.ToString();
-        }
-
-        public static string InsertEvent()
-        {
-            QueryBuilder.Clear();
-            QueryBuilder.AppendLine("INSERT INTO [SpendManagementEvents]");
-            QueryBuilder.AppendLine("( ");
-            QueryBuilder.AppendLine("[FK_Command_Id], ");
-            QueryBuilder.AppendLine("[RoutingKey], ");
-            QueryBuilder.AppendLine("[DataEvent], ");
-            QueryBuilder.AppendLine("[NameEvent], ");
-            QueryBuilder.AppendLine("[EventBody] ");
-            QueryBuilder.AppendLine(") ");
-            QueryBuilder.AppendLine(" VALUES ");
-            QueryBuilder.AppendLine(" ( ");
-            QueryBuilder.AppendLine("  @Id,  ");
-            QueryBuilder.AppendLine("  @RoutingKey,  ");
-            QueryBuilder.AppendLine("  @DataEvent,  ");
-            QueryBuilder.AppendLine("  @NameEvent,  ");
-            QueryBuilder.AppendLine("  @EventBody  ");
             QueryBuilder.AppendLine("  )  ");
             return QueryBuilder.ToString();
         }

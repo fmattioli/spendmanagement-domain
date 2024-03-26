@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using Domain.Entities;
+using Npgsql;
 using SpendManagement.Domain.Integration.Tests.Configuration;
-using System.Data.SqlClient;
 
 namespace SpendManagement.Domain.Integration.Tests.Fixtures
 {
@@ -9,7 +9,7 @@ namespace SpendManagement.Domain.Integration.Tests.Fixtures
     {
         public static async Task<SpendManagementCommand> GetCommandAsync(string commandId)
         {
-            using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
+            using var connection = new NpgsqlConnection(TestSettings.SqlSettings?.ConnectionString);
             var command = await connection.QueryFirstOrDefaultAsync<SpendManagementCommand>("SELECT * FROM SpendManagementCommands WHERE RoutingKey = @id", new { id = commandId });
             return command!;
         }
@@ -18,7 +18,7 @@ namespace SpendManagement.Domain.Integration.Tests.Fixtures
 
         public async Task DisposeAsync()
         {
-            using var connection = new SqlConnection(TestSettings.SqlSettings?.ConnectionString);
+            using var connection = new NpgsqlConnection(TestSettings.SqlSettings?.ConnectionString);
             await connection.ExecuteAsync("DELETE FROM SpendManagementCommands");
         }
     }
