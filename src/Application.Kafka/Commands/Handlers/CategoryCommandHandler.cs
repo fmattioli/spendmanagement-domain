@@ -26,6 +26,7 @@ namespace Application.Kafka.Commands.Handlers
         public async Task Handle(IMessageContext context, CreateCategoryCommand message)
         {
             _logger.Information("PAI NOSSO QUE ESTAIS NO CÉU, MUITO OBRIGADO!");
+
             var commandDomain = message.ToDomain();
 
             await _unitOfWork.SpendManagementCommandRepository.Add(commandDomain);
