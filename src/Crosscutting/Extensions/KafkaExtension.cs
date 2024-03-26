@@ -21,7 +21,16 @@ namespace Crosscutting.Extensions
             services.AddKafka(kafka => kafka
                 .UseConsoleLog()
                 .AddCluster(cluster => cluster
-                    .AddBrokers(kafkaSettings)
+                    .WithBrokers(new string[] { "unique-camel-8345-eu2-kafka.upstash.io:9092" })
+                    .WithSecurityInformation(information =>
+                        {
+                            information.SaslMechanism = SaslMechanism.ScramSha256;
+                            information.SaslUsername = "dW5pcXVlLWNhbWVsLTgzNDUk8RLsTQoJ7i1X5nGz0HNWvMirQdh7ldh4--2vvmY";
+                            information.SaslPassword = "ZmExNzIwZDgtYTI4ZC00OTFhLWI5YzgtMzMyMzFkYjBiMjEz";
+                            information.SecurityProtocol = SecurityProtocol.SaslSsl;
+                            information.SecurityProtocol = SecurityProtocol.SaslSsl;
+                            information.EnableSslCertificateVerification = true;
+                        })
                     .AddTelemetry(kafkaSettings.Environment)
                     .AddConsumers(kafkaSettings)
                     .AddProducers(kafkaSettings)
