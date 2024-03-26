@@ -15,6 +15,7 @@ namespace Crosscutting.Extensions
                 settings!.KafkaSettings!.Sasl_Brokers = new[] { GetEnvironmentVariableFromRender("Sasl_Brokers") };
                 settings!.KafkaSettings!.Sasl_Username = GetEnvironmentVariableFromRender("Sasl_Username");
                 settings!.KafkaSettings!.Sasl_Password = GetEnvironmentVariableFromRender("Sasl_Password");
+                settings!.SqlSettings!.ConnectionString = GetEnvironmentVariableFromRender("ConnectionString");
             }
 
             return settings!;

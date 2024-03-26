@@ -8,29 +8,27 @@ GO
 USE SpendManagement
 
 GO
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE NAME='Commands' AND xtype='U')
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE NAME='SpendManagementCommands' AND xtype='U')
 BEGIN
-    CREATE TABLE [dbo].[Commands] (
-    [Id] INT IDENTITY(1,1) PRIMARY KEY,
-    [RoutingKey]  UNIQUEIDENTIFIER NOT NULL,
+   CREATE TABLE [dbo].[SpendManagementCommands] (
+    [RoutingKey]  VARCHAR(200) NOT NULL,
     [DataCommand] DATETIME NOT NULL,
     [NameCommand] Varchar(200) NOT NULL,
-    [CommandBody] NVARCHAR(MAX)         NOT NULL 
+    [CommandBody] NVARCHAR(MAX)         NOT NULL
 );
+
 
 END
 
 GO
 
-IF NOT EXISTS (SELECT * FROM sysobjects WHERE NAME='Events' AND xtype='U')
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE NAME='SpendManagementEvents' AND xtype='U')
 BEGIN
-    CREATE TABLE [dbo].[Events] (
-        [FK_Command_Id] INT NOT NULL,
-        [RoutingKey]  UNIQUEIDENTIFIER NOT NULL,
-        [DataEvent] DATETIME NOT NULL,
-        [NameEvent] Varchar(200) NOT NULL,
-        [EventBody] NVARCHAR(MAX)         NOT NULL,
-        CONSTRAINT [FK_Events_Commands] FOREIGN KEY ([FK_Command_Id]) REFERENCES [Commands](Id) 
-    );
+    CREATE TABLE [dbo].[SpendManagementEvents] (
+    [RoutingKey]  VARCHAR(200) NOT NULL,
+    [DataEvent] DATETIME NOT NULL,
+    [NameEvent] Varchar(200) NOT NULL,
+    [EventBody] NVARCHAR(MAX)         NOT NULL
+);
 END
 GO
