@@ -21,16 +21,7 @@ namespace Crosscutting.Extensions
             services.AddKafka(kafka => kafka
                 .UseConsoleLog()
                 .AddCluster(cluster => cluster
-                    .WithBrokers(new string[] { "unique-camel-8345-eu2-kafka.upstash.io:9092" })
-                    .WithSecurityInformation(information =>
-                        {
-                            information.SaslMechanism = SaslMechanism.ScramSha256;
-                            information.SaslUsername = "dW5pcXVlLWNhbWVsLTgzNDUk8RLsTQoJ7i1X5nGz0HNWvMirQdh7ldh4--2vvmY";
-                            information.SaslPassword = "ZmExNzIwZDgtYTI4ZC00OTFhLWI5YzgtMzMyMzFkYjBiMjEz";
-                            information.SecurityProtocol = SecurityProtocol.SaslSsl;
-                            information.SecurityProtocol = SecurityProtocol.SaslSsl;
-                            information.EnableSslCertificateVerification = true;
-                        })
+                    .AddBrokers(kafkaSettings)
                     .AddTelemetry(kafkaSettings.Environment)
                     .AddConsumers(kafkaSettings)
                     .AddProducers(kafkaSettings)
@@ -61,13 +52,14 @@ namespace Crosscutting.Extensions
             {
                 builder
                     .WithBrokers(settings.Sasl_Brokers)
-                    .WithSecurityInformation(x =>
+                    .WithSecurityInformation(information =>
                     {
-                        x.SecurityProtocol = KafkaFlow.Configuration.SecurityProtocol.SaslSsl;
-                        x.SaslUsername = settings.Sasl_UserName;
-                        x.SaslPassword = settings.Sasl_Password;
-                        x.SaslMechanism = KafkaFlow.Configuration.SaslMechanism.ScramSha512;
-                        x.SslCaLocation = string.Empty;
+                        information.SaslMechanism = SaslMechanism.ScramSha256;
+                        information.SaslUsername = settings.Sasl_UserName;
+                        information.SaslPassword = settings.Sasl_Password;
+                        information.SecurityProtocol = SecurityProtocol.SaslSsl;
+                        information.SecurityProtocol = SecurityProtocol.SaslSsl;
+                        information.EnableSslCertificateVerification = true;
                     });
             }
             else
