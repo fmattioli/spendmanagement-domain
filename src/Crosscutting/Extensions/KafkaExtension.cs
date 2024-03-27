@@ -22,26 +22,12 @@ namespace Crosscutting.Extensions
                 .UseConsoleLog()
                 .AddCluster(cluster => cluster
                     .AddBrokers(kafkaSettings)
-                    .AddTelemetry(kafkaSettings.Environment)
                     .AddConsumers(kafkaSettings)
                     .AddProducers(kafkaSettings)
                     )
                 );
             services.AddHostedService<KafkaBusHostedService>();
             return services;
-        }
-
-        private static IClusterConfigurationBuilder AddTelemetry(
-            this IClusterConfigurationBuilder builder,
-            string enviroment)
-        {
-            var topic = $"{enviroment}.spendmanagement.receipts.events.telemetry";
-
-            builder
-                .EnableAdminMessages(topic)
-                .EnableTelemetry(topic);
-
-            return builder;
         }
 
         private static IClusterConfigurationBuilder AddBrokers(
