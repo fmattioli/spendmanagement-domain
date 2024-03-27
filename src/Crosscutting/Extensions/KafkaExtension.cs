@@ -77,10 +77,10 @@ namespace Crosscutting.Extensions
                 consumer => consumer
                      .Topics(KafkaTopics.Commands.GetReceiptCommands(settings!.Environment))
                      .WithGroupId("Receipts-Commands")
-                     .WithBufferSize(settings?.BufferSize ?? 0)
-                     .WithWorkersCount(settings?.WorkerCount ?? 0)
+                     .WithBufferSize(settings.BufferSize)
+                     .WithWorkersCount(settings.WorkerCount)
                      .WithAutoOffsetReset(AutoOffsetReset.Latest)
-                     .WithInitialState(Enum.Parse<ConsumerInitialState>(settings?.ConsumerInitialState ?? "Running"))
+                     .WithInitialState(Enum.Parse<ConsumerInitialState>(settings.ConsumerInitialState ?? "Running"))
                      .AddMiddlewares(m => m
                             .Add<ConsumerLoggingMiddleware>()
                             .Add<ConsumerTracingMiddleware>()
