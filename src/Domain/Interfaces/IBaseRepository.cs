@@ -1,7 +1,14 @@
-﻿namespace Domain.Interfaces
+﻿using System.Linq.Expressions;
+
+namespace Domain.Interfaces
 {
-    public interface IBaseRepository<T> where T : class
+    public interface IBaseRepository<TEntity> where TEntity : class
     {
-        Task<Guid> Add(T entity);
+        Task AddOneAsync(TEntity entity);
+
+        Task ReplaceOneAsync(Expression<Func<TEntity, bool>> filterExpression,
+            TEntity entity);
+
+        Task DeleteAsync(Expression<Func<TEntity, bool>> filterExpression);
     }
 }

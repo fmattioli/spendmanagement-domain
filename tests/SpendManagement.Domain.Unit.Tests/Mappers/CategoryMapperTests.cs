@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using Newtonsoft.Json;
 using SpendManagement.Contracts.V1.Commands.CategoryCommands;
-using Application.Kafka.Mappers.Category;
+using Application.Services.Mappers.Category;
 using FluentAssertions;
 
 namespace SpendManagement.Domain.Unit.Tests.Mappers
@@ -49,7 +49,7 @@ namespace SpendManagement.Domain.Unit.Tests.Mappers
             var createCategoryCommand = fixture.Create<UpdateCategoryCommand>();
 
             // Act
-            var result = createCategoryCommand.ToDomain();
+            var result = createCategoryCommand.ToCommandDomain();
 
             // Assert
             result.RoutingKey
@@ -76,7 +76,7 @@ namespace SpendManagement.Domain.Unit.Tests.Mappers
             var deleteCategoryCommand = fixture.Create<DeleteCategoryCommand>();
 
             // Act
-            var result = deleteCategoryCommand.ToDomain();
+            var result = deleteCategoryCommand.ToCommandDomain();
 
             // Assert
             result.RoutingKey

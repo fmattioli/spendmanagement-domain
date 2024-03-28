@@ -1,5 +1,5 @@
-﻿using Application.Kafka.Events;
-using Application.Kafka.Events.Interfaces;
+﻿using Application.Services.Events;
+using Application.Services.Events.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Crosscutting.Extensions

@@ -1,4 +1,4 @@
-﻿namespace Application.Kafka.Constants
+﻿namespace Application.Services.Constants
 {
     public static class Constants
     {

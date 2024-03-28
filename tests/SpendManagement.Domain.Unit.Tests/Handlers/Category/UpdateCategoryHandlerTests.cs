@@ -1,5 +1,5 @@
-﻿using Application.Kafka.Commands.Handlers;
-using Application.Kafka.Events.Interfaces;
+﻿using Application.Services.Commands.Handlers;
+using Application.Services.Events.Interfaces;
 using AutoFixture;
 using Data.Persistence.UnitOfWork;
 using Domain.Entities;

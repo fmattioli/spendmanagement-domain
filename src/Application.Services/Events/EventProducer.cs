@@ -1,9 +1,9 @@
-﻿using Application.Kafka.Events.Interfaces;
+﻿using Application.Services.Events.Interfaces;
 using KafkaFlow;
 using Serilog;
 using SpendManagementEvents = SpendManagement.Contracts.V1.Interfaces;
 
-namespace Application.Kafka.Events
+namespace Application.Services.Events
 {
     public class EventProducer : IEventProducer
     {

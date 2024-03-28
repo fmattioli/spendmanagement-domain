@@ -5,9 +5,12 @@ using System.Data;
 namespace Data.Persistence.UnitOfWork
 {
     public class UnitOfWork(IDbTransaction dbTransaction,
-        ISpendManagementCommandRepository spendManagementCommandRepository) : IUnitOfWork, IDisposable
+        ISpendManagementCommandRepository spendManagementCommandRepository,
+        ISpendManagementEventRepository spendManagementEventRepository) : IUnitOfWork, IDisposable
     {
         public ISpendManagementCommandRepository SpendManagementCommandRepository { get; } = spendManagementCommandRepository;
+
+        public ISpendManagementEventRepository SpendManagementEventRepository { get; } = spendManagementEventRepository;
 
         private readonly IDbTransaction _dbTransaction = dbTransaction;
 
@@ -29,7 +32,6 @@ namespace Data.Persistence.UnitOfWork
             _dbTransaction.Connection?.Close();
             _dbTransaction.Connection?.Dispose();
             _dbTransaction.Dispose();
-            GC.SuppressFinalize(this);
         }
     }
 }

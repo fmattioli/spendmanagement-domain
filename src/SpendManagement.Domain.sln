@@ -17,15 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Data", "Data\Data.csproj", 
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SpendManagement", "Database\SpendManagement.sqlproj", "{0D604B5E-CE89-44CA-84A9-DACDC5805DBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Kafka", "Application.Kafka\Application.Kafka.csproj", "{7027CD5E-CBDF-41E0-BDD3-017CB5641109}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpendManagement.Domain.API", "SpendManagement.Domain.API\SpendManagement.Domain.API.csproj", "{6BA7F020-EF6F-49B1-AF75-E60577CCC7FA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3E2F2B61-9CFA-4EB5-81CB-1355416C6198}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpendManagement.Domain.Unit.Tests", "..\tests\SpendManagement.Domain.Unit.Tests\SpendManagement.Domain.Unit.Tests.csproj", "{4EE75E6F-490A-483C-8127-00A9BF1C424B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpendManagement.Domain.Integration.Tests", "..\tests\SpendManagement.Domain.Integration.Tests\SpendManagement.Domain.Integration.Tests.csproj", "{A22C0C32-1512-4C7D-87E0-E5B4012F1AFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpendManagement.Domain.Integration.Tests", "..\tests\SpendManagement.Domain.Integration.Tests\SpendManagement.Domain.Integration.Tests.csproj", "{A22C0C32-1512-4C7D-87E0-E5B4012F1AFA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Services", "Application.Services\Application.Services.csproj", "{5F388588-F782-4222-A094-26CD12D26E99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,10 +51,6 @@ Global
 		{0D604B5E-CE89-44CA-84A9-DACDC5805DBD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D604B5E-CE89-44CA-84A9-DACDC5805DBD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0D604B5E-CE89-44CA-84A9-DACDC5805DBD}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{7027CD5E-CBDF-41E0-BDD3-017CB5641109}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7027CD5E-CBDF-41E0-BDD3-017CB5641109}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7027CD5E-CBDF-41E0-BDD3-017CB5641109}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7027CD5E-CBDF-41E0-BDD3-017CB5641109}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6BA7F020-EF6F-49B1-AF75-E60577CCC7FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6BA7F020-EF6F-49B1-AF75-E60577CCC7FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BA7F020-EF6F-49B1-AF75-E60577CCC7FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -67,6 +63,10 @@ Global
 		{A22C0C32-1512-4C7D-87E0-E5B4012F1AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A22C0C32-1512-4C7D-87E0-E5B4012F1AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A22C0C32-1512-4C7D-87E0-E5B4012F1AFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F388588-F782-4222-A094-26CD12D26E99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F388588-F782-4222-A094-26CD12D26E99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F388588-F782-4222-A094-26CD12D26E99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F388588-F782-4222-A094-26CD12D26E99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,10 +76,10 @@ Global
 		{64676A32-8437-4D98-ACFE-FB59A0E30259} = {71F9425D-17F7-4A01-A9CF-D54E5FC3B5EE}
 		{37F05051-2070-44B3-9D65-BAA7553D8BB7} = {71F9425D-17F7-4A01-A9CF-D54E5FC3B5EE}
 		{0D604B5E-CE89-44CA-84A9-DACDC5805DBD} = {71F9425D-17F7-4A01-A9CF-D54E5FC3B5EE}
-		{7027CD5E-CBDF-41E0-BDD3-017CB5641109} = {2E5B457D-3630-4688-9D0E-2B58084C0C5D}
 		{6BA7F020-EF6F-49B1-AF75-E60577CCC7FA} = {C342BC02-CA19-4130-8280-4A206D477C59}
 		{4EE75E6F-490A-483C-8127-00A9BF1C424B} = {3E2F2B61-9CFA-4EB5-81CB-1355416C6198}
 		{A22C0C32-1512-4C7D-87E0-E5B4012F1AFA} = {3E2F2B61-9CFA-4EB5-81CB-1355416C6198}
+		{5F388588-F782-4222-A094-26CD12D26E99} = {2E5B457D-3630-4688-9D0E-2B58084C0C5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6DB7E096-A418-44A5-A52C-643DE2B880E6}

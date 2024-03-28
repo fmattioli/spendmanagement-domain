@@ -1,8 +1,6 @@
-﻿using Application.Kafka.Mappers.Receipt;
-using AutoFixture;
+﻿using AutoFixture;
 using FluentAssertions;
 using Newtonsoft.Json;
-using SpendManagement.Contracts.V1.Commands.ReceiptCommands;
 
 namespace SpendManagement.Domain.Unit.Tests.Mappers
 {

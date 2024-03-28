@@ -6,8 +6,8 @@ using System.Data;
 
 namespace Data.Persistence.Repository
 {
-    public class SpendManagementCommandRepository(NpgsqlConnection connection, ILogger logger, IDbTransaction dbTransaction) 
-        : BaseRepository<SpendManagementCommand>(connection, dbTransaction, logger), ISpendManagementCommandRepository
+    public class SpendManagementCommandRepository(NpgsqlConnection connection, ILogger logger, IDbTransaction dbTransaction)
+        : BaseEventSourcingRepository<SpendManagementCommand>(connection, dbTransaction, logger), ISpendManagementCommandRepository
     {
     }
 }
