@@ -13,10 +13,18 @@ namespace Crosscutting.HealthChecks
 
         public static IServiceCollection AddHealthCheckers(this IServiceCollection services, Settings settings)
         {
-            var configKafka = new ProducerConfig { BootstrapServers = settings.KafkaSettings.Broker };
+            var producerConfig = new ProducerConfig
+            {
+                BootstrapServers = settings.KafkaSettings.Sasl_Brokers.First(),
+                SaslMechanism = SaslMechanism.ScramSha256,
+                SecurityProtocol = SecurityProtocol.SaslSsl,
+                SaslUsername = settings.KafkaSettings.Sasl_Username,
+                SaslPassword = settings.KafkaSettings.Sasl_Password,
+            };
+
             services
                 .AddHealthChecks()
-                .AddKafka(configKafka, name: "Kafka")
+                .AddKafka(producerConfig, name: "Kafka")
                 .AddNpgSql(settings.SqlSettings.ConnectionString, name: "Postgres", tags: tags);
 
             services
