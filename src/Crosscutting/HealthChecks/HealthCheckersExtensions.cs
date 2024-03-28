@@ -24,7 +24,7 @@ namespace Crosscutting.HealthChecks
 
             services
                 .AddHealthChecks()
-                .AddKafka(producerConfig, name: "Kafka")
+                .AddKafka(producerConfig)
                 .AddNpgSql(settings.SqlSettings.ConnectionString, name: "Postgres", tags: tags);
 
             services
