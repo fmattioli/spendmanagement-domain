@@ -4,6 +4,7 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.DependencyInjection;
+using SpendManagement.Topics;
 
 namespace Crosscutting.HealthChecks
 {
@@ -13,6 +14,7 @@ namespace Crosscutting.HealthChecks
 
         public static IServiceCollection AddHealthCheckers(this IServiceCollection services, Settings settings)
         {
+            var topicName = KafkaTopics.Commands.GetReceiptCommands(settings.KafkaSettings.Environment);
             var producerConfig = new ProducerConfig
             {
                 BootstrapServers = settings.KafkaSettings.Sasl_Brokers.First(),
@@ -22,9 +24,10 @@ namespace Crosscutting.HealthChecks
                 SaslPassword = settings.KafkaSettings.Sasl_Password,
             };
 
+
             services
                 .AddHealthChecks()
-                .AddKafka(producerConfig)
+                .AddKafka(producerConfig, topicName)
                 .AddNpgSql(settings.SqlSettings.ConnectionString, name: "Postgres", tags: tags);
 
             services
