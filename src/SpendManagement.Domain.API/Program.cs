@@ -2,6 +2,7 @@ using KafkaFlow;
 using Crosscutting.Extensions;
 using Crosscutting.Models;
 using Crosscutting.HealthChecks;
+using Crosscutting.Mongo;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +20,13 @@ builder.Logging
     .AddFilter("Microsoft", LogLevel.Warning)
     .AddFilter("Microsoft", LogLevel.Critical);
 
-builder.Services.AddSingleton<ISettings>(applicationSettings ?? throw new Exception("Error while reading app settings."));
+builder.Services.AddSingleton<ISettings>(applicationSettings);
 
 builder.Services
     .AddTracing(applicationSettings.TracingSettings)
     .AddHealthCheckers(applicationSettings)
     .AddKafka(applicationSettings.KafkaSettings)
+    .AddMongo(applicationSettings.MongoSettings!)
     .AddUnitOfWork(applicationSettings.SqlSettings.ConnectionString)
     .AddRepositories()
     .AddServiceEventsProducer()

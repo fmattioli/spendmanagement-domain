@@ -1,32 +1,60 @@
 ﻿using Domain.Interfaces;
-using Dapper;
+using MongoDB.Bson.Serialization;
+using MongoDB.Driver;
 using Serilog;
-using Data.Statements;
-using System.Data;
-using Npgsql;
+using System.Linq.Expressions;
 
 namespace Data.Persistence.Repository
 {
-    public class BaseRepository<T>(NpgsqlConnection connection, IDbTransaction dbTransaction, ILogger logger) : IBaseRepository<T> where T : class
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        private readonly NpgsqlConnection _connection = connection;
-        private readonly IDbTransaction _dbTransaction = dbTransaction;
-        private readonly ILogger _logger = logger;
+        private readonly IMongoCollection<TEntity> collection;
+        private readonly ILogger _logger;
+        private static readonly object registrationLock = new();
 
-        public async Task<Guid> Add(T entity)
+        public BaseRepository(IMongoDatabase mongoDb, string collectionName, ILogger logger)
         {
-            var sql = SQLStatements.InsertCommand();
+            MapClasses();
+            this.collection = mongoDb.GetCollection<TEntity>(collectionName);
+            _logger = logger;
+        }
 
-            var result = await _connection.ExecuteScalarAsync(sql, entity, _dbTransaction);
+        public async Task AddOneAsync(TEntity entity)
+        {
+            await this.collection.InsertOneAsync(entity);
+            _logger.Information("Document createed with successfully {@entity}", entity);
+        }
 
-            if (result != null && Guid.TryParse(result.ToString(), out Guid guidResult))
+        public async Task ReplaceOneAsync(Expression<Func<TEntity, bool>> filterExpression, TEntity entity)
+        {
+            await this.collection.ReplaceOneAsync(filterExpression, entity);
+            _logger.Information("Document updated with successfully {@entity}", entity);
+        }
+
+        public async Task DeleteAsync(Expression<Func<TEntity, bool>> filterExpression)
+        {
+            await this.collection.DeleteOneAsync(filterExpression);
+
+            var body = filterExpression.Body.ToString();
+            _logger.Information($"Category deleted with sucessfully on database {body}");
+        }
+
+        private static void MapClasses()
+        {
+            if (!BsonClassMap.IsClassMapRegistered(typeof(TEntity)))
             {
-                _logger.Information("Command or event inserted successfully on database {@entity}", entity);
-                return guidResult;
+                lock (registrationLock)
+                {
+                    if (!BsonClassMap.IsClassMapRegistered(typeof(TEntity)))
+                    {
+                        BsonClassMap.RegisterClassMap<TEntity>(cm =>
+                        {
+                            cm.AutoMap();
+                            cm.SetIgnoreExtraElements(true);
+                        });
+                    }
+                }
             }
-
-            _logger.Information("An error occured when tried insert the command", entity);
-            return Guid.Empty;
         }
     }
 }

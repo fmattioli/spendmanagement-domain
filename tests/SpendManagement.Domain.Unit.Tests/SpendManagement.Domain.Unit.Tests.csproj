@@ -25,7 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Application.Kafka\Application.Kafka.csproj" />
+    <ProjectReference Include="..\..\src\Application.Services\Application.Services.csproj" />
   </ItemGroup>
 
 </Project>

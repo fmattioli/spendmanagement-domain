@@ -1,4 +1,4 @@
-﻿using Application.Kafka.Constants;
+﻿using Application.Services.Constants;
 using Crosscutting.Models;
 using KafkaFlow;
 using OpenTelemetry;

@@ -1,6 +1,6 @@
 ﻿using SpendManagement.Contracts.V1.Interfaces;
 
-namespace Application.Kafka.Events.Interfaces
+namespace Application.Services.Events.Interfaces
 {
     public interface IEventProducer
     {

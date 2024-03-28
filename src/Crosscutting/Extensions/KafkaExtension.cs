@@ -1,4 +1,4 @@
-﻿using Application.Kafka.Commands.Handlers;
+﻿using Application.Services.Commands.Handlers;
 using Crosscutting.Middlewares;
 using Crosscutting.Models;
 using KafkaFlow;
@@ -73,7 +73,7 @@ namespace Crosscutting.Extensions
                             .AddTypedHandlers(
                                 h => h
                                     .WithHandlerLifetime(InstanceLifetime.Scoped)
-                                    .AddHandlersFromAssemblyOf<ReceiptCommandHandler>()
+                                    .AddHandlersFromAssemblyOf<VariableReceiptCommandHandler>()
                                     )
                             )
                      );

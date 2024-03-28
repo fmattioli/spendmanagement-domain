@@ -2,7 +2,7 @@
 
 namespace Domain.Interfaces
 {
-    public interface ISpendManagementCommandRepository : IBaseRepository<SpendManagementCommand>
+    public interface ISpendManagementCommandRepository : IBaseEventSourcingRepository<SpendManagementCommand>
     {
     }
 }

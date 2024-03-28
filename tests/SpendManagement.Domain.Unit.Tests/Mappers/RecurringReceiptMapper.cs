@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using Newtonsoft.Json;
 using SpendManagement.Contracts.V1.Commands.RecurringReceiptCommands;
-using Application.Kafka.Mappers.RecurringReceipt;
+using Application.Services.Mappers.RecurringReceipt;
 using FluentAssertions;
 namespace SpendManagement.Domain.Unit.Tests.Mappers
 {
@@ -21,7 +21,7 @@ namespace SpendManagement.Domain.Unit.Tests.Mappers
             var createRecurringReceiptCommand = fixture.Create<CreateRecurringReceiptCommand>();
 
             // Act
-            var result = createRecurringReceiptCommand.ToDomain();
+            var result = createRecurringReceiptCommand.ToCommandDomain();
 
             // Assert
             result.RoutingKey
@@ -48,7 +48,7 @@ namespace SpendManagement.Domain.Unit.Tests.Mappers
             var updateRecurringReceiptCommand = fixture.Create<UpdateRecurringReceiptCommand>();
 
             // Act
-            var result = updateRecurringReceiptCommand.ToDomain();
+            var result = updateRecurringReceiptCommand.ToCommandDomain();
 
             // Assert
             result.RoutingKey
@@ -75,7 +75,7 @@ namespace SpendManagement.Domain.Unit.Tests.Mappers
             var deleteRecurringReceiptCommand = fixture.Create<DeleteRecurringReceiptCommand>();
 
             // Act
-            var result = deleteRecurringReceiptCommand.ToDomain();
+            var result = deleteRecurringReceiptCommand.ToCommandDomain();
 
             // Assert
             result.RoutingKey

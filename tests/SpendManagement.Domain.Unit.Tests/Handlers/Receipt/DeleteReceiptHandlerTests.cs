@@ -1,5 +1,5 @@
-﻿using Application.Kafka.Commands.Handlers;
-using Application.Kafka.Events.Interfaces;
+﻿using Application.Services.Commands.Handlers;
+using Application.Services.Events.Interfaces;
 using AutoFixture;
 using Data.Persistence.Interfaces;
 using Data.Persistence.UnitOfWork;
@@ -16,7 +16,7 @@ namespace SpendManagement.Domain.Unit.Tests.Handlers.Receipt
 {
     public class DeleteReceiptHandlerTests
     {
-        private readonly ReceiptCommandHandler _receiptHandler;
+        private readonly VariableReceiptCommandHandler _receiptHandler;
         private readonly Fixture _fixture = new();
         private readonly Mock<IEventProducer> _eventProducer = new();
         private readonly Mock<IDbTransaction> _dbTransactionObject = new();
