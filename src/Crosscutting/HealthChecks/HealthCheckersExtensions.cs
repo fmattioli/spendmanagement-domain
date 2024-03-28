@@ -17,7 +17,7 @@ namespace Crosscutting.HealthChecks
             services
                 .AddHealthChecks()
                 .AddKafka(configKafka, name: "Kafka")
-                .AddSqlServer(settings.SqlSettings.ConnectionString, name: "SqlServer", tags: tags);
+                .AddNpgSql(settings.SqlSettings.ConnectionString, name: "Postgres", tags: tags);
 
             services
                 .AddHealthChecksUI(setupSettings: setup => setup.SetEvaluationTimeInSeconds(60))
