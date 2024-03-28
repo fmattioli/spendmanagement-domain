@@ -1,5 +1,4 @@
 ﻿using Application.Kafka.Commands.Handlers;
-using Crosscutting.HostedService;
 using Crosscutting.Middlewares;
 using Crosscutting.Models;
 using KafkaFlow;
@@ -24,9 +23,8 @@ namespace Crosscutting.Extensions
                     .AddBrokers(kafkaSettings)
                     .AddConsumers(kafkaSettings)
                     .AddProducers(kafkaSettings)
-                    )
-                );
-            services.AddHostedService<KafkaBusHostedService>();
+            ));
+
             return services;
         }
 

@@ -21,7 +21,7 @@ namespace Crosscutting.HostedService
         public async Task StopAsync(CancellationToken cancellationToken)
         {
             Console.WriteLine("Kafka stopped");
-            await kafkaBus.StartAsync(cancellationToken);
+            await kafkaBus.StopAsync();
         }
     }
 }
