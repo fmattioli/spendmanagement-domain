@@ -49,4 +49,6 @@ app.MapGet("/", () =>
 "Hello! I'm working. My work is only read commands and producing domain events...\n" +
 "If you wanna, you can see my health on /health");
 
+var kafkaBus = app.Services.CreateKafkaBus();
+await kafkaBus.StartAsync();
 app.Run();
